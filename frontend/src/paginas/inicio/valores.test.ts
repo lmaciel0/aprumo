@@ -23,8 +23,9 @@ describe('paraCentavos', () => {
 })
 
 describe('formatarComSinal', () => {
-  it('põe o sinal − antes do R$ quando negativo', () => {
-    expect(semNbsp(formatarComSinal('-799.50'))).toBe('− R$ 799,50')
+  it('põe o sinal − colado no R$ quando negativo', () => {
+    expect(semNbsp(formatarComSinal('-799.50'))).toBe('−R$ 799,50')
+    expect(semNbsp(formatarComSinal('-0.01'))).toBe('−R$ 0,01')
   })
 
   it('não põe sinal em positivo nem em zero', () => {
@@ -132,11 +133,14 @@ describe('resultadoCurto', () => {
     expect(resultadoCurto(-80, false)).toBe('−80')
   })
 
-  it('a partir de mil usa uma casa decimal e o sufixo mil (ou k se compacto)', () => {
+  it('a partir de mil usa uma casa decimal, vírgula e o sufixo mil, nunca k', () => {
     expect(resultadoCurto(-1200, false)).toBe('−1,2 mil')
-    expect(resultadoCurto(-1200, true)).toBe('−1,2k')
+    expect(resultadoCurto(-1200, true)).toBe('−1,2 mil')
+    expect(resultadoCurto(-2500, false)).toBe('−2,5 mil')
+    expect(resultadoCurto(-2500, true)).toMatch(/,/)
+    expect(resultadoCurto(-2500, true)).not.toMatch(/k$/)
     expect(resultadoCurto(2000, false)).toBe('+2 mil')
-    expect(resultadoCurto(2000, true)).toBe('+2k')
+    expect(resultadoCurto(2000, true)).toBe('+2 mil')
     expect(resultadoCurto(999.6, false)).toBe('+1 mil')
     expect(resultadoCurto(1234567, false)).toBe('+1.234,6 mil')
   })

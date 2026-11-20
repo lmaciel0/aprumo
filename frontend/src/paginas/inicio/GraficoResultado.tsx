@@ -21,7 +21,7 @@ function corDoValor(valor: string): string {
   if (centavos === 0) {
     return 'text-[var(--cor-mutado)]'
   }
-  return centavos > 0 ? 'text-[var(--cor-positivo-texto)]' : 'text-[var(--cor-negativo-texto)]'
+  return 'text-[var(--cor-texto)]'
 }
 
 /**

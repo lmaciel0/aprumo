@@ -123,7 +123,7 @@ describe('InicioPage', () => {
 
     const sobra = await bloco('Sobra do mês')
     expect(within(sobra).getByText('R$ 799,50')).toBeInTheDocument()
-    expect(within(sobra).getByText('No ano: − R$ 1.234,00')).toBeInTheDocument()
+    expect(within(sobra).getByText('No ano: −R$ 1.234,00')).toBeInTheDocument()
     expect(within(sobra).getByText('R$ 1.799,50 melhor que setembro')).toBeInTheDocument()
     expect(within(await bloco('Receitas')).getByText('R$ 5.000,00')).toBeInTheDocument()
     expect(within(await bloco('Despesas')).getByText('R$ 4.200,50')).toBeInTheDocument()
@@ -134,7 +134,7 @@ describe('InicioPage', () => {
     renderizar()
 
     const sobra = await bloco('Sobra do mês')
-    expect(within(sobra).getByText('− R$ 6,20')).toBeInTheDocument()
+    expect(within(sobra).getByText('−R$ 6,20')).toBeInTheDocument()
     expect(within(sobra).getByText('R$ 6,20 pior que setembro')).toBeInTheDocument()
   })
 
@@ -159,7 +159,7 @@ describe('InicioPage', () => {
     expect(within(await bloco('Sobra do mês')).queryByText(/da receita/)).not.toBeInTheDocument()
   })
 
-  it('chips_de_variacao_receita_que_cai_e_vermelha_despesa_que_cai_e_verde', async () => {
+  it('chips_de_variacao_bom_e_ruim_ficam_neutros_com_sinal_e_seta', async () => {
     responderResumo(
       resumo({
         receitas: '670.00',
@@ -169,13 +169,15 @@ describe('InicioPage', () => {
     )
     renderizar()
 
-    const chipReceitas = within(await bloco('Receitas')).getByText('↓ 33% vs setembro')
-    const chipDespesas = within(await bloco('Despesas')).getByText('↓ 50% vs setembro')
+    const chipReceitas = within(await bloco('Receitas')).getByText('−33% vs setembro')
+    const chipDespesas = within(await bloco('Despesas')).getByText('−50% vs setembro')
     expect(chipReceitas).toHaveAttribute('data-tom', 'ruim')
     expect(chipDespesas).toHaveAttribute('data-tom', 'bom')
-    // Texto dos chips no tom escuro (contraste AA sobre o fundo claro).
-    expect(chipReceitas).toHaveClass('text-[var(--cor-negativo-texto)]')
-    expect(chipDespesas).toHaveClass('text-[var(--cor-positivo-texto)]')
+    // Bom e ruim ficam na cor do texto: o sinal e a seta dizem a direção; verde e vermelho só em status.
+    for (const chip of [chipReceitas, chipDespesas]) {
+      expect(chip.className).not.toMatch(/cor-negativo|cor-positivo|cor-erro-fundo|cor-ok-fundo/)
+      expect(chip.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+    }
   })
 
   it('esconde_comparacao_quando_anterior_null', async () => {
@@ -207,7 +209,7 @@ describe('InicioPage', () => {
     renderizar()
 
     expect(within(await bloco('Receitas')).queryByText(/vs /)).not.toBeInTheDocument()
-    expect(within(await bloco('Despesas')).getByText('↓ 16% vs setembro')).toBeInTheDocument()
+    expect(within(await bloco('Despesas')).getByText('−16% vs setembro')).toBeInTheDocument()
     expect(document.body).not.toHaveTextContent(/NaN|Infinity/)
   })
 

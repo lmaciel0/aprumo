@@ -101,7 +101,7 @@ describe('tokens de cor', () => {
 
   it('celula_paga_e_diferenca_negativa_usam_os_tons_de_texto', () => {
     expect(css).toMatch(/\.celula-paga\s*\{\s*color:\s*var\(--cor-positivo-texto\);?\s*\}/)
-    expect(css).toMatch(/\.diferenca-negativa\s*\{\s*color:\s*var\(--cor-negativo-texto\);?\s*\}/)
+    expect(css).toMatch(/\.diferenca-negativa\s*\{\s*color:\s*var\(--cor-texto\);?\s*\}/)
   })
 
   it('declara só os presets musgo e ceu, sem lima, esmeralda nem indigo', () => {

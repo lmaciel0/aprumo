@@ -4,13 +4,14 @@ import { COR_DESPESAS, COR_RECEITAS, FUNDO_DESPESAS_PREVISTAS, FUNDO_RECEITAS_PR
 import { TooltipResultado } from './TooltipResultado'
 import { resultadoCurto, type PontoDoResultado } from './valores'
 
+// Sobra e déficit ficam na cor do texto: o sinal (+ ou −) do rótulo diz o sentido; verde e vermelho só em status.
 const COR_DO_SENTIDO: Record<PontoDoResultado['sentido'], string> = {
-  sobrou: 'var(--cor-positivo-texto)',
-  faltou: 'var(--cor-negativo-texto)',
+  sobrou: 'var(--cor-texto)',
+  faltou: 'var(--cor-texto)',
   zero: 'var(--cor-mutado)',
 }
 
-/** O rótulo "0" (resultado que arredonda para zero) não leva cor de alerta, mesmo que o sentido seja sobrou/faltou. */
+/** O rótulo "0" (resultado que arredonda para zero) fica na cor mutada, mesmo que o sentido seja sobrou/faltou. */
 function corDoRotulo(ponto: PontoDoResultado): string {
   return Math.round(Math.abs(ponto.resultado)) === 0 ? COR_DO_SENTIDO.zero : COR_DO_SENTIDO[ponto.sentido]
 }
@@ -40,7 +41,7 @@ interface MesNoEixoProps {
   compacto: boolean
 }
 
-/** Rótulo do eixo em duas linhas: o mês e, abaixo, o resultado dele com sinal (a cor só reforça o sinal). */
+/** Rótulo do eixo em duas linhas: o mês e, abaixo, o resultado dele com sinal. */
 function MesNoEixo({ x = 0, y = 0, payload, dados, mesSelecionado, compacto }: MesNoEixoProps) {
   const ponto = dados.find((candidato) => candidato.rotulo === payload?.value)
   if (!ponto) {

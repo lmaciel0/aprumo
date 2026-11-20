@@ -1,3 +1,4 @@
+import { ArrowDown, ArrowUp } from 'lucide-react'
 import type { TotaisMes } from '../../api/tipos'
 import { formatarMoeda } from '../../formato/moeda'
 import { variacao } from './valores'
@@ -12,9 +13,11 @@ interface Props {
 
 type Tom = 'bom' | 'ruim' | 'neutro'
 
+// Bom e ruim não usam verde nem vermelho (reservados a status): o sinal e a seta dizem a direção, e o ruim fica um
+// degrau mais forte na cor do texto.
 const CORES_DO_CHIP: Record<Tom, string> = {
-  bom: 'bg-[var(--cor-ok-fundo)] text-[var(--cor-positivo-texto)]',
-  ruim: 'bg-[var(--cor-erro-fundo)] text-[var(--cor-negativo-texto)]',
+  bom: 'bg-[var(--cor-elevado)] text-[var(--cor-secundario)]',
+  ruim: 'bg-[var(--cor-elevado)] text-[var(--cor-texto)]',
   neutro: 'bg-[var(--cor-linha)] text-[var(--cor-mutado)]',
 }
 
@@ -26,7 +29,7 @@ interface ChipProps {
   subirEBom: boolean
 }
 
-/** `↑/↓ N% vs <mês>`; some sem mês anterior ou quando o valor anterior é zero (não há base para comparar). */
+/** Seta e `+/−N% vs <mês>`; some sem mês anterior ou quando o valor anterior é zero (não há base para comparar). */
 function Chip({ atual, anterior, nomeMesAnterior, subirEBom }: ChipProps) {
   const mudanca = anterior === undefined ? null : variacao(atual, anterior)
   if (mudanca === null) {
@@ -34,15 +37,18 @@ function Chip({ atual, anterior, nomeMesAnterior, subirEBom }: ChipProps) {
   }
   const tom: Tom =
     mudanca.direcao === 'igual' ? 'neutro' : (mudanca.direcao === 'subiu') === subirEBom ? 'bom' : 'ruim'
-  const seta = mudanca.direcao === 'subiu' ? '↑' : mudanca.direcao === 'caiu' ? '↓' : '='
+  const sinal = mudanca.direcao === 'subiu' ? '+' : mudanca.direcao === 'caiu' ? '\u2212' : ''
   const percentual = mudanca.direcao !== 'igual' && mudanca.percentual === 0 ? '<1%' : `${mudanca.percentual}%`
 
   return (
     <p
       data-tom={tom}
-      className={`m-0 w-fit rounded-full px-2 py-0.5 text-[11px] font-semibold ${CORES_DO_CHIP[tom]}`}
+      className={`m-0 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${CORES_DO_CHIP[tom]}`}
     >
-      {seta} {percentual} vs {nomeMesAnterior}
+      {mudanca.direcao === 'subiu' && <ArrowUp size={12} aria-hidden="true" />}
+      {mudanca.direcao === 'caiu' && <ArrowDown size={12} aria-hidden="true" />}
+      {sinal}
+      {percentual} vs {nomeMesAnterior}
     </p>
   )
 }
