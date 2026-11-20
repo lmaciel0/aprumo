@@ -75,7 +75,7 @@ O acento tem dois tons e cada um tem um papel. Espalhar coral em seleção, avat
 | Texto, ícone, link, borda de foco e fio de prumo | `--cor-principal` | O tom escuro é o seguro como texto. |
 | Marca de dado (barra de progresso) | `bg-[var(--cor-principal)]` | Só nos arquivos de `ACENTO_ESCURO_PERMITIDO` em `frontend/src/teste/varredura.ts`, com o motivo. |
 
-`estilos.test.ts` (describe `acento`) reprova `bg-[var(--cor-principal)]` em todo TSX de produção fora das telas das fases 3 e 4 e fora de `ACENTO_ESCURO_PERMITIDO`, e reprova `--cor-principal-fundo` como texto, borda ou contorno. Banner de aviso do servidor usa `--cor-elevado` com texto `--cor-texto`, não o acento.
+`estilos.test.ts` (describe `acento`) reprova `bg-[var(--cor-principal)]` em todo TSX de produção fora de `ACENTO_ESCURO_PERMITIDO`, e reprova `--cor-principal-fundo` como texto, borda ou contorno. Banner de aviso do servidor usa `--cor-elevado` com texto `--cor-texto`, não o acento.
 
 ## Presets
 
@@ -94,7 +94,7 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 - Fonte única: Inter Variable (`@fontsource-variable/inter`), declarada em `--font-sans` e no `html`, com `ui-sans-serif, system-ui, sans-serif` de reserva.
 - Valores de dinheiro usam a classe `.valor` (`font-variant-numeric: tabular-nums`) para alinhar em coluna.
 - Corpo no celular: campos de formulário com 16 px (menos que isso o iOS dá zoom ao focar); nenhum texto abaixo de 12 px em tela de auth. Rótulos e legendas pequenas usam 11 a 12 px com `--cor-mutado`.
-- Pesos: 400 e 500. `font-semibold` (600) só para ênfase rara, como a marca do logo ou um item da linha que precisa se destacar. Nada de `font-bold`, `font-extrabold`, `font-black` nem `font-weight` de 700 a 900; `estilos.test.ts` reprova em todo TSX de produção (com a exceção temporária das telas das fases 3 e 4 do visual).
+- Pesos: 400 e 500. `font-semibold` (600) só para ênfase rara, como a marca do logo ou um item da linha que precisa se destacar. Nada de `font-bold`, `font-extrabold`, `font-black` nem `font-weight` de 700 a 900; `estilos.test.ts` reprova em todo TSX de produção.
 - Título de página: `text-[28px] font-medium tracking-tight`. Título de seção, de card e de modal: `font-medium`. Número de destaque, de 28 a 32 px: `font-medium` (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500. Item de navegação e botão: `font-medium`.
 - Rótulo de seção ou de campo: sentence case, `text-xs font-medium text-[var(--cor-mutado)]` ("Financeiro", "Preset de cor", "Modo do tema"). Sem `uppercase` e sem `tracking-wide`, `tracking-wider` nem `tracking-widest`; se o texto-fonte estiver em caixa-alta, reescrever a string em vez de só tirar a classe.
 - `tracking-tight` só em texto de 28 px ou mais; abaixo disso o espaçamento entre letras é o padrão.
@@ -110,7 +110,7 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 | `--sombra-elevada` | `0 8px 24px rgb(20 33 61 / 8%)` no claro; `inset 0 1px 0 rgb(255 255 255 / 6%)` no escuro | Só para o que flutua: dock, menu, modal e card de auth. |
 | `--curva` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva única de toda animação e transição. |
 
-- Foto com texto por cima (hero do `CardMeta`): `.veu-foto` aplica um véu neutro de `rgb(0 0 0 / 0%)` a `rgb(0 0 0 / 65%)` (sombra para o texto, não degradê de matiz); botão de ícone sobre a foto usa `.veu-botao-foto`; texto e ícone em `--cor-sobre-imagem`. Sem foto, o hero fica em `--cor-elevado` com o mesmo véu.
+- Foto com texto por cima (hero do `CardMeta`): `.veu-foto` aplica um véu neutro de `rgb(0 0 0 / 0%)` a `rgb(0 0 0 / 65%)` (sombra para o texto, não degradê de matiz); botão de ícone sobre a foto usa `.veu-botao-foto`; texto e ícone em `--cor-sobre-imagem`. Sem foto, o hero fica em `--cor-elevado` com o mesmo véu. O preset de meta (`presetsVisuais.ts`) guarda só ícone e foto padrão; ele não pinta o card nem o formulário, e o usuário não escolhe cor.
 - `.card`: superfície sólida com `--raio-card`, `padding: 1rem`, sem `backdrop-filter`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
 - Escala de raio por tamanho do elemento:
 
@@ -124,7 +124,7 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 
 - Raio interno = raio externo menos o padding, no mínimo 4 px; o botão de 10 px dentro de um painel de 16 px com 8 px de padding cabe sem sair do canto. Botão só de ícone com menos de 28 px de lado usa `rounded-md`.
 - Pílula (`rounded-full`) só em avatar (e a marca do logo, que é um avatar da marca), ponto de status ou de cor e amostra de cor, trilho e barra de progresso, botão "Criar" da dock, interruptor de tema e spinner. Nunca em botão com texto, campo, chip, tag, busca ou botão só de ícone. Par de botões unidos (chip da categoria e seu lápis de editar) usa `rounded-l-md` e `rounded-r-md`.
-- `estilos.test.ts` (describe `raios`) reprova `rounded-3xl`, `rounded-full` fora de `PILULAS_PERMITIDAS` e `rounded-2xl` fora de `PAINEIS_2XL` (listas em `frontend/src/teste/varredura.ts`, com o motivo de cada arquivo), em todo TSX de produção fora das telas das fases 3 e 4.
+- `estilos.test.ts` (describe `raios`) reprova `rounded-3xl`, `rounded-full` fora de `PILULAS_PERMITIDAS` e `rounded-2xl` fora de `PAINEIS_2XL` (listas em `frontend/src/teste/varredura.ts`, com o motivo de cada arquivo), em todo TSX de produção.
 - O card de auth usa 18 px e seus campos e botão 10 px.
 
 ## Espaçamento e primeira dobra no celular
@@ -186,7 +186,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Barras de ação e cabeçalhos usam `flex-wrap` para quebrar em vez de cortar em 320 px.
 - Largura útil conta: sem card dentro de card, sem padding duplicado, sem wrapper vazio com `gap`.
 - O conteúdo principal precisa ficar acima da dock flutuante; elemento fixo embaixo sobe `6.5rem + env(safe-area-inset-bottom)` (o botão "Criar" elevado chega a 5 rem do fundo).
-- Modal no celular é folha que sobe de baixo (`rounded-t-[20px]`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada (`rounded-2xl`). Os modais de Metas ficam em `rounded-t-3xl` até a fase 3.
+- Modal no celular é folha que sobe de baixo (`rounded-t-[20px]`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada (`rounded-2xl`). Os modais de Metas seguem a regra: o corpo rola e o rodapé com a ação principal fica fora da área de rolagem, para o botão de confirmar continuar alcançável com o teclado aberto.
 - Texto de campo em 16 px, para não dar zoom no iOS.
 
 ## Acessibilidade
@@ -220,7 +220,7 @@ unslop, de Damir Sokolovsky (https://github.com/heydamir/unslop), CC BY 4.0
 Nasce das armadilhas registradas no projeto e das regras de 360 px.
 
 - Não usar cor fixa (`bg-white`, `text-white`, `bg-[#...]`, `text-[#...]`): `estilos.test.ts` reprova. Use `--cor-*`.
-- Não usar a paleta do Tailwind (`red-600`, `emerald-500`, `amber-*`, `from-black/80`) em tela nova. Hoje há desvios em `metas` (`CardMeta`, `MetasPage`, `ModalMetaForm`, `ModalAporteMeta`, `CardConselheiroMetas`, `WidgetMetaInicio`). São dívida a corrigir com os tokens `--cor-negativo`, `--cor-positivo` e `--cor-sobre-*`, não padrão a copiar.
+- Não usar a paleta do Tailwind (`red-600`, `emerald-500`, `amber-*`, `from-black/80`) em tela nova. `estilos.test.ts` reprova a paleta crua em Metas e as varreduras de peso, caixa-alta, raio e movimento valem no app inteiro, sem exceção por tela.
 - Não usar `--cor-positivo` e `--cor-negativo` em texto pequeno: use `--cor-positivo-texto` e `--cor-negativo-texto` (4,5:1).
 - Não usar `backdrop-filter` nem `backdrop-blur`: `estilos.test.ts` reprova no `index.css` e em todo TSX de produção. Superfície que precisa esconder o que rola por baixo usa fundo sólido (`--cor-fundo` ou `--cor-card`).
 - Não usar degradê entre matizes, brilho nem sombra colorida (como `shadow-[0_8px_18px_color-mix(... --cor-principal ...)]`).

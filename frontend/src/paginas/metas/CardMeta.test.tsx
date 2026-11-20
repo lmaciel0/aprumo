@@ -14,8 +14,6 @@ const metaExemplo: MetaResponse = {
   prazo: '2027-12-31',
   presetVisual: 'reserva',
   icone: 'shield',
-  corGradienteInicio: '#047857',
-  corGradienteFim: '#10b981',
   fotoUrl: null,
   ordem: 0,
   percentualConcluido: '0.4000',

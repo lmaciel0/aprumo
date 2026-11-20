@@ -2,7 +2,8 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { ACENTO_ESCURO_PERMITIDO, EXCECOES_FASE_3_4, infratores, PAINEIS_2XL, PILULAS_PERMITIDAS, tsxDeProducao } from './teste/varredura'
+import * as varredura from './teste/varredura'
+import { ACENTO_ESCURO_PERMITIDO, infratores, PAINEIS_2XL, PILULAS_PERMITIDAS, tsxDeProducao } from './teste/varredura'
 
 // O Vitest roda com `css: false`, que esvazia `import '...css?raw'`; por isso o arquivo é lido direto.
 const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf8')
@@ -344,23 +345,35 @@ describe('superfícies sólidas, sombras e curva', () => {
   })
 })
 
+describe('fim das exceções das fases 3 e 4', () => {
+  it('varredura.ts não exporta mais EXCECOES_FASE_3_4: as regras valem no app inteiro', () => {
+    expect('EXCECOES_FASE_3_4' in varredura).toBe(false)
+  })
+
+  it('nenhum TSX de produção de Metas usa paleta crua do Tailwind, opacidade de preto ou branco nem degradê', () => {
+    const cru = /\b(?:bg|text|border|ring|from|to|via|outline|divide|fill|stroke)-(?:emerald|sky|amber|red|blue|green|violet|purple|teal|slate|gray|zinc|orange|yellow|rose|indigo|cyan|lime)-\d|\b(?:bg|text|border|from|to|via)-(?:black|white)\/|\bgradient\b|linear-gradient\(/
+    const metas = infratores(cru).filter((arquivo) => arquivo.startsWith('paginas/metas/'))
+    expect(metas).toEqual([])
+  })
+})
+
 describe('tipografia', () => {
-  it('nenhum TSX fora das fases 3 e 4 usa font-bold, font-extrabold nem font-black', () => {
-    expect(infratores(/font-(bold|extrabold|black)\b/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app usa font-bold, font-extrabold nem font-black', () => {
+    expect(infratores(/font-(bold|extrabold|black)\b/)).toEqual([])
   })
 
-  it('nenhum TSX fora das fases 3 e 4 usa uppercase', () => {
-    expect(infratores(/\buppercase\b/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app usa uppercase', () => {
+    expect(infratores(/\buppercase\b/)).toEqual([])
   })
 
-  it('nenhum TSX fora das fases 3 e 4 usa tracking-wide, -wider nem -widest', () => {
-    expect(infratores(/tracking-(wide|wider|widest)\b/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app usa tracking-wide, -wider nem -widest', () => {
+    expect(infratores(/tracking-(wide|wider|widest)\b/)).toEqual([])
   })
 
-  it('nenhum TSX fora das fases 3 e 4 usa fontWeight 700 a 900 nem bold em prop JSX/SVG ou style inline', () => {
+  it('nenhum TSX no app usa fontWeight 700 a 900 nem bold em prop JSX/SVG ou style inline', () => {
     // Cobre `fontWeight={700}`, `fontWeight="bold"` e ternário como `fontWeight={sel ? 700 : 400}`.
-    expect(infratores(/fontWeight=(\{[^}]*)?['"]?\b(700|800|900|bold)\b/, EXCECOES_FASE_3_4)).toEqual([])
-    expect(infratores(/fontWeight:\s*['"]?(700|800|900|bold)/, EXCECOES_FASE_3_4)).toEqual([])
+    expect(infratores(/fontWeight=(\{[^}]*)?['"]?\b(700|800|900|bold)\b/)).toEqual([])
+    expect(infratores(/fontWeight:\s*['"]?(700|800|900|bold)/)).toEqual([])
   })
 
   it('o index.css não declara font-weight 700 a 900 nem bold', () => {
@@ -369,13 +382,13 @@ describe('tipografia', () => {
 })
 
 describe('raios', () => {
-  it('nenhum TSX fora das fases 3 e 4 usa rounded-3xl nem rounded-t-3xl', () => {
-    expect(infratores(/rounded(-[a-z]{1,2})?-3xl\b/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app usa rounded-3xl nem rounded-t-3xl', () => {
+    expect(infratores(/rounded(-[a-z]{1,2})?-3xl\b/)).toEqual([])
   })
 
   it('rounded-full só aparece nos arquivos de PILULAS_PERMITIDAS', () => {
     const permitidos = PILULAS_PERMITIDAS.map((p) => p.arquivo)
-    expect(infratores(/rounded(-[a-z]{1,2})?-full\b/, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+    expect(infratores(/rounded(-[a-z]{1,2})?-full\b/, permitidos)).toEqual([])
   })
 
   it('PILULAS_PERMITIDAS e PAINEIS_2XL só listam arquivos que existem e usam a classe', () => {
@@ -393,21 +406,21 @@ describe('raios', () => {
 
   it('rounded-2xl só aparece em painel flutuante ou modal (PAINEIS_2XL)', () => {
     const permitidos = PAINEIS_2XL.map((p) => p.arquivo)
-    expect(infratores(/rounded(-[a-z]{1,2})?-2xl\b/, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+    expect(infratores(/rounded(-[a-z]{1,2})?-2xl\b/, permitidos)).toEqual([])
   })
 })
 
 describe('movimento', () => {
-  it('nenhum TSX fora das fases 3 e 4 usa transition-all', () => {
-    expect(infratores(/transition-all\b/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app usa transition-all', () => {
+    expect(infratores(/transition-all\b/)).toEqual([])
   })
 
-  it('nenhum TSX fora das fases 3 e 4 escala ou desloca no hover', () => {
-    expect(infratores(/hover:-?(scale|translate)/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app escala ou desloca no hover', () => {
+    expect(infratores(/hover:-?(scale|translate)/)).toEqual([])
   })
 
   it('animate-pulse só em arquivo que marca o carregamento com role="status" ou aria-busy', () => {
-    const comPulso = infratores(/animate-pulse/, EXCECOES_FASE_3_4)
+    const comPulso = infratores(/animate-pulse/)
     const semMarca = comPulso.filter(
       (arquivo) => !/role="status"|aria-busy/.test(readFileSync(resolve(process.cwd(), 'src', arquivo), 'utf8')),
     )
@@ -420,7 +433,7 @@ describe('acento', () => {
 
   it('bg-[var(--cor-principal)] só aparece nos arquivos de ACENTO_ESCURO_PERMITIDO', () => {
     const permitidos = ACENTO_ESCURO_PERMITIDO.map((p) => p.arquivo)
-    expect(infratores(ACENTO_ESCURO, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+    expect(infratores(ACENTO_ESCURO, permitidos)).toEqual([])
   })
 
   it('ACENTO_ESCURO_PERMITIDO só lista arquivos que existem, usam a classe e dizem o motivo', () => {
@@ -431,8 +444,8 @@ describe('acento', () => {
     }
   })
 
-  it('nenhum TSX fora das fases 3 e 4 usa o coral vivo como texto ou como linha', () => {
-    expect(infratores(/(text|border|outline|ring|divide)-\[var\(--cor-principal-fundo\)\]/, EXCECOES_FASE_3_4)).toEqual([])
+  it('nenhum TSX no app usa o coral vivo como texto ou como linha', () => {
+    expect(infratores(/(text|border|outline|ring|divide)-\[var\(--cor-principal-fundo\)\]/)).toEqual([])
   })
 })
 
