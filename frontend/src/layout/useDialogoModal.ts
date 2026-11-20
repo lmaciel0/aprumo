@@ -18,6 +18,12 @@ interface DialogoModal<T extends HTMLElement = HTMLDivElement> {
  */
 export function useDialogoModal<T extends HTMLElement = HTMLDivElement>(aberto: boolean, aoFechar: () => void): DialogoModal<T> {
   const painel = useRef<T>(null)
+  // Guarda a versão mais recente de aoFechar: assim o efeito depende só de `aberto` e um aoFechar novo a cada
+  // render do pai não devolve o foco ao primeiro item nem refaz a trava de rolagem.
+  const aoFecharAtual = useRef(aoFechar)
+  useEffect(() => {
+    aoFecharAtual.current = aoFechar
+  })
 
   useEffect(() => {
     if (!aberto) {
@@ -27,7 +33,7 @@ export function useDialogoModal<T extends HTMLElement = HTMLDivElement>(aberto: 
     const soltarRolagem = travarRolagem()
     const fecharComEsc = (evento: globalThis.KeyboardEvent) => {
       if (evento.key === 'Escape') {
-        aoFechar()
+        aoFecharAtual.current()
       }
     }
     document.addEventListener('keydown', fecharComEsc)
@@ -35,7 +41,7 @@ export function useDialogoModal<T extends HTMLElement = HTMLDivElement>(aberto: 
       soltarRolagem()
       document.removeEventListener('keydown', fecharComEsc)
     }
-  }, [aberto, aoFechar])
+  }, [aberto])
 
   const prenderFoco = (evento: KeyboardEvent<T>) => {
     if (evento.key !== 'Tab' || !painel.current) {

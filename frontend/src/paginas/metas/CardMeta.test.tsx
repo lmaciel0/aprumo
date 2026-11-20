@@ -210,6 +210,47 @@ describe('CardMeta', () => {
     expect(screen.queryByText(/Faltam/)).toBeNull()
   })
 
+  it('meta não atingida por pouco (995 de 1000) mostra 99%, nunca 100%', () => {
+    render(
+      <CardMeta
+        meta={{
+          ...metaExemplo,
+          valorAlvo: '1000.00',
+          valorGuardado: '995.00',
+          percentualConcluido: '0.9950',
+          valorRestante: '5.00',
+        }}
+      />,
+    )
+
+    const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+    expect(barra).toHaveAttribute('aria-valuenow', '99')
+    expect((barra.firstElementChild as HTMLElement).style.width).toBe('99%')
+    expect(screen.getByText('99%')).toBeInTheDocument()
+    expect(screen.queryByText('100%')).toBeNull()
+  })
+
+  it('o percentual não atingido arredonda para baixo (29% fica 29%, 40,9% fica 40%)', () => {
+    const { rerender } = render(
+      <CardMeta meta={{ ...metaExemplo, percentualConcluido: '0.2900' }} />,
+    )
+    expect(screen.getByText('29%')).toBeInTheDocument()
+
+    rerender(<CardMeta meta={{ ...metaExemplo, percentualConcluido: '0.4090' }} />)
+    expect(screen.getByText('40%')).toBeInTheDocument()
+  })
+
+  it('esconde o valor mensal sugerido quando a API manda 0.00 (meta sem prazo)', () => {
+    render(
+      <CardMeta
+        meta={{ ...metaExemplo, prazo: null, valorMensalSugerido: '0.00', mesesRestantes: 0 }}
+      />,
+    )
+
+    expect(screen.queryByText(/\/mês/)).toBeNull()
+    expect(screen.getByText('Sem prazo fixo')).toBeInTheDocument()
+  })
+
   it('Guardar é ação secundária e Resgatar é botão de texto, sem coral', () => {
     render(<CardMeta meta={metaExemplo} />)
 

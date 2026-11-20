@@ -4,6 +4,7 @@ import type { MetaResponse } from '../../api/tipos'
 import { formatarMoeda, lerValor } from '../../formato/moeda'
 import { FundoDoDialogo } from '../../layout/FundoDoDialogo'
 import { foco } from '../../layout/classesFoco'
+import { estiloAreaVisivel, useAlturaVisivel } from '../../layout/useAlturaVisivel'
 import { useDialogoModal } from '../../layout/useDialogoModal'
 
 const classeCampo = `min-h-11 w-full rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] px-3 text-base text-[var(--cor-texto)] placeholder:text-[var(--cor-mutado)] ${foco}`
@@ -25,6 +26,7 @@ export function ModalAporteMeta({
   aoFechar,
 }: Readonly<Props>) {
   const { painel, prenderFoco } = useDialogoModal<HTMLDialogElement>(aberto, aoFechar)
+  const areaVisivel = useAlturaVisivel(aberto)
   const [valorTexto, setValorTexto] = useState('')
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState(false)
@@ -85,7 +87,10 @@ export function ModalAporteMeta({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
+    <div
+      style={estiloAreaVisivel(areaVisivel)}
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+    >
       <FundoDoDialogo testId="fundo-modal-aporte" aoClicar={aoFechar} />
       <dialog
         open
@@ -93,7 +98,7 @@ export function ModalAporteMeta({
         aria-modal="true"
         aria-labelledby="titulo-modal-aporte"
         onKeyDown={prenderFoco}
-        className="superficie relative z-10 m-0 flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-t-[20px] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-[var(--sombra-elevada)] backdrop:bg-transparent sm:rounded-2xl"
+        className="superficie relative z-10 m-0 flex max-h-[min(92vh,100%)] w-full max-w-md flex-col overflow-hidden rounded-t-[20px] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-[var(--sombra-elevada)] backdrop:bg-transparent sm:rounded-2xl"
       >
         {/* Cabeçalho */}
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--cor-linha)] px-5 py-4">
@@ -144,7 +149,7 @@ export function ModalAporteMeta({
           )}
         </div>
 
-        {/* O corpo rola; erro e rodapé ficam fixos para o botão seguir alcançável com o teclado aberto. */}
+        {/* O corpo rola; erro e rodapé ficam fixos. O contêiner acompanha o visualViewport (useAlturaVisivel), então o rodapé fica acima do teclado. */}
         <form onSubmit={tratarEnvio} className="flex min-h-0 flex-1 flex-col">
           <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
             <div className="flex flex-col gap-1.5">

@@ -4,6 +4,7 @@ import type { MetaResponse } from '../../api/tipos'
 import { formatarMoeda } from '../../formato/moeda'
 import { foco } from '../../layout/classesFoco'
 import { getIconePreset } from './iconesMeta'
+import { metaAtingida, percentualExibido } from './percentualMeta'
 import { obterPresetVisual } from './presetsVisuais'
 
 interface Props {
@@ -16,12 +17,12 @@ interface Props {
 export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Props>) {
   const idTitulo = useId()
   const preset = obterPresetVisual(meta.presetVisual)
-  const percentualNum = Number.parseFloat(meta.percentualConcluido || '0') * 100
-  const percentualInteiro = Math.min(100, Math.max(0, Math.round(percentualNum)))
   const fotoExibicao = meta.fotoUrl || preset.fotoPadrao
   const centavosGuardados = Math.round(Number.parseFloat(meta.valorGuardado || '0') * 100)
   const centavosAlvo = Math.round(Number.parseFloat(meta.valorAlvo || '0') * 100)
-  const atingida = meta.concluida || (centavosAlvo > 0 && centavosGuardados >= centavosAlvo)
+  const atingida = metaAtingida(meta)
+  const percentualInteiro = percentualExibido(meta.percentualConcluido, atingida)
+  const valorMensal = Number.parseFloat(meta.valorMensalSugerido || '0')
   const centavosAcima = centavosGuardados - centavosAlvo
   const corBarra = atingida ? 'bg-[var(--cor-positivo)]' : 'bg-[var(--cor-grafico-receitas)]'
 
@@ -132,10 +133,10 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
           </div>
 
           <div className="mt-3 flex flex-wrap items-center justify-between gap-1 text-[11px] text-[var(--cor-mutado)]">
-            {meta.valorMensalSugerido && !atingida ? (
+            {valorMensal > 0 && !atingida ? (
               <span className="inline-flex items-center gap-1 font-medium text-[var(--cor-secundario)]">
                 <Calendar className="size-3 shrink-0" />
-                {formatarMoeda(meta.valorMensalSugerido)}/mês
+                {formatarMoeda(valorMensal)}/mês
               </span>
             ) : centavosAcima > 0 ? (
               <span className="font-medium text-[var(--cor-secundario)]">

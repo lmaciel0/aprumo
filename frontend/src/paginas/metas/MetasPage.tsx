@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { PiggyBank, Plus } from 'lucide-react'
 import { endpoints } from '../../api/endpoints'
 import type { MetaRequest, MetaResponse } from '../../api/tipos'
@@ -73,6 +73,13 @@ export function MetasPage() {
     await endpoints.metas.excluir(id)
     await carregarMetas()
   }
+
+  const fecharAporte = useCallback(() => setMetaAporte(null), [])
+
+  const fecharForm = useCallback(() => {
+    setModalFormAberto(false)
+    setMetaEdicao(null)
+  }, [])
 
   const confirmarAporte = async (valor: string) => {
     if (!metaAporte) return
@@ -221,18 +228,17 @@ export function MetasPage() {
         meta={metaAporte}
         tipo={tipoAporte}
         aoConfirmar={confirmarAporte}
-        aoFechar={() => setMetaAporte(null)}
+        aoFechar={fecharAporte}
       />
 
+      {/* A chave recria o formulário a cada meta, já que ele lê a meta só ao montar. */}
       <ModalMetaForm
+        key={metaEdicao?.id ?? 'nova'}
         aberto={modalFormAberto}
         meta={metaEdicao}
         aoSalvar={salvarMeta}
         aoExcluir={excluirMeta}
-        aoFechar={() => {
-          setModalFormAberto(false)
-          setMetaEdicao(null)
-        }}
+        aoFechar={fecharForm}
       />
     </div>
   )

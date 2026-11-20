@@ -186,7 +186,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Barras de ação e cabeçalhos usam `flex-wrap` para quebrar em vez de cortar em 320 px.
 - Largura útil conta: sem card dentro de card, sem padding duplicado, sem wrapper vazio com `gap`.
 - O conteúdo principal precisa ficar acima da dock flutuante; elemento fixo embaixo sobe `6.5rem + env(safe-area-inset-bottom)` (o botão "Criar" elevado chega a 5 rem do fundo).
-- Modal no celular é folha que sobe de baixo (`rounded-t-[20px]`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada (`rounded-2xl`). Os modais de Metas seguem a regra: o corpo rola e o rodapé com a ação principal fica fora da área de rolagem, para o botão de confirmar continuar alcançável com o teclado aberto.
+- Modal no celular é folha que sobe de baixo (`rounded-t-[20px]`, `max-h-[min(92vh,100%)]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada (`rounded-2xl`). Os modais de Metas seguem a regra: o corpo rola e o rodapé com a ação principal fica fora da área de rolagem, para o botão de confirmar continuar alcançável com o teclado aberto. No Android (Chrome e TWA) o teclado não redimensiona o layout, só a área visível; por isso a folha usa `useAlturaVisivel` (`frontend/src/layout/useAlturaVisivel.ts`), que lê `window.visualViewport` e aplica altura e deslocamento ao contêiner `fixed inset-0` (`estiloAreaVisivel`), e o painel limita a altura com `max-h-[min(92vh,100%)]`. Sem `visualViewport` nada muda. Não alterar o `viewport` do app para resolver isso.
 - Texto de campo em 16 px, para não dar zoom no iOS.
 
 ## Acessibilidade

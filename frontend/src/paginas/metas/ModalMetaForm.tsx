@@ -4,6 +4,7 @@ import type { MetaRequest, MetaResponse } from '../../api/tipos'
 import { lerValor } from '../../formato/moeda'
 import { FundoDoDialogo } from '../../layout/FundoDoDialogo'
 import { foco } from '../../layout/classesFoco'
+import { estiloAreaVisivel, useAlturaVisivel } from '../../layout/useAlturaVisivel'
 import { useDialogoModal } from '../../layout/useDialogoModal'
 import { getIconePreset } from './iconesMeta'
 import { LISTA_PRESETS, obterPresetVisual } from './presetsVisuais'
@@ -30,6 +31,7 @@ export function ModalMetaForm({
   aoFechar,
 }: Readonly<Props>) {
   const { painel, prenderFoco } = useDialogoModal<HTMLDialogElement>(aberto, aoFechar)
+  const areaVisivel = useAlturaVisivel(aberto)
   const ehEdicao = Boolean(meta)
 
   const [titulo, setTitulo] = useState(meta?.titulo || '')
@@ -157,7 +159,10 @@ export function ModalMetaForm({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
+    <div
+      style={estiloAreaVisivel(areaVisivel)}
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+    >
       <FundoDoDialogo testId="fundo-modal-meta-form" aoClicar={aoFechar} />
       <dialog
         open
@@ -165,7 +170,7 @@ export function ModalMetaForm({
         aria-modal="true"
         aria-labelledby="titulo-modal-meta-form"
         onKeyDown={prenderFoco}
-        className="superficie relative z-10 m-0 flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-[20px] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-[var(--sombra-elevada)] backdrop:bg-transparent sm:rounded-2xl"
+        className="superficie relative z-10 m-0 flex max-h-[min(92vh,100%)] w-full max-w-lg flex-col overflow-hidden rounded-t-[20px] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-[var(--sombra-elevada)] backdrop:bg-transparent sm:rounded-2xl"
       >
         {/* Cabeçalho */}
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--cor-linha)] px-5 py-4">
@@ -198,7 +203,7 @@ export function ModalMetaForm({
           </button>
         </div>
 
-        {/* O corpo rola; erro e rodapé ficam fixos para o botão seguir alcançável com o teclado aberto. */}
+        {/* O corpo rola; erro e rodapé ficam fixos. O contêiner acompanha o visualViewport (useAlturaVisivel), então o rodapé fica acima do teclado. */}
         <form onSubmit={tratarEnvio} className="flex min-h-0 flex-1 flex-col">
           <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
             {/* Seletor de Presets Visuais */}

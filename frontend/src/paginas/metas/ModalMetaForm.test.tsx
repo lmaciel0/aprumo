@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { MetaResponse } from '../../api/tipos'
 import { ModalMetaForm } from './ModalMetaForm'
 
@@ -239,5 +239,39 @@ describe('ModalMetaForm', () => {
     await user.click(btnConfirmar)
 
     expect(aoExcluir).toHaveBeenCalledWith(metaExemplo.id)
+  })
+
+  describe('com o teclado do celular aberto', () => {
+    afterEach(() => {
+      Object.defineProperty(window, 'visualViewport', { configurable: true, value: undefined })
+    })
+
+    it('a folha segue a área visível: encolhe e sobe com o visualViewport, mantendo o rodapé acima do teclado', () => {
+      const vv = Object.assign(new EventTarget(), { height: 800, offsetTop: 0 })
+      Object.defineProperty(window, 'visualViewport', { configurable: true, value: vv })
+      render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+
+      const raiz = screen.getByRole('dialog').parentElement as HTMLElement
+      expect(raiz.style.height).toBe('800px')
+
+      act(() => {
+        vv.height = 420
+        vv.offsetTop = 16
+        vv.dispatchEvent(new Event('resize'))
+      })
+
+      expect(raiz.style.height).toBe('420px')
+      expect(raiz.style.transform).toBe('translateY(16px)')
+      expect(screen.getByRole('dialog').className).toContain('max-h-[min(92vh,100%)]')
+    })
+
+    it('sem visualViewport o contêiner não recebe altura nem deslocamento', () => {
+      Object.defineProperty(window, 'visualViewport', { configurable: true, value: undefined })
+      render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+
+      const raiz = screen.getByRole('dialog').parentElement as HTMLElement
+      expect(raiz.style.height).toBe('')
+      expect(raiz.style.transform).toBe('')
+    })
   })
 })

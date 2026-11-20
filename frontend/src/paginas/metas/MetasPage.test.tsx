@@ -1,9 +1,9 @@
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MetaResponse } from '../../api/tipos'
 import { renderComApp } from '../../teste/render'
 import { servidor } from '../../teste/servidor'
@@ -177,5 +177,52 @@ describe('MetasPage', () => {
     await user.click(btnNova)
 
     expect(await screen.findByRole('heading', { name: /nova meta ou caixinha/i })).toBeInTheDocument()
+  })
+
+  it('re-renderizar a página com o modal aberto não tira o foco do campo que a pessoa está usando', async () => {
+    const user = userEvent.setup()
+    let chamadas = 0
+    servidor.use(
+      http.get('/api/metas', () => {
+        chamadas += 1
+        return chamadas === 1
+          ? HttpResponse.json({ mensagem: 'falha' }, { status: 500 })
+          : HttpResponse.json([])
+      }),
+    )
+
+    renderComApp(<MetasPage />, '/metas')
+
+    await user.click(await screen.findByRole('button', { name: /criar primeira meta/i }))
+    const titulo = await screen.findByLabelText(/título da meta/i)
+    await user.click(titulo)
+    expect(titulo).toHaveFocus()
+
+    // "Tentar novamente" refaz a carga (setCarregando) e re-renderiza a página com o modal aberto.
+    fireEvent.click(screen.getByRole('button', { name: /tentar novamente/i }))
+    await vi.waitFor(() => expect(chamadas).toBe(2))
+    await screen.findByText(/nenhuma meta cadastrada/i)
+
+    expect(screen.getByLabelText(/título da meta/i)).toHaveFocus()
+  })
+
+  it('editar duas metas em sequência mostra os dados da meta escolhida, não os da anterior', async () => {
+    const user = userEvent.setup()
+    servidor.use(http.get('/api/metas', () => HttpResponse.json(metasMock)))
+
+    renderComApp(<MetasPage />, '/metas')
+
+    await user.click(await screen.findByRole('button', { name: 'Editar Reserva de Emergência' }))
+    expect(await screen.findByLabelText(/título da meta/i)).toHaveValue('Reserva de Emergência')
+    expect(screen.getByLabelText(/valor alvo/i)).toHaveValue('10000,00')
+
+    await user.click(screen.getByRole('button', { name: 'Fechar' }))
+    await user.click(screen.getByRole('button', { name: 'Editar IPVA 2027' }))
+    expect(await screen.findByLabelText(/título da meta/i)).toHaveValue('IPVA 2027')
+    expect(screen.getByLabelText(/valor alvo/i)).toHaveValue('2400,00')
+
+    await user.click(screen.getByRole('button', { name: 'Fechar' }))
+    await user.click(screen.getByRole('button', { name: /nova meta/i }))
+    expect(await screen.findByLabelText(/título da meta/i)).toHaveValue('')
   })
 })

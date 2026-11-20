@@ -36,6 +36,30 @@ describe('WidgetMetaInicio', () => {
     expect(container.firstChild).toBeNull()
   })
 
+  it('meta não atingida por pouco (995 de 1000) mostra 99%, nunca 100%', async () => {
+    servidor.use(
+      http.get('/api/metas', () =>
+        HttpResponse.json([
+          {
+            ...metaExemplo,
+            valorAlvo: '1000.00',
+            valorGuardado: '995.00',
+            percentualConcluido: '0.9950',
+            valorRestante: '5.00',
+          },
+        ]),
+      ),
+    )
+
+    renderComApp(<WidgetMetaInicio />, '/')
+
+    expect(await screen.findByText('99%')).toBeInTheDocument()
+    expect(screen.queryByText('100%')).toBeNull()
+    const barra = screen.getByRole('progressbar')
+    expect(barra).toHaveAttribute('aria-valuenow', '99')
+    expect((barra.firstElementChild as HTMLElement).style.width).toBe('99%')
+  })
+
   it('renderiza card compacto com a meta mais relevante e barra de progresso', async () => {
     servidor.use(http.get('/api/metas', () => HttpResponse.json([metaExemplo])))
 

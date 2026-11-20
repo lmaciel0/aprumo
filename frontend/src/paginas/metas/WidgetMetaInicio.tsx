@@ -6,6 +6,7 @@ import { endpoints } from '../../api/endpoints'
 import { formatarMoeda } from '../../formato/moeda'
 import { foco } from '../../layout/classesFoco'
 import { getIconePreset } from './iconesMeta'
+import { metaAtingida, percentualExibido } from './percentualMeta'
 import { obterPresetVisual } from './presetsVisuais'
 
 interface WidgetMetaInicioProps {
@@ -30,8 +31,7 @@ export function WidgetMetaInicio({ className, style }: WidgetMetaInicioProps = {
   }
 
   const preset = obterPresetVisual(metaAtiva.presetVisual)
-  const percentualNum = Number.parseFloat(metaAtiva.percentualConcluido || '0') * 100
-  const percentualInteiro = Math.min(100, Math.max(0, Math.round(percentualNum)))
+  const percentualInteiro = percentualExibido(metaAtiva.percentualConcluido, metaAtingida(metaAtiva))
   const corBarra = metaAtiva.concluida
     ? 'bg-[var(--cor-positivo)]'
     : 'bg-[var(--cor-grafico-receitas)]'
