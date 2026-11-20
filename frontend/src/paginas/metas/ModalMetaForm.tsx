@@ -191,7 +191,7 @@ export function ModalMetaForm({
           <button
             type="button"
             onClick={aoFechar}
-            aria-label="Fechar diálogo"
+            aria-label="Fechar"
             className={`inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-[10px] text-[var(--cor-mutado)] transition-colors duration-150 hover:bg-[var(--cor-elevado)] hover:text-[var(--cor-texto)] motion-reduce:transition-none ${foco}`}
           >
             <X className="size-4" />
@@ -216,7 +216,7 @@ export function ModalMetaForm({
                       className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-[10px] border p-2 text-left text-sm font-medium transition-colors duration-150 motion-reduce:transition-none ${foco} ${
                         selecionado
                           ? 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
-                          : 'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:bg-[var(--cor-elevado)]'
+                          : 'border-[var(--cor-auth-campo-borda)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:bg-[var(--cor-elevado)]'
                       }`}
                     >
                       <span

@@ -116,6 +116,35 @@ describe('MetasPage', () => {
     expect(rotulo.closest('.card')).not.toBeNull()
   })
 
+  it('no celular o total ocupa a linha toda e os outros dois ficam lado a lado; de md em diante são 3 colunas', async () => {
+    servidor.use(http.get('/api/metas', () => HttpResponse.json(metasMock)))
+
+    renderComApp(<MetasPage />, '/metas')
+
+    const total = (await screen.findByText('Total guardado em metas')).closest('.card') as HTMLElement
+    const grade = total.parentElement as HTMLElement
+    expect(grade.className).toContain('grid-cols-2')
+    expect(grade.className).not.toContain('grid-cols-1')
+    expect(grade.className).toContain('md:grid-cols-3')
+    expect(total.className).toContain('col-span-2')
+    expect(total.className).toContain('md:col-span-1')
+
+    for (const rotulo of ['Metas ativas', 'Objetivos alcançados']) {
+      const card = screen.getByText(rotulo).closest('.card') as HTMLElement
+      expect(card.className).toContain('!p-3.5')
+      expect(card.className).not.toContain('col-span-2')
+    }
+  })
+
+  it('a página não soma padding próprio ao do main, para o título ficar à mesma distância do cabeçalho das outras telas', async () => {
+    servidor.use(http.get('/api/metas', () => HttpResponse.json(metasMock)))
+
+    renderComApp(<MetasPage />, '/metas')
+
+    const raiz = (await screen.findByRole('heading', { level: 1 })).closest('header')?.parentElement as HTMLElement
+    expect(raiz.className).not.toMatch(/(^|\s)(\w+:)?p[xyt]?-\d/)
+  })
+
   it('o código não usa paleta crua, preto ou branco com opacidade, degradê, negrito nem alto-relevo', () => {
     const arquivo = readFileSync(resolve(process.cwd(), 'src/paginas/metas/MetasPage.tsx'), 'utf8')
 

@@ -7,7 +7,7 @@ import { foco } from '../../layout/classesFoco'
 import { useDialogoModal } from '../../layout/useDialogoModal'
 
 const classeCampo = `min-h-11 w-full rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] px-3 text-base text-[var(--cor-texto)] placeholder:text-[var(--cor-mutado)] ${foco}`
-const classeChip = `inline-flex min-h-11 cursor-pointer items-center rounded-md border border-[var(--cor-linha)] bg-[var(--cor-card)] px-3 text-sm font-medium text-[var(--cor-texto)] transition-colors duration-150 hover:bg-[var(--cor-elevado)] motion-reduce:transition-none ${foco}`
+const classeChip = `inline-flex min-h-11 cursor-pointer items-center rounded-md border border-[var(--cor-auth-campo-borda)] bg-[var(--cor-card)] px-3 text-sm font-medium text-[var(--cor-texto)] transition-colors duration-150 hover:bg-[var(--cor-elevado)] motion-reduce:transition-none ${foco}`
 
 interface Props {
   readonly aberto: boolean
@@ -121,7 +121,7 @@ export function ModalAporteMeta({
           <button
             type="button"
             onClick={aoFechar}
-            aria-label="Fechar diálogo"
+            aria-label="Fechar"
             className={`inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-[10px] text-[var(--cor-mutado)] transition-colors duration-150 hover:bg-[var(--cor-elevado)] hover:text-[var(--cor-texto)] motion-reduce:transition-none ${foco}`}
           >
             <X className="size-4" />

@@ -25,6 +25,14 @@ describe('HeaderPrincipal', () => {
     expect(onAbrirBusca).toHaveBeenCalledTimes(1)
   })
 
+  it('o avatar fica dentro do cartão do sino e do perfil, com folga interna nas bordas', () => {
+    renderComApp(<HeaderPrincipal nomeUsuario="Lucas" />)
+
+    const grupo = screen.getByRole('button', { name: /perfil do usuário/i }).closest('.superficie') as HTMLElement
+    expect(grupo).toContainElement(screen.getByRole('button', { name: /notificações/i }))
+    expect(grupo).toHaveClass('px-1.5', 'gap-1')
+  })
+
   it('mostra o botão de notificações', () => {
     renderComApp(<HeaderPrincipal nomeUsuario="Lucas" />)
 

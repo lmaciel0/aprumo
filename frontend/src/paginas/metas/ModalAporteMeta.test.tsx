@@ -22,6 +22,25 @@ const metaExemplo: MetaResponse = {
 }
 
 describe('ModalAporteMeta', () => {
+  it('o botão fechar do cabeçalho tem alvo de 44 px e se chama "Fechar"', async () => {
+    const user = userEvent.setup()
+    const aoFechar = vi.fn()
+    render(<ModalAporteMeta aberto={true} meta={metaExemplo} tipo="GUARDAR" aoConfirmar={vi.fn()} aoFechar={aoFechar} />)
+
+    const fechar = screen.getByRole('button', { name: 'Fechar' })
+    expect(fechar).toHaveClass('size-11', 'rounded-[10px]', 'hover:bg-[var(--cor-elevado)]')
+    await user.click(fechar)
+    expect(aoFechar).toHaveBeenCalledTimes(1)
+  })
+
+  it('as sugestões de valor têm contorno de 3:1', () => {
+    render(<ModalAporteMeta aberto={true} meta={metaExemplo} tipo="GUARDAR" aoConfirmar={vi.fn()} aoFechar={vi.fn()} />)
+
+    const sugestao = screen.getByRole('button', { name: /^\+ R\$ 50$/ })
+    expect(sugestao).toHaveClass('border-[var(--cor-auth-campo-borda)]')
+    expect(sugestao.className).not.toContain('border-[var(--cor-linha)]')
+  })
+
   it('renderiza corretamente no modo GUARDAR e permite envio', async () => {
     const user = userEvent.setup()
     const aoConfirmar = vi.fn()

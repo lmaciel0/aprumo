@@ -41,7 +41,7 @@ Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "E
 | `--cor-ok-fundo` | `#dcead9` | `#15261c` | Fundo de chip e aviso de sucesso. |
 | `--cor-aviso-fundo` | `#f5e2b8` | `#2b2410` | Fundo de aviso. |
 | `--cor-aviso-texto` | `#6b4e00` | `#f2c94c` | Texto de aviso sobre `--cor-aviso-fundo`. |
-| `--cor-auth-campo-borda` | `#7d8496` | `#6e6e73` | Contorno dos campos de auth, 3:1 sobre o card (WCAG 1.4.11). |
+| `--cor-auth-campo-borda` | `#7d8496` | `#6e6e73` | Contorno dos campos de auth e das opções não selecionadas (preset, atalho, sugestão de valor), 3:1 sobre o card (WCAG 1.4.11). |
 | `--cor-grafico-receitas` | `#14213d` | `#a9b8d6` | Barras de receitas realizadas no gráfico do ano. |
 | `--cor-grafico-despesas` | `var(--cor-principal-fundo)` | `var(--cor-principal-fundo)` | Barras de despesas realizadas no gráfico do ano. |
 | `--cor-grafico-receitas-previstas` | `color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card))` | `color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card))` | Fundo das receitas previstas no gráfico do ano. |

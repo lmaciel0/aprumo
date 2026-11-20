@@ -22,6 +22,30 @@ const metaExemplo: MetaResponse = {
 }
 
 describe('ModalMetaForm', () => {
+  it('o botão fechar do cabeçalho tem alvo de 44 px e se chama "Fechar"', async () => {
+    const user = userEvent.setup()
+    const aoFechar = vi.fn()
+    render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={aoFechar} />)
+
+    const fechar = screen.getByRole('button', { name: 'Fechar' })
+    expect(fechar).toHaveClass('size-11', 'rounded-[10px]', 'hover:bg-[var(--cor-elevado)]')
+    await user.click(fechar)
+    expect(aoFechar).toHaveBeenCalledTimes(1)
+  })
+
+  it('as opções de estilo não selecionadas têm contorno de 3:1 e a selecionada não muda', () => {
+    render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+
+    const opcoes = screen.getAllByRole('button', { pressed: false })
+    expect(opcoes.length).toBeGreaterThan(0)
+    for (const opcao of opcoes) {
+      expect(opcao).toHaveClass('border-[var(--cor-auth-campo-borda)]')
+      expect(opcao.className).not.toContain('border-[var(--cor-linha)]')
+    }
+    const selecionada = screen.getAllByRole('button', { pressed: true })[0]
+    expect(selecionada).toHaveClass('border-[var(--cor-texto)]')
+  })
+
   it('renderiza campos vazios para criação e valida campos obrigatórios', async () => {
     const user = userEvent.setup()
     const aoSalvar = vi.fn()

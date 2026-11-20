@@ -127,8 +127,8 @@ export function MetasPage() {
     return (
       <>
         {/* Totais */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="card">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          <div className="card col-span-2 md:col-span-1">
             <span className="text-xs font-medium text-[var(--cor-secundario)]">
               Total guardado em metas
             </span>
@@ -137,7 +137,7 @@ export function MetasPage() {
             </p>
           </div>
 
-          <div className="card">
+          <div className="card !p-3.5">
             <span className="text-xs font-medium text-[var(--cor-secundario)]">
               Metas ativas
             </span>
@@ -146,7 +146,7 @@ export function MetasPage() {
             </p>
           </div>
 
-          <div className="card">
+          <div className="card !p-3.5">
             <span className="text-xs font-medium text-[var(--cor-secundario)]">
               Objetivos alcançados
             </span>
@@ -173,7 +173,7 @@ export function MetasPage() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 sm:p-6">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
       {/* Cabeçalho da Página */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
