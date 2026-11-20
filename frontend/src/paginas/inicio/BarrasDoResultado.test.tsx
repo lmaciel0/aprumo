@@ -48,6 +48,18 @@ describe('MesNoEixo', () => {
     }
   })
 
+  it('o rótulo do resultado usa peso 500 e corpo 11 quando cabe (até 4 caracteres no número)', () => {
+    for (const [resultado, compacto] of [[-1200, true], [80, true], [-1200, false]] as const) {
+      const { rotuloResultado } = renderizar(resultado, compacto)
+      expect(rotuloResultado).toHaveAttribute('font-weight', '500')
+      expect(rotuloResultado).toHaveAttribute('font-size', '11')
+    }
+  })
+
+  it('no compacto, número de 5 caracteres ("−12,3") cai para 10 para não encostar no vizinho', () => {
+    expect(renderizar(-12300, true).rotuloResultado).toHaveAttribute('font-size', '10')
+  })
+
   it('no compacto, valor abaixo de mil fica em uma linha só', () => {
     const { rotuloResultado } = renderizar(80, true)
 

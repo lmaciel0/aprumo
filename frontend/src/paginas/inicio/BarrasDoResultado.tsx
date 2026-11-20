@@ -33,6 +33,15 @@ function PadraoListrado({ id, cor, fundo }: PadraoProps) {
   )
 }
 
+/**
+ * Corpo do resultado no eixo. O piso do design system é 11 px; no celular a coluna tem ~25 px, e 11 px cabe até 4
+ * caracteres (`−1,2`, `+123`). Só o número de 5 caracteres (`−12,3`, de 10 mil para cima) cai para 10 px, exceção
+ * consciente ao piso para não encostar no mês vizinho.
+ */
+function tamanhoDoResultado(numero: string, compacto: boolean): number {
+  return compacto && numero.length > 4 ? 10 : 11
+}
+
 interface MesNoEixoProps {
   x?: number | string
   y?: number | string
@@ -67,7 +76,7 @@ export function MesNoEixo({ x = 0, y = 0, payload, dados, mesAtual, compacto }: 
       >
         {ponto.rotulo}
       </text>
-      <text y={28} textAnchor="middle" fontSize={compacto ? 9 : 10} fontWeight={600} fill={corDoRotulo(ponto)}>
+      <text y={28} textAnchor="middle" fontSize={tamanhoDoResultado(numero, compacto)} fontWeight={500} fill={corDoRotulo(ponto)}>
         {quebra ? (
           <>
             <tspan x={0}>{numero}</tspan>

@@ -157,7 +157,7 @@ function ListaCartoes({
   }
 
   return (
-    <div className="item-entra grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+    <div className="item-entra grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {/* Botão/card pontilhado para adicionar novo cartão de forma intuitiva */}
       <button
         type="button"

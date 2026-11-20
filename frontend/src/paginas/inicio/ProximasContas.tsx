@@ -26,11 +26,12 @@ export function ProximasContas({ contas, className = 'md:col-span-15', hoje = ne
         <ul className="m-0 mt-2 list-none p-0">
           {contas.map((conta, indice) => {
             const marcada = indice === maisProxima
-            // A conta mais próxima de hoje leva o fio de prumo; o resto da lista fica como está.
-            const classes = `grid grid-cols-[3rem_1fr_auto] items-center gap-2 border-t border-[var(--cor-linha)] py-2 text-[12.5px] first:border-t-0${marcada ? ' pl-3 shadow-[inset_2px_0_0_var(--cor-principal)]' : ''}`
+            // Todas as linhas têm o mesmo recuo (colunas alinhadas); só a conta mais próxima de hoje leva o fio de prumo.
+            const classes = `relative grid grid-cols-[3rem_1fr_auto] items-center gap-2 border-t border-[var(--cor-linha)] py-2 pl-3 text-[12.5px] first:border-t-0${marcada ? ' shadow-[inset_2px_0_0_var(--cor-principal)]' : ''}`
             return (
               <li key={conta.lancamentoId} className={classes}>
-                <time dateTime={conta.vencimento} className={`valor ${marcada ? 'font-medium' : 'font-semibold'}`}>
+                {marcada && <span className="sr-only">mais próxima: </span>}
+                <time dateTime={conta.vencimento} className={`valor ${marcada ? 'font-medium' : 'font-normal'}`}>
                   {diaEMes(conta.vencimento)}
                 </time>
                 <span className="min-w-0">

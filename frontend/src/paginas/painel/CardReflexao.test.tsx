@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { renderComApp } from '../../teste/render'
@@ -125,5 +125,28 @@ describe('CardReflexao', () => {
     expect(writeTextMock).toHaveBeenCalledTimes(1)
     expect(writeTextMock).toHaveBeenCalledWith(expect.stringContaining('“'))
     expect(botaoCopiar).toHaveAttribute('title', 'Copiado')
+  })
+
+  it('o título "Copiado" volta a "Copiar citação" depois do tempo', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-10-31T15:00:00Z'))
+    Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } })
+    renderComApp(<CardReflexao />)
+
+    const botao = screen.getByRole('button', { name: /copiar reflexão/i })
+    await act(async () => {
+      fireEvent.click(botao)
+    })
+    expect(botao).toHaveAttribute('title', 'Copiado')
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1999)
+    })
+    expect(botao).toHaveAttribute('title', 'Copiado')
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2)
+    })
+    expect(botao).toHaveAttribute('title', 'Copiar citação')
   })
 })

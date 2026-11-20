@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
 import type { PontoSerie } from '../../api/tipos'
 import { formatarMoeda } from '../../formato/moeda'
-import { nomeMes } from '../../formato/mes'
+import { mesAtual as mesDeHoje, nomeMes } from '../../formato/mes'
 import { useEhDesktop } from '../../layout/useEhDesktop'
 import { COR_DESPESAS, COR_RECEITAS, FUNDO_DESPESAS_PREVISTAS } from './cores'
 import { formatarComSinal, paraCentavos, resultadoAcumulado, serieDoResultado } from './valores'
@@ -35,6 +35,7 @@ export function GraficoResultado({ ano, mes, serie, className, hoje }: Props) {
   const compacto = !useEhDesktop()
   const pontos = serieDoResultado(serie)
   const acumulado = resultadoAcumulado(serie, mes)
+  const agora = mesDeHoje(hoje ?? new Date())
 
   return (
     <section aria-labelledby="titulo-grafico" className={className ? `card flex flex-col ${className}` : 'card flex flex-col'}>
@@ -93,7 +94,7 @@ export function GraficoResultado({ ano, mes, serie, className, hoje }: Props) {
         <tbody>
           {pontos.map((ponto) => (
             <tr key={ponto.mes}>
-              <th scope="row">{ponto.rotulo}</th>
+              <th scope="row">{agora.ano === ano && agora.mes === ponto.mes ? `${ponto.rotulo} (mês atual)` : ponto.rotulo}</th>
               <td>{formatarMoeda(ponto.receitas)}</td>
               <td>{formatarMoeda(ponto.despesas)}</td>
               <td>{formatarComSinal(ponto.resultado.toFixed(2))}</td>

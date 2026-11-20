@@ -46,7 +46,7 @@ export function GrupoCategoria({ nome, lancamentos, busca, idMudandoStatus, aoMu
                 className={`grid min-h-12 grid-cols-[3rem_1fr_auto] items-center gap-2 py-2 text-[13px] text-inherit no-underline ${classeFoco}`}
               >
                 <span className="valor font-semibold">{l.vencimento === null ? '—' : diaEMes(l.vencimento)}</span>
-                <span className="min-w-0 truncate font-medium">{l.itemNome}</span>
+                <span className="line-clamp-2 min-w-0 break-words font-medium">{l.itemNome}</span>
                 <span
                   className={`valor font-medium ${l.tipo === 'RECEITA' ? 'text-[var(--cor-positivo)]' : ''}`}
                 >
@@ -58,7 +58,7 @@ export function GrupoCategoria({ nome, lancamentos, busca, idMudandoStatus, aoMu
                 disabled={idMudandoStatus === l.id}
                 aria-label={`${l.itemNome}: ${rotulo}. Tocar para marcar como ${pago ? 'previsto' : 'pago'}`}
                 onClick={() => aoMudarStatus(l.id, pago ? 'PREVISTO' : 'PAGO')}
-                className={`inline-flex min-h-8 min-w-[5.5rem] items-center justify-center gap-1 rounded-md px-3 text-[12px] font-semibold disabled:opacity-60 ${classeFoco} ${
+                className={`inline-flex min-h-11 min-w-[5.5rem] items-center justify-center gap-1 rounded-md px-3 text-[12px] font-semibold disabled:opacity-60 ${classeFoco} ${
                   pago ? 'bg-[var(--cor-ok-fundo)] text-[var(--cor-positivo)]' : 'bg-[var(--cor-fundo)] text-[var(--cor-principal)]'
                 }`}
               >

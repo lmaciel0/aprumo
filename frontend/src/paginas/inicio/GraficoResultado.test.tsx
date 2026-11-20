@@ -205,6 +205,15 @@ describe('GraficoResultado', () => {
     expect(celulas(linhas[11]!)).toEqual(['Nov', 'R$ 1.000,00', 'R$ 800,00', 'R$ 200,00'])
   })
 
+  it('tabela_escondida_marca_o_mes_atual_no_texto', async () => {
+    await renderizar()
+
+    const tabela = screen.getByRole('table', { name: 'Resultado de cada mês em 2026' })
+    expect(within(tabela).getByRole('rowheader', { name: 'Out (mês atual)' })).toBeInTheDocument()
+    expect(within(tabela).getByRole('rowheader', { name: 'Nov' })).toBeInTheDocument()
+    expect(within(tabela).getAllByText(/mês atual/)).toHaveLength(1)
+  })
+
   it('serie_vazia_nao_quebra', async () => {
     render(<GraficoResultado ano={2026} mes={10} serie={[]} />)
 

@@ -56,8 +56,8 @@ export function CardCartao({ cartao, aoEditar, aoLancar }: Props) {
         <div>
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <h3 id={idTitulo} className="m-0 truncate text-base font-medium text-[var(--cor-texto)]">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-1.5">
+                <h3 id={idTitulo} className="m-0 min-w-0 max-w-full truncate text-base font-medium text-[var(--cor-texto)]">
                   {cartao.nome}
                 </h3>
                 {cartao.titular && (
@@ -71,7 +71,7 @@ export function CardCartao({ cartao, aoEditar, aoLancar }: Props) {
                     onClick={() => aoEditar(cartao)}
                     title={`Editar ${cartao.nome}`}
                     aria-label={`Editar ${cartao.nome}`}
-                    className={`-my-2 inline-flex size-11 cursor-pointer items-center justify-center rounded-[10px] text-[var(--cor-mutado)] transition-colors hover:bg-[var(--cor-elevado)] hover:text-[var(--cor-texto)] ${classeFoco}`}
+                    className={`-my-2 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-[10px] text-[var(--cor-mutado)] transition-colors hover:bg-[var(--cor-elevado)] hover:text-[var(--cor-texto)] ${classeFoco}`}
                   >
                     <Pencil className="size-4" />
                   </button>
@@ -114,10 +114,10 @@ export function CardCartao({ cartao, aoEditar, aoLancar }: Props) {
         </div>
 
         {/* Rodapé com fatura, limite e botão de ação */}
-        <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--cor-linha)] pt-3">
-          <div className="flex flex-col">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[11px] text-[var(--cor-mutado)]">Fatura do mês</span>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-[var(--cor-linha)] pt-3">
+          <div className="flex min-w-0 flex-col">
+            <div className="flex flex-wrap items-center gap-x-1.5">
+              <span className="text-[11px] whitespace-nowrap text-[var(--cor-mutado)]">Fatura do mês</span>
               {cartao.faturaPaga && Number.parseFloat(cartao.fatura) > 0 && (
                 <span className="inline-flex items-center rounded-md bg-[var(--cor-ok-fundo)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--cor-positivo-texto)]">
                   Paga
@@ -129,7 +129,7 @@ export function CardCartao({ cartao, aoEditar, aoLancar }: Props) {
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             {comLimite ? (
               <div className="text-right">
                 <span className="text-[11px] text-[var(--cor-mutado)]">

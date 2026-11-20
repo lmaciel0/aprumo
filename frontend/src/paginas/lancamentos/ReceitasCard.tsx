@@ -73,7 +73,7 @@ export function ReceitasCard({ lancamentos, busca, idMudandoStatus, aoMudarStatu
                     className={`grid min-h-12 grid-cols-[3rem_1fr_auto] items-center gap-2 py-2 text-[13px] text-inherit no-underline ${classeFoco}`}
                   >
                     <span className="valor font-medium">{l.vencimento === null ? '—' : diaEMes(l.vencimento)}</span>
-                    <span className="min-w-0 truncate font-medium">{l.itemNome}</span>
+                    <span className="line-clamp-2 min-w-0 break-words font-medium">{l.itemNome}</span>
                     <span className="valor font-medium text-[var(--cor-texto)]">{formatarMoeda(l.valor)}</span>
                   </Link>
                   <button
@@ -81,7 +81,7 @@ export function ReceitasCard({ lancamentos, busca, idMudandoStatus, aoMudarStatu
                     disabled={idMudandoStatus === l.id}
                     aria-label={`${l.itemNome}: ${rotulo}. Tocar para marcar como ${recebido ? 'a receber' : 'recebido'}`}
                     onClick={() => aoMudarStatus(l.id, recebido ? 'PREVISTO' : 'PAGO')}
-                    className={`inline-flex min-h-8 min-w-[5.5rem] cursor-pointer items-center justify-center gap-1 rounded-md px-3 text-[12px] font-medium transition-colors disabled:cursor-default disabled:opacity-60 ${classeFoco} ${
+                    className={`inline-flex min-h-11 min-w-[5.5rem] cursor-pointer items-center justify-center gap-1 rounded-md px-3 text-[12px] font-medium transition-colors disabled:cursor-default disabled:opacity-60 ${classeFoco} ${
                       recebido
                         ? 'bg-[var(--cor-ok-fundo)] text-[var(--cor-positivo-texto)]'
                         : 'bg-[var(--cor-fundo)] text-[var(--cor-principal)]'

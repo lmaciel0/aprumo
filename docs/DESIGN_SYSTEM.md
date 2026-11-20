@@ -168,7 +168,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Painel (`painel`): `CardReflexao` (frase do dia), `AtalhosRapidosMobile` (grade de 4 atalhos configuráveis, `ModalPersonalizarAtalhos`), `FinancasDoMes`, `NotaFixada` (conteúdo somente leitura, caixinhas marcáveis).
 - Visão geral (`inicio`): `CardSobra` (fundo `--cor-principal`), `CardsTotais` (cards compactos com chip de variação), `GraficoResultado` (cores `--cor-grafico-*` e tabela equivalente para leitor de tela), `OndeMaisGastou` (barras por categoria), `ProximasContas`, `ResumoCartoes`.
 - Orçamento (`lancamentos`): `FaixaSaldo` (saldo grande no destaque), `ReceitasCard`, `GrupoCategoria` (linhas tocáveis, chip que alterna o status), `LancamentoForm` dentro de `Moldura` (tela cheia no celular, janela modal a partir de 768 px).
-- Cartões (`cartoes`): `CardCartao` (visual `cartao-premium` em `CardCartao.css`), `EditorCartao`.
+- Cartões (`cartoes`): `CardCartao` (material do banco via `coresBancos.ts`; desconhecido em material neutro; barra de uso com `--cor-positivo`, `--cor-aviso-texto` e `--cor-negativo` em `faixas.ts`; grade de 1 coluna, 2 a partir de `sm` e 3 a partir de `xl`), `EditorCartao`.
 - Categorias (`categorias`): `LinhaCategoria`, `LinhaSubcategoria`, `SeletorCor` e `SeletorIcone` (paleta fixa em `paletaCores.ts`), `PaginacaoTabela`.
 - Metas (`metas`): `CardMeta`, `WidgetMetaInicio`, `CardConselheiroMetas`, `ModalMetaForm` e `ModalAporteMeta` (folha que sobe de baixo no celular, centralizada a partir de `sm`).
 - Notas (`notas`): `CartaoNota` (entrada escalonada `.nota-entra`), `FaixaCategorias` (chips de filtro), `NotaEditor` com `BarraFormatacao` (Tiptap), `nota-editor.css` e `nota-leitura.css`.
@@ -219,7 +219,7 @@ unslop, de Damir Sokolovsky (https://github.com/heydamir/unslop), CC BY 4.0
 Nasce das armadilhas registradas no projeto e das regras de 360 px.
 
 - Não usar cor fixa (`bg-white`, `text-white`, `bg-[#...]`, `text-[#...]`): `estilos.test.ts` reprova. Use `--cor-*`.
-- Não usar a paleta do Tailwind (`red-600`, `emerald-500`, `amber-*`, `from-black/80`) em tela nova. Hoje há desvios em `metas` (`CardMeta`, `MetasPage`, `ModalMetaForm`, `ModalAporteMeta`, `CardConselheiroMetas`, `WidgetMetaInicio`), em `CardCartao` e em um ponto de `CardReflexao`. São dívida a corrigir com os tokens `--cor-negativo`, `--cor-positivo` e `--cor-sobre-*`, não padrão a copiar.
+- Não usar a paleta do Tailwind (`red-600`, `emerald-500`, `amber-*`, `from-black/80`) em tela nova. Hoje há desvios em `metas` (`CardMeta`, `MetasPage`, `ModalMetaForm`, `ModalAporteMeta`, `CardConselheiroMetas`, `WidgetMetaInicio`). São dívida a corrigir com os tokens `--cor-negativo`, `--cor-positivo` e `--cor-sobre-*`, não padrão a copiar.
 - Não usar `--cor-positivo` e `--cor-negativo` em texto pequeno: use `--cor-positivo-texto` e `--cor-negativo-texto` (4,5:1).
 - Não usar `backdrop-filter` nem `backdrop-blur`: `estilos.test.ts` reprova no `index.css` e em todo TSX de produção. Superfície que precisa esconder o que rola por baixo usa fundo sólido (`--cor-fundo` ou `--cor-card`).
 - Não usar degradê entre matizes, brilho nem sombra colorida (como `shadow-[0_8px_18px_color-mix(... --cor-principal ...)]`).

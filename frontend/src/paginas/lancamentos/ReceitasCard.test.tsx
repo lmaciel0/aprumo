@@ -84,6 +84,17 @@ describe('ReceitasCard', () => {
     expect(aoMudarStatus).toHaveBeenCalledWith(1, 'PREVISTO')
   })
 
+  it('selo_de_status_tem_alvo_de_44_px_e_o_nome_quebra_em_ate_2_linhas', () => {
+    const { regiao } = renderizar([salario(), camila('PREVISTO')])
+
+    const selo = within(regiao).getByRole('button', { name: /Salário.*Recebido/ })
+    expect(selo).toHaveClass('min-h-11')
+    expect(selo).not.toHaveClass('min-h-8')
+    const nome = within(regiao).getByText('Salário')
+    expect(nome).toHaveClass('line-clamp-2', 'break-words')
+    expect(nome).not.toHaveClass('truncate')
+  })
+
   it('a_linha_abre_o_lancamento_mantendo_o_mes', () => {
     renderizar([salario()])
 

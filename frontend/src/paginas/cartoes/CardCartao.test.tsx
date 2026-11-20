@@ -90,6 +90,32 @@ describe('CardCartao: chips e botões neutros', () => {
   })
 })
 
+describe('CardCartao: layout robusto em card estreito', () => {
+  it('o rodapé quebra linha em vez de estourar, o "+" nunca encolhe e o rótulo não parte', () => {
+    const { container } = render(<CardCartao cartao={cartao()} aoLancar={() => {}} />)
+    const rodape = container.querySelector('.border-t') as HTMLElement
+    expect(rodape).toHaveClass('flex-wrap')
+    expect(screen.getByText('Fatura do mês')).toHaveClass('whitespace-nowrap')
+    expect(screen.getByText('Fatura do mês').closest('.min-w-0')).not.toBeNull()
+    expect(screen.getByRole('button', { name: 'Lançar despesa em Nubank Ultravioleta' })).toHaveClass('shrink-0')
+  })
+
+  it('a linha do título tem min-w-0 e o lápis não encolhe', () => {
+    render(<CardCartao cartao={cartao()} aoEditar={() => {}} />)
+    const titulo = screen.getByRole('heading', { level: 3 })
+    expect(titulo).toHaveClass('min-w-0', 'truncate')
+    expect(titulo.parentElement).toHaveClass('min-w-0', 'flex-wrap')
+    expect(screen.getByRole('button', { name: 'Editar Nubank Ultravioleta' })).toHaveClass('shrink-0')
+  })
+
+  it('a barra de uso usa tokens, sem cor fixa', () => {
+    render(<CardCartao cartao={cartao()} />)
+    const barra = screen.getByRole('meter').firstElementChild as HTMLElement
+    expect(barra.getAttribute('style')).toContain('var(--cor-aviso-texto)')
+    expect(tsx).not.toMatch(/#[0-9a-f]{6}/i)
+  })
+})
+
 describe('CardCartao: fonte sem resto do visual antigo', () => {
   it('o TSX não tem a cor-padrão roxa, transição genérica nem paleta crua', () => {
     expect(tsx).not.toMatch(/#4f46e5|#7c3aed/i)

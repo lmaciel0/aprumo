@@ -100,7 +100,7 @@ describe('CartoesPage', () => {
 
     // 0.7300 vira 73%, na cor do amarelo.
     expect(within(azul).getByText('73%')).toBeInTheDocument()
-    expect(preenchimento(azul)).toHaveStyle({ backgroundColor: '#E0A100', width: '73%' })
+    expect(preenchimento(azul)).toHaveStyle({ backgroundColor: 'var(--cor-aviso-texto)', width: '73%' })
     expect(within(azul).getByRole('meter')).toHaveAttribute('aria-valuenow', '73')
     expect(azul).toHaveTextContent('vence dia 05')
     expect(azul).toHaveTextContent('R$ 730,00')
@@ -108,15 +108,15 @@ describe('CartoesPage', () => {
 
     const verde = screen.getByRole('region', { name: 'Cartão Verde' })
     expect(within(verde).getByText('20%')).toBeInTheDocument()
-    // Texto do chip usa o tom escuro (contraste AA); a barra mantém o verde da paleta.
+    // Texto do chip usa o tom escuro (contraste AA); a barra usa o token de preenchimento.
     expect(within(verde).getByText('20%')).toHaveClass('text-[var(--cor-positivo-texto)]')
-    expect(preenchimento(verde)).toHaveStyle({ backgroundColor: '#2E9E5B', width: '20%' })
+    expect(preenchimento(verde)).toHaveStyle({ backgroundColor: 'var(--cor-positivo)', width: '20%' })
     expect(verde).toHaveTextContent('vence dia 25')
 
     const vermelho = screen.getByRole('region', { name: 'Cartão Vermelho' })
     expect(within(vermelho).getByText('99%')).toBeInTheDocument()
     expect(within(vermelho).getByText('99%')).toHaveClass('text-[var(--cor-negativo-texto)]')
-    expect(preenchimento(vermelho)).toHaveStyle({ backgroundColor: '#D64545', width: '99%' })
+    expect(preenchimento(vermelho)).toHaveStyle({ backgroundColor: 'var(--cor-negativo)', width: '99%' })
 
     // Resumo do mês.
     expect(within(screen.getByRole('region', { name: 'Faturas do mês' })).getByText('R$ 1.920,00')).toBeInTheDocument()
@@ -126,6 +126,15 @@ describe('CartoesPage', () => {
     // Ordem da API: maior fatura primeiro.
     const nomes = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)
     expect(nomes).toEqual(['Cartão Azul', 'Cartão Verde', 'Cartão Vermelho'])
+  })
+
+  it('grade_de_cartoes_tem_1_coluna_no_celular_2_em_sm_e_3_so_em_xl', async () => {
+    responderCartoes(resposta())
+    renderizar()
+
+    const grade = (await screen.findByRole('button', { name: 'Cadastrar novo cartão na grade' })).parentElement!
+    expect(grade).toHaveClass('sm:grid-cols-2', 'xl:grid-cols-3')
+    expect(grade.className).not.toMatch(/(md|lg):grid-cols-3/)
   })
 
   it('uso_acima_de_100_enche_a_barra_e_mostra_o_percentual_real', async () => {

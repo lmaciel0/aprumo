@@ -36,6 +36,33 @@ describe('ProximasContas', () => {
     expect(data.className).not.toContain('font-semibold')
   })
 
+  it('todas as linhas têm o mesmo recuo à esquerda e só a data da marcada é font-medium', () => {
+    render(
+      <ProximasContas hoje={hoje} contas={[conta(1, '2026-11-10', true), conta(2, '2026-11-16'), conta(3, '2026-11-20')]} />,
+    )
+
+    for (const linha of linhas()) {
+      expect(linha).toHaveClass('pl-3', 'relative')
+    }
+    const datas = linhas().map((linha) => linha.querySelector('time')!)
+    expect(datas[0]).toHaveClass('font-normal')
+    expect(datas[1]).toHaveClass('font-medium')
+    expect(datas[2]).toHaveClass('font-normal')
+    for (const data of datas) {
+      expect(data.className).not.toContain('font-semibold')
+    }
+  })
+
+  it('a conta mais próxima também é dita em texto para leitor de tela, só nela', () => {
+    render(<ProximasContas hoje={hoje} contas={[conta(1, '2026-11-10', true), conta(2, '2026-11-16')]} />)
+
+    const avisos = screen.getAllByText('mais próxima:', { exact: false })
+    expect(avisos).toHaveLength(1)
+    expect(avisos[0]).toHaveClass('sr-only')
+    expect(avisos[0]!.closest('li')).toHaveTextContent('Conta 2')
+    expect(avisos[0]!.closest('li')).toHaveClass('relative')
+  })
+
   it('vencimento igual a hoje recebe o fio', () => {
     render(<ProximasContas hoje={hoje} contas={[conta(1, '2026-11-15'), conta(2, '2026-11-20')]} />)
 
