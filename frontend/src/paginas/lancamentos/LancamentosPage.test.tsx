@@ -88,7 +88,12 @@ describe('LancamentosPage', () => {
     expect(luz).toHaveTextContent('R$ 180,40')
     expect(within(luz!).getByRole('button', { name: /Previsto/ })).toBeInTheDocument()
     expect(condominio).toHaveTextContent('31/10')
-    expect(within(condominio!).getByRole('button', { name: /Pago/ })).toBeInTheDocument()
+    const chipPago = within(condominio!).getByRole('button', { name: /Pago/ })
+    expect(chipPago).toBeInTheDocument()
+    expect(chipPago).toHaveTextContent('Pago')
+    expect(chipPago.textContent).not.toContain('✓')
+    expect(chipPago.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+    expect(chipPago.querySelector('svg')).toHaveAttribute('width', '12')
   })
 
   it('receitas_viram_um_card_proprio_e_as_despesas_continuam_por_categoria', async () => {

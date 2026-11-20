@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react'
 import { Link } from 'react-router'
 import type { LancamentoResponse, StatusLancamento } from '../../api/tipos'
 import { formatarMoeda } from '../../formato/moeda'
@@ -86,13 +87,14 @@ export function ReceitasCard({ lancamentos, busca, idMudandoStatus, aoMudarStatu
                     disabled={idMudandoStatus === l.id}
                     aria-label={`${l.itemNome}: ${rotulo}. Tocar para marcar como ${recebido ? 'a receber' : 'recebido'}`}
                     onClick={() => aoMudarStatus(l.id, recebido ? 'PREVISTO' : 'PAGO')}
-                    className={`min-h-8 min-w-[5.5rem] cursor-pointer rounded-full px-3 text-[12px] font-semibold transition-colors disabled:cursor-default disabled:opacity-60 ${classeFoco} ${
+                    className={`inline-flex min-h-8 min-w-[5.5rem] cursor-pointer items-center justify-center gap-1 rounded-full px-3 text-[12px] font-semibold transition-colors disabled:cursor-default disabled:opacity-60 ${classeFoco} ${
                       recebido
                         ? 'bg-[var(--cor-ok-fundo)] text-[var(--cor-positivo-texto)]'
                         : 'bg-[var(--cor-fundo)] text-[var(--cor-principal)]'
                     }`}
                   >
-                    {recebido ? '✓ Recebido' : 'A receber'}
+                    {recebido && <Check size={12} aria-hidden="true" />}
+                    {rotulo}
                   </button>
                 </li>
               )

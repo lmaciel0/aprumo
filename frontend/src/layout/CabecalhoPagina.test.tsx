@@ -136,4 +136,12 @@ describe('CabecalhoPagina', () => {
     expect(lancar).toHaveClass('bg-[var(--cor-principal-fundo)]', 'text-[var(--cor-sobre-principal-fundo)]')
     expect(lancar.className).not.toContain('bg-[var(--cor-principal)]')
   })
+
+  it('o_lancar_usa_peso_de_botao_medium', () => {
+    renderizar(<CabecalhoPagina titulo="Orçamento" />)
+
+    const lancar = screen.getByRole('link', { name: '+ Lançar' })
+    expect(lancar).toHaveClass('font-medium')
+    expect(lancar).not.toHaveClass('font-semibold')
+  })
 })

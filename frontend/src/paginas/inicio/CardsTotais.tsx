@@ -37,8 +37,10 @@ function Chip({ atual, anterior, nomeMesAnterior, subirEBom }: ChipProps) {
   }
   const tom: Tom =
     mudanca.direcao === 'igual' ? 'neutro' : (mudanca.direcao === 'subiu') === subirEBom ? 'bom' : 'ruim'
-  const sinal = mudanca.direcao === 'subiu' ? '+' : mudanca.direcao === 'caiu' ? '\u2212' : ''
-  const percentual = mudanca.direcao !== 'igual' && mudanca.percentual === 0 ? '<1%' : `${mudanca.percentual}%`
+  // Abaixo de 1% vai s\u00f3 `<1%`, sem sinal: a seta j\u00e1 d\u00e1 a dire\u00e7\u00e3o e o sinal colado no `<` confunde.
+  const abaixoDeUm = mudanca.direcao !== 'igual' && mudanca.percentual === 0
+  const sinal = abaixoDeUm ? '' : mudanca.direcao === 'subiu' ? '+' : mudanca.direcao === 'caiu' ? '\u2212' : ''
+  const percentual = abaixoDeUm ? '<1%' : `${mudanca.percentual}%`
 
   return (
     <p
