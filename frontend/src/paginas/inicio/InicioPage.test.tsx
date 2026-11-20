@@ -276,6 +276,18 @@ describe('InicioPage', () => {
     ])
   })
 
+  it('em_1280_px_cards_de_numero_nao_esticam_e_receitas_e_despesas_dividem_a_altura', async () => {
+    responderResumo(resumo())
+    responderCartoes()
+    renderizar()
+
+    expect(await bloco('Sobra do mês')).toHaveClass('md:self-start')
+    expect(await bloco('Onde você mais gastou em outubro')).toHaveClass('md:self-start')
+    const colunaTotais = (await bloco('Receitas')).parentElement
+    expect(colunaTotais).toHaveClass('md:grid-rows-2')
+    expect(colunaTotais).toHaveClass('md:self-start')
+  })
+
   it('mostra_o_bloco_de_cartoes_do_mes_selecionado', async () => {
     responderResumo(resumo())
     const consultas = responderCartoes()
