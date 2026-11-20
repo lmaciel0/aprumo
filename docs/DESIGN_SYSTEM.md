@@ -110,6 +110,7 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 | `--sombra-elevada` | `0 8px 24px rgb(20 33 61 / 8%)` no claro; `inset 0 1px 0 rgb(255 255 255 / 6%)` no escuro | Só para o que flutua: dock, menu, modal e card de auth. |
 | `--curva` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva única de toda animação e transição. |
 
+- Foto com texto por cima (hero do `CardMeta`): `.veu-foto` aplica um véu neutro de `rgb(0 0 0 / 0%)` a `rgb(0 0 0 / 65%)` (sombra para o texto, não degradê de matiz); botão de ícone sobre a foto usa `.veu-botao-foto`; texto e ícone em `--cor-sobre-imagem`. Sem foto, o hero fica em `--cor-elevado` com o mesmo véu.
 - `.card`: superfície sólida com `--raio-card`, `padding: 1rem`, sem `backdrop-filter`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
 - Escala de raio por tamanho do elemento:
 
