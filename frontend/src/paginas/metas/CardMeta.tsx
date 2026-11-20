@@ -19,7 +19,11 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
   const percentualNum = Number.parseFloat(meta.percentualConcluido || '0') * 100
   const percentualInteiro = Math.min(100, Math.max(0, Math.round(percentualNum)))
   const fotoExibicao = meta.fotoUrl || preset.fotoPadrao
-  const corBarra = meta.concluida ? 'bg-[var(--cor-positivo)]' : 'bg-[var(--cor-grafico-receitas)]'
+  const centavosGuardados = Math.round(Number.parseFloat(meta.valorGuardado || '0') * 100)
+  const centavosAlvo = Math.round(Number.parseFloat(meta.valorAlvo || '0') * 100)
+  const atingida = meta.concluida || (centavosAlvo > 0 && centavosGuardados >= centavosAlvo)
+  const centavosAcima = centavosGuardados - centavosAlvo
+  const corBarra = atingida ? 'bg-[var(--cor-positivo)]' : 'bg-[var(--cor-grafico-receitas)]'
 
   return (
     <section
@@ -102,9 +106,9 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
           <div className="mt-3">
             <div className="mb-1 flex items-center justify-between text-xs">
               <span className="text-[11px] font-medium text-[var(--cor-mutado)]">
-                {meta.concluida
+                {atingida
                   ? 'Objetivo alcançado'
-                  : `Faltam ${formatarMoeda(meta.valorRestante)}`}
+                  : `Faltam ${formatarMoeda(Math.max(0, Number.parseFloat(meta.valorRestante || '0')))}`}
               </span>
               <span className="font-medium text-[var(--cor-secundario)]">
                 {percentualInteiro}%
@@ -128,10 +132,14 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
           </div>
 
           <div className="mt-3 flex flex-wrap items-center justify-between gap-1 text-[11px] text-[var(--cor-mutado)]">
-            {meta.valorMensalSugerido && !meta.concluida ? (
+            {meta.valorMensalSugerido && !atingida ? (
               <span className="inline-flex items-center gap-1 font-medium text-[var(--cor-secundario)]">
                 <Calendar className="size-3 shrink-0" />
                 {formatarMoeda(meta.valorMensalSugerido)}/mês
+              </span>
+            ) : centavosAcima > 0 ? (
+              <span className="font-medium text-[var(--cor-secundario)]">
+                {formatarMoeda(centavosAcima / 100)} acima do alvo
               </span>
             ) : (
               <span />

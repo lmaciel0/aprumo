@@ -150,6 +150,68 @@ describe('CardMeta', () => {
     expect(screen.queryByText('150%')).toBeNull()
   })
 
+  describe('meta não concluída com valor guardado acima do alvo', () => {
+    const metaAcima: MetaResponse = {
+      ...metaExemplo,
+      valorAlvo: '12000.00',
+      valorGuardado: '12500.00',
+      percentualConcluido: '1.0417',
+      valorRestante: '-500.00',
+      valorMensalSugerido: '35.71',
+      concluida: false,
+    }
+
+    it('nunca mostra valor que falta negativo e avisa o objetivo alcançado', () => {
+      const { container } = render(<CardMeta meta={metaAcima} />)
+
+      expect(screen.queryByText(/Faltam/)).toBeNull()
+      expect(container.textContent).not.toContain('−R$')
+      expect(screen.getByText('Objetivo alcançado')).toBeInTheDocument()
+      expect(container.textContent).not.toContain('!')
+    })
+
+    it('mostra quanto passou do alvo em tom secundário', () => {
+      render(<CardMeta meta={metaAcima} />)
+
+      const acima = screen.getByText(/R\$\s*500,00 acima do alvo/)
+      expect(acima.className).toContain('text-[var(--cor-secundario)]')
+    })
+
+    it('barra em 100% com a cor positiva, mesmo sem a flag concluída', () => {
+      render(<CardMeta meta={metaAcima} />)
+
+      const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+      expect(barra).toHaveAttribute('aria-valuenow', '100')
+      const preenchimento = barra.firstElementChild as HTMLElement
+      expect(preenchimento.style.width).toBe('100%')
+      expect(preenchimento.className).toContain('bg-[var(--cor-positivo)]')
+    })
+
+    it('esconde o valor mensal sugerido quando não falta nada', () => {
+      render(<CardMeta meta={metaAcima} />)
+
+      expect(screen.queryByText(/\/mês/)).toBeNull()
+    })
+  })
+
+  it('guardado exatamente igual ao alvo, sem a flag, mostra objetivo alcançado sem "acima do alvo"', () => {
+    render(
+      <CardMeta
+        meta={{
+          ...metaExemplo,
+          valorGuardado: '10000.00',
+          percentualConcluido: '1.0000',
+          valorRestante: '0.00',
+          concluida: false,
+        }}
+      />,
+    )
+
+    expect(screen.getByText('Objetivo alcançado')).toBeInTheDocument()
+    expect(screen.queryByText(/acima do alvo/)).toBeNull()
+    expect(screen.queryByText(/Faltam/)).toBeNull()
+  })
+
   it('Guardar é ação secundária e Resgatar é botão de texto, sem coral', () => {
     render(<CardMeta meta={metaExemplo} />)
 
