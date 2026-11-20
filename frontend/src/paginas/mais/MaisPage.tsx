@@ -18,7 +18,7 @@ import { useMesSelecionado } from '../../layout/useMesSelecionado'
 
 const linha = `flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-[15px] font-semibold no-underline transition-colors duration-200 ease-out hover:bg-[var(--cor-fundo)] motion-reduce:transition-none ${foco} focus-visible:-outline-offset-2`
 
-const cartao = 'overflow-hidden rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)]'
+const cartao = 'overflow-hidden rounded-[var(--raio-card)] border border-[var(--cor-linha)] bg-[var(--cor-card)]'
 
 const divisor = 'divide-y divide-[var(--cor-linha)]'
 

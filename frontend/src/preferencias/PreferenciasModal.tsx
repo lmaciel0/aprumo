@@ -109,7 +109,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         aria-modal="true"
         aria-labelledby="titulo-preferencias"
         onKeyDown={prenderFoco}
-        className="relative z-10 w-full max-w-md rounded-3xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-6 shadow-2xl transition-all duration-200"
+        className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-6 shadow-2xl transition-all duration-200"
       >
         {/* Cabeçalho */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-[var(--cor-linha)]">
@@ -126,7 +126,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
             type="button"
             aria-label="Fechar preferências"
             onClick={aoFechar}
-            className={`grid size-9 shrink-0 place-items-center rounded-full text-[var(--cor-mutado)] transition-colors hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] ${foco}`}
+            className={`grid size-9 shrink-0 place-items-center rounded-[10px] text-[var(--cor-mutado)] transition-colors hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] ${foco}`}
           >
             <svg
               width="20"

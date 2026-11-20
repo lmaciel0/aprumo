@@ -76,6 +76,19 @@ describe('FolhaAcaoRapida', () => {
     expect(screen.queryByRole('link', { name: 'Nova tarefa' })).not.toBeInTheDocument()
   })
 
+  it('a folha é painel de 16 px e as linhas e o botão Fechar usam raio de linha', async () => {
+    renderizar()
+    await userEvent.click(screen.getByRole('button', { name: 'Criar' }))
+
+    const dialogo = screen.getByRole('dialog', { name: 'Criar' })
+    expect(dialogo).toHaveClass('rounded-2xl')
+    expect(dialogo.className).not.toContain('rounded-3xl')
+    for (const el of [...within(dialogo).getAllByRole('link'), within(dialogo).getByRole('button', { name: 'Fechar' })]) {
+      expect(el).toHaveClass('rounded-[10px]', 'min-h-11')
+      expect(el).not.toHaveClass('rounded-2xl')
+    }
+  })
+
   it('Esc chama aoFechar e fecha', async () => {
     renderizar()
     await userEvent.click(screen.getByRole('button', { name: 'Criar' }))

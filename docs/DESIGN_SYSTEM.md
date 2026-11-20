@@ -95,8 +95,20 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 | `--curva` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva única de toda animação e transição. |
 
 - `.card`: superfície sólida com `--raio-card`, `padding: 1rem`, sem `backdrop-filter`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
-- Escala de raio: tag 6 px, controle (campo e botão) 10 px, card 14 px, painel e folha de 16 a 20 px. Pílula (`rounded-full`) só em avatar, botão "Criar", ponto de status e interruptor de tema. O card de auth usa 18 px e seus campos e botão 10 px.
-- Código antigo ainda usa `rounded-2xl`, `rounded-3xl` e `rounded-full` em chips e botões; a migração para a escala acontece por tela e não por esta tabela.
+- Escala de raio por tamanho do elemento:
+
+| Elemento | Classe | Raio |
+|---|---|---|
+| Tag e chip (inclui chip de filtro e chip de status) | `rounded-md` | 6 px |
+| Botão, campo, linha tocável, botão só de ícone e busca do cabeçalho | `rounded-[10px]` | 10 px |
+| Card e sub-painel dentro de formulário | `rounded-[var(--raio-card)]` | 14 px |
+| Painel flutuante, menu e modal centralizado | `rounded-2xl` | 16 px |
+| Folha que sobe de baixo no celular | `rounded-t-[20px]` | 20 px |
+
+- Raio interno = raio externo menos o padding, no mínimo 4 px; o botão de 10 px dentro de um painel de 16 px com 8 px de padding cabe sem sair do canto. Botão só de ícone com menos de 28 px de lado usa `rounded-md`.
+- Pílula (`rounded-full`) só em avatar (e a marca do logo, que é um avatar da marca), ponto de status ou de cor e amostra de cor, trilho e barra de progresso, botão "Criar" da dock, interruptor de tema e spinner. Nunca em botão com texto, campo, chip, tag, busca ou botão só de ícone. Par de botões unidos (chip da categoria e seu lápis de editar) usa `rounded-l-md` e `rounded-r-md`.
+- `estilos.test.ts` (describe `raios`) reprova `rounded-3xl`, `rounded-full` fora de `PILULAS_PERMITIDAS` e `rounded-2xl` fora de `PAINEIS_2XL` (listas em `frontend/src/teste/varredura.ts`, com o motivo de cada arquivo), em todo TSX de produção fora das telas das fases 3 e 4.
+- O card de auth usa 18 px e seus campos e botão 10 px.
 
 ## Espaçamento e primeira dobra no celular
 
@@ -157,7 +169,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Barras de ação e cabeçalhos usam `flex-wrap` para quebrar em vez de cortar em 320 px.
 - Largura útil conta: sem card dentro de card, sem padding duplicado, sem wrapper vazio com `gap`.
 - O conteúdo principal precisa ficar acima da dock flutuante; elemento fixo embaixo sobe `6.5rem + env(safe-area-inset-bottom)` (o botão "Criar" elevado chega a 5 rem do fundo).
-- Modal no celular é folha que sobe de baixo (`rounded-t-3xl`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada.
+- Modal no celular é folha que sobe de baixo (`rounded-t-[20px]`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada (`rounded-2xl`). Os modais de Metas ficam em `rounded-t-3xl` até a fase 3.
 - Texto de campo em 16 px, para não dar zoom no iOS.
 
 ## Acessibilidade

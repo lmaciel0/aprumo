@@ -69,7 +69,7 @@ export function Moldura({ titulo, aoFechar, children, larguraMaxima }: Props) {
         aria-labelledby={idTitulo}
         tabIndex={-1}
         onKeyDown={prenderFoco}
-        className={`h-full overflow-y-auto px-4 pt-4 pb-8 outline-none md:h-auto md:max-h-full md:w-full ${larguraMaxima ?? 'md:max-w-lg'} md:rounded-3xl md:bg-[var(--cor-fundo)] md:p-6 md:shadow-2xl`}
+        className={`h-full overflow-y-auto px-4 pt-4 pb-8 outline-none md:h-auto md:max-h-full md:w-full ${larguraMaxima ?? 'md:max-w-lg'} md:rounded-2xl md:bg-[var(--cor-fundo)] md:p-6 md:shadow-2xl`}
       >
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 id={idTitulo} className="m-0 text-xl font-medium">
@@ -79,7 +79,7 @@ export function Moldura({ titulo, aoFechar, children, larguraMaxima }: Props) {
             type="button"
             onClick={aoFechar}
             aria-label="Fechar"
-            className="grid size-11 place-items-center rounded-full bg-[var(--cor-card)] text-xl leading-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+            className="grid size-11 place-items-center rounded-[10px] bg-[var(--cor-card)] text-xl leading-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
           >
             <span aria-hidden="true">×</span>
           </button>

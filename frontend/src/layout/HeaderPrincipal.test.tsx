@@ -119,6 +119,19 @@ describe('HeaderPrincipal', () => {
     expect(screen.getByRole('button', { name: 'Perfil do usuário' }).parentElement?.parentElement).toHaveClass('superficie')
   })
 
+  it('busca_e_botoes_de_icone_usam_raio_de_controle_e_o_avatar_continua_circulo', () => {
+    renderComApp(<HeaderPrincipal nomeUsuario="Lucas" />)
+
+    const busca = screen.getByRole('button', { name: 'Buscar páginas e atalhos' })
+    const notificacoes = screen.getByRole('button', { name: /notificações/i })
+    for (const el of [busca, notificacoes, notificacoes.parentElement]) {
+      expect(el).toHaveClass('rounded-[10px]')
+      expect(el).not.toHaveClass('rounded-full')
+    }
+    expect(notificacoes).toHaveClass('min-h-11', 'min-w-11')
+    expect(screen.getByText('L')).toHaveClass('rounded-full')
+  })
+
   it('não renderiza botão de alternar painel de produtividade', () => {
     renderComApp(<HeaderPrincipal nomeUsuario="Lucas" />)
 

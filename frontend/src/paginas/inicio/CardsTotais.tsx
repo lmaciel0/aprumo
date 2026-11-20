@@ -43,7 +43,7 @@ function Chip({ atual, anterior, nomeMesAnterior, subirEBom }: ChipProps) {
   return (
     <p
       data-tom={tom}
-      className={`m-0 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${CORES_DO_CHIP[tom]}`}
+      className={`m-0 inline-flex w-fit items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold ${CORES_DO_CHIP[tom]}`}
     >
       {mudanca.direcao === 'subiu' && <ArrowUp size={12} aria-hidden="true" />}
       {mudanca.direcao === 'caiu' && <ArrowDown size={12} aria-hidden="true" />}

@@ -2,7 +2,7 @@ import { rotuloMes } from '../formato/mes'
 import { useMesSelecionado } from './useMesSelecionado'
 
 const botao =
-  'grid min-h-11 min-w-11 cursor-pointer place-items-center rounded-full text-[var(--cor-principal)] hover:bg-[var(--cor-fundo)] ' +
+  'grid min-h-11 min-w-11 cursor-pointer place-items-center rounded-[10px] text-[var(--cor-principal)] hover:bg-[var(--cor-fundo)] ' +
   'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]'
 
 /** `‹ Outubro 2026 ›`: troca o mês em foco (guardado na URL). */
@@ -10,7 +10,7 @@ export function SeletorMes() {
   const { ano, mes, anterior, seguinte } = useMesSelecionado()
 
   return (
-    <div className="flex items-center gap-1 superficie rounded-full px-1 text-sm font-semibold">
+    <div className="flex items-center gap-1 superficie rounded-[10px] px-1 text-sm font-semibold">
       <button type="button" className={botao} aria-label="Mês anterior" onClick={anterior}>
         <span aria-hidden="true">‹</span>
       </button>

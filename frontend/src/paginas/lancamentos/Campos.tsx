@@ -50,7 +50,7 @@ export function Segmentado<T extends string>({
 }: PropsSegmentado<T>): ReactNode {
   return (
     <fieldset
-      className="m-0 grid gap-1 rounded-2xl border-0 bg-[var(--cor-card)] p-1"
+      className="m-0 grid gap-1 rounded-[var(--raio-card)] border-0 bg-[var(--cor-card)] p-1"
       style={{ gridTemplateColumns: `repeat(${opcoes.length}, minmax(0, 1fr))` }}
     >
       <legend className="sr-only">{legenda}</legend>

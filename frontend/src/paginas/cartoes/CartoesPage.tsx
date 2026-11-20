@@ -79,7 +79,7 @@ function FiltroTitulares({ titulares, cartoes, titularFiltro, aoSelecionar }: Fi
       <button
         type="button"
         onClick={() => aoSelecionar('todos')}
-        className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
+        className={`cursor-pointer rounded-md px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
           titularFiltro === 'todos'
             ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
             : 'border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)] hover:text-[var(--cor-texto)]'
@@ -97,7 +97,7 @@ function FiltroTitulares({ titulares, cartoes, titularFiltro, aoSelecionar }: Fi
             key={titular}
             type="button"
             onClick={() => aoSelecionar(titular)}
-            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
+            className={`cursor-pointer rounded-md px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
               ativo
                 ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
                 : 'border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)] hover:text-[var(--cor-texto)]'
@@ -140,7 +140,7 @@ function ListaCartoes({
         <button
           type="button"
           onClick={aoCriarCartao}
-          className="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] bg-[var(--cor-principal)] px-4 text-sm font-semibold text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           + Cadastrar primeiro cartão
         </button>
@@ -222,7 +222,7 @@ export function CartoesPage() {
         <button
           type="button"
           onClick={() => setCriandoCartao(true)}
-          className="flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold whitespace-nowrap text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[10px] bg-[var(--cor-principal)] px-4 text-sm font-semibold whitespace-nowrap text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           + Novo cartão
         </button>
@@ -267,7 +267,7 @@ export function CartoesPage() {
         <button
           type="button"
           onClick={() => void consulta.refetch()}
-          className="rounded-full bg-[var(--cor-principal)] px-4 py-2 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-[10px] bg-[var(--cor-principal)] px-4 py-2 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           Tentar de novo
         </button>

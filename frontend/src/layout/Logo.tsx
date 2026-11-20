@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <Link
       to="/"
-      className="flex shrink-0 items-center gap-2.5 rounded-full py-1 pr-3 pl-1 font-medium whitespace-nowrap text-[var(--cor-texto)] no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+      className="flex shrink-0 items-center gap-2.5 rounded-[10px] py-1 pr-3 pl-1 font-medium whitespace-nowrap text-[var(--cor-texto)] no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
     >
       <span
         aria-hidden="true"

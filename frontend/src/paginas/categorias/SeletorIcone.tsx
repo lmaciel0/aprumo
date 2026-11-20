@@ -49,7 +49,7 @@ export function SeletorIcone({ valor, aoMudar }: Props) {
               aria-checked={selecionado}
               aria-label={item.nome}
               onClick={() => aoMudar(item.id)}
-              className={`grid size-9 place-items-center rounded-full border transition-all ${
+              className={`grid size-9 place-items-center rounded-[10px] border transition-all ${
                 selecionado
                   ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] shadow-sm'
                   : 'border-[var(--cor-linha)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/50'
@@ -63,7 +63,7 @@ export function SeletorIcone({ valor, aoMudar }: Props) {
         <button
           type="button"
           onClick={() => setExpandido((prev) => !prev)}
-          className="rounded-full bg-[var(--cor-linha)] px-3 py-1.5 text-xs font-medium text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-[10px] bg-[var(--cor-linha)] px-3 py-1.5 text-xs font-medium text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
         >
           Outros
         </button>

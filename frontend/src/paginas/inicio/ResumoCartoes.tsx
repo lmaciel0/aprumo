@@ -61,7 +61,7 @@ export function ResumoCartoes({ cartoes, busca, className = '' }: Props) {
                   </div>
                   <div className="mt-1 flex items-center justify-between gap-2 text-[11px] text-[var(--cor-mutado)]">
                     <span className="valor">de {formatarMoeda(limite)}</span>
-                    <span className={`rounded-full px-2 py-0.5 font-medium ${CLASSE_DO_CHIP[faixa]}`}>
+                    <span className={`rounded-md px-2 py-0.5 font-medium ${CLASSE_DO_CHIP[faixa]}`}>
                       {formatarPercentual(uso)}
                     </span>
                   </div>

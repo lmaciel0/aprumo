@@ -21,7 +21,7 @@ interface Valor {
 
 const TITULO_PADRAO = 'Sem título'
 const foco = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
-const botao = `inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-[var(--cor-linha)] px-4 text-sm font-semibold transition-colors duration-200 motion-reduce:transition-none ${foco}`
+const botao = `inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-[10px] border border-[var(--cor-linha)] px-4 text-sm font-semibold transition-colors duration-200 motion-reduce:transition-none ${foco}`
 
 /** Título, categoria, alfinete, editor e indicador de salvamento. O estado inicial vem da nota; depois o editor manda. */
 export function EdicaoNota({ nota, categorias, aoExcluir, excluindo }: Props) {

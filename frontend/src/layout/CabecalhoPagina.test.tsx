@@ -106,11 +106,25 @@ describe('CabecalhoPagina', () => {
     expect(screen.getByRole('button', { name: 'Mês seguinte' })).toHaveClass('min-h-11', 'min-w-11')
   })
 
+  it('lancar_e_setas_do_mes_usam_raio_de_botao_e_nao_pilula', () => {
+    renderizar(<CabecalhoPagina titulo="Orçamento" />)
+
+    for (const el of [
+      screen.getByRole('link', { name: '+ Lançar' }),
+      screen.getByRole('button', { name: 'Mês anterior' }),
+      screen.getByRole('button', { name: 'Mês seguinte' }),
+    ]) {
+      expect(el).toHaveClass('rounded-[10px]')
+      expect(el).not.toHaveClass('rounded-full')
+    }
+  })
+
   it('seletor_de_mes_usa_a_superficie_flutuante', () => {
     renderizar(<CabecalhoPagina titulo="Orçamento" />)
 
     const seletor = screen.getByRole('button', { name: 'Mês anterior' }).parentElement
-    expect(seletor).toHaveClass('superficie', 'rounded-full')
+    expect(seletor).toHaveClass('superficie', 'rounded-[10px]')
+    expect(seletor).not.toHaveClass('rounded-full')
     expect(seletor).not.toHaveClass('shadow-sm')
     expect(seletor?.className).not.toContain('bg-[var(--cor-card)]')
   })

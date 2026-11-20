@@ -53,7 +53,7 @@ export function LinhaCategoria({
             title="Relatórios"
             aria-label={`Ver relatórios de ${categoria.nome}`}
             onClick={() => aoRelatorios(categoria)}
-            className="group relative grid size-9 place-items-center rounded-full text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/60 hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+            className="group relative grid size-9 place-items-center rounded-[10px] text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/60 hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
           >
             <FileText className="size-4" aria-hidden="true" />
             <span className="pointer-events-none absolute -top-8 z-20 hidden rounded-md border border-[var(--cor-linha)] bg-[var(--cor-card)] px-2 py-0.5 text-[11px] font-medium text-[var(--cor-texto)] shadow-md group-hover:block">
@@ -67,7 +67,7 @@ export function LinhaCategoria({
             title="Editar"
             aria-label={`Editar categoria ${categoria.nome}`}
             onClick={() => aoEditar(categoria)}
-            className="grid size-9 place-items-center rounded-full text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/60 hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+            className="grid size-9 place-items-center rounded-[10px] text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/60 hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
           >
             <Pencil className="size-4" aria-hidden="true" />
           </button>
@@ -78,7 +78,7 @@ export function LinhaCategoria({
             title="Arquivar"
             aria-label={`Arquivar categoria ${categoria.nome}`}
             onClick={() => aoArquivar(categoria)}
-            className="grid size-9 place-items-center rounded-full text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/60 hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+            className="grid size-9 place-items-center rounded-[10px] text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/60 hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
           >
             <Inbox className="size-4" aria-hidden="true" />
           </button>
@@ -89,7 +89,7 @@ export function LinhaCategoria({
             title="Adicionar subcategoria"
             aria-label={`Adicionar subcategoria em ${categoria.nome}`}
             onClick={() => aoAdicionarSubcategoria(categoria)}
-            className={`grid size-7 place-items-center rounded-full shadow-xs transition-transform hover:scale-110 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-1 ${
+            className={`grid size-7 place-items-center rounded-[10px] shadow-xs transition-transform hover:scale-110 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-1 ${
               eDespesa
                 ? 'bg-[var(--cor-negativo)] text-[var(--cor-sobre-negativo)] focus-visible:outline-[var(--cor-negativo)]'
                 : 'bg-[var(--cor-positivo)] text-[var(--cor-sobre-positivo)] focus-visible:outline-[var(--cor-positivo)]'

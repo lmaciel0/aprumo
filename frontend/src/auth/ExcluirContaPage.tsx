@@ -16,7 +16,7 @@ const MENSAGEM_SENHA_VAZIA = 'Informe a sua senha.'
 const MENSAGEM_SEM_CIENCIA = 'Marque "Entendo que é definitivo" antes de confirmar.'
 
 const classeBotaoPerigo =
-  'min-h-11 cursor-pointer rounded-full bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] ' +
+  'min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] ' +
   'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-negativo)]'
 
 /**

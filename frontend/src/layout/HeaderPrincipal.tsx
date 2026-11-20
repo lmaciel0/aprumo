@@ -63,7 +63,7 @@ export function HeaderPrincipal({
         type="button"
         aria-label="Buscar páginas e atalhos"
         onClick={onAbrirBusca}
-        className={`superficie group flex h-11 min-w-0 flex-1 cursor-pointer items-center justify-between gap-2.5 rounded-full px-4 text-sm text-[var(--cor-mutado)] transition-colors duration-200 hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)] ${foco}`}
+        className={`superficie group flex h-11 min-w-0 flex-1 cursor-pointer items-center justify-between gap-2.5 rounded-[10px] px-4 text-sm text-[var(--cor-mutado)] transition-colors duration-200 hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)] ${foco}`}
       >
         <span className="flex min-w-0 items-center gap-2.5">
           <svg
@@ -94,12 +94,12 @@ export function HeaderPrincipal({
       </button>
 
       {/* Pílula à direita: Notificações + Perfil do Usuário. Sem overflow para o menu não ser cortado. */}
-      <div className="superficie flex h-11 shrink-0 items-center rounded-full">
+      <div className="superficie flex h-11 shrink-0 items-center rounded-[10px]">
         {/* Notificações */}
         <button
           type="button"
           aria-label="Notificações"
-          className={`relative grid min-h-11 min-w-11 cursor-pointer place-items-center rounded-full text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-fundo)] active:scale-95 ${foco}`}
+          className={`relative grid min-h-11 min-w-11 cursor-pointer place-items-center rounded-[10px] text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-fundo)] active:scale-95 ${foco}`}
         >
           <svg
             width="20"

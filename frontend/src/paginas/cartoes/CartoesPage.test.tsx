@@ -298,7 +298,10 @@ describe('CartoesPage', () => {
 
     renderizar()
 
-    await userEvent.click(await screen.findByRole('button', { name: '+ Novo cartão' }))
+    const novo = await screen.findByRole('button', { name: '+ Novo cartão' })
+    expect(novo).toHaveClass('rounded-[10px]', 'min-h-11')
+    expect(novo).not.toHaveClass('rounded-full')
+    await userEvent.click(novo)
 
     expect(screen.getByRole('dialog', { name: 'Novo cartão' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Novo cartão' })).toBeInTheDocument()

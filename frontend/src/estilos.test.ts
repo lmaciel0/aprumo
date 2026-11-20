@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { EXCECOES_FASE_3_4, infratores, tsxDeProducao } from './teste/varredura'
+import { EXCECOES_FASE_3_4, infratores, PAINEIS_2XL, PILULAS_PERMITIDAS, tsxDeProducao } from './teste/varredura'
 
 // O Vitest roda com `css: false`, que esvazia `import '...css?raw'`; por isso o arquivo é lido direto.
 const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf8')
@@ -359,6 +359,35 @@ describe('tipografia', () => {
 
   it('o index.css não declara font-weight 700 a 900 nem bold', () => {
     expect(cssSemComentarios()).not.toMatch(/font-weight:\s*(700|800|900|bold)/)
+  })
+})
+
+describe('raios', () => {
+  it('nenhum TSX fora das fases 3 e 4 usa rounded-3xl nem rounded-t-3xl', () => {
+    expect(infratores(/rounded(-[a-z]{1,2})?-3xl\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('rounded-full só aparece nos arquivos de PILULAS_PERMITIDAS', () => {
+    const permitidos = PILULAS_PERMITIDAS.map((p) => p.arquivo)
+    expect(infratores(/rounded(-[a-z]{1,2})?-full\b/, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+  })
+
+  it('PILULAS_PERMITIDAS e PAINEIS_2XL só listam arquivos que existem e usam a classe', () => {
+    const comPilula = infratores(/rounded(-[a-z]{1,2})?-full\b/)
+    for (const { arquivo, motivo } of PILULAS_PERMITIDAS) {
+      expect(motivo, arquivo).not.toBe('')
+      expect(comPilula, `${arquivo} não usa mais rounded-full`).toContain(arquivo)
+    }
+    const com2xl = infratores(/rounded(-[a-z]{1,2})?-2xl\b/)
+    for (const { arquivo, motivo } of PAINEIS_2XL) {
+      expect(motivo, arquivo).not.toBe('')
+      expect(com2xl, `${arquivo} não usa mais rounded-2xl`).toContain(arquivo)
+    }
+  })
+
+  it('rounded-2xl só aparece em painel flutuante ou modal (PAINEIS_2XL)', () => {
+    const permitidos = PAINEIS_2XL.map((p) => p.arquivo)
+    expect(infratores(/rounded(-[a-z]{1,2})?-2xl\b/, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
   })
 })
 

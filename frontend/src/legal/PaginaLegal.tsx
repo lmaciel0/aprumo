@@ -13,7 +13,7 @@ export function PaginaLegal({ titulo, children }: { titulo: string; children: Re
       <main className="mx-auto flex max-w-2xl flex-col gap-6">
         <Link
           to="/"
-          className="inline-flex min-h-11 w-fit items-center rounded-full px-1 text-sm font-semibold text-[var(--cor-principal)] underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="inline-flex min-h-11 w-fit items-center rounded-[10px] px-1 text-sm font-semibold text-[var(--cor-principal)] underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           Voltar ao Aprumo
         </Link>

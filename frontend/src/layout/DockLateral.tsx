@@ -47,7 +47,7 @@ export function DockLateral({
           {recolhida ? (
             <div
               title="Aprumo"
-              className="grid size-10 place-items-center rounded-2xl bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] font-semibold text-lg shadow-sm"
+              className="grid size-10 place-items-center rounded-[10px] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] font-semibold text-lg shadow-sm"
             >
               A
             </div>
@@ -99,7 +99,7 @@ export function DockLateral({
                 title={recolhida ? item.rotulo : undefined}
                 className={({ isActive }) =>
                   recolhida
-                    ? `group relative grid size-11 place-items-center rounded-2xl transition-all duration-150 ${foco} ` +
+                    ? `group relative grid size-11 place-items-center rounded-[10px] transition-all duration-150 ${foco} ` +
                       (isActive
                         ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
                         : 'text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)]')
@@ -174,7 +174,7 @@ export function DockLateral({
           }}
           className={
             recolhida
-              ? `group relative grid size-11 place-items-center rounded-2xl text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] transition-colors ${foco}`
+              ? `group relative grid size-11 place-items-center rounded-[10px] text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] transition-colors ${foco}`
               : `${linhaBase} text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]`
           }
         >
@@ -251,7 +251,7 @@ export function DockLateral({
           }}
           className={
             recolhida
-              ? `group relative grid size-11 place-items-center rounded-2xl text-[var(--cor-negativo)] hover:bg-[var(--cor-erro-fundo)] transition-colors ${foco}`
+              ? `group relative grid size-11 place-items-center rounded-[10px] text-[var(--cor-negativo)] hover:bg-[var(--cor-erro-fundo)] transition-colors ${foco}`
               : `${linhaBase} cursor-pointer text-left text-[var(--cor-negativo)] hover:bg-[var(--cor-erro-fundo)]`
           }
         >

@@ -42,7 +42,7 @@ export function CartaoNota({ nota, categoria, aoFixar, indice = 0 }: Props) {
         aria-label={nota.fixada ? 'Tirar da tela inicial' : 'Fixar na tela inicial'}
         aria-pressed={nota.fixada}
         onClick={() => aoFixar(nota)}
-        className={`absolute top-1 right-1 grid size-11 cursor-pointer place-items-center rounded-full transition-[color,background-color,transform] duration-200 active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)] ${
+        className={`absolute top-1 right-1 grid size-11 cursor-pointer place-items-center rounded-[10px] transition-[color,background-color,transform] duration-200 active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)] ${
           nota.fixada
             ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
             : 'text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-principal)]'

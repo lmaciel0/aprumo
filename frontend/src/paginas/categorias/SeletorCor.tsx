@@ -47,7 +47,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
         <button
           type="button"
           onClick={() => setExpandido((prev) => !prev)}
-          className="rounded-full bg-[var(--cor-linha)] px-3 py-1.5 text-xs font-medium text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-[10px] bg-[var(--cor-linha)] px-3 py-1.5 text-xs font-medium text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
         >
           Outros
         </button>

@@ -30,6 +30,20 @@ describe('PreferenciasModal', () => {
     expect(screen.getByRole('button', { name: /restaurar padrões/i })).toBeInTheDocument()
   })
 
+  it('o modal tem 16 px de raio e o botão fechar usa raio de controle', () => {
+    render(
+      <PreferenciasProvider>
+        <PreferenciasModal aberta={true} aoFechar={() => {}} />
+      </PreferenciasProvider>
+    )
+    const dialogo = screen.getByRole('dialog', { name: /preferências/i })
+    expect(dialogo).toHaveClass('rounded-2xl')
+    expect(dialogo.innerHTML).not.toContain('rounded-3xl')
+    const fechar = screen.getAllByRole('button', { name: /fechar/i })[0]
+    expect(fechar).toHaveClass('rounded-[10px]')
+    expect(fechar).not.toHaveClass('rounded-full')
+  })
+
   it('chama aoFechar ao pressionar Escape', () => {
     const fechar = vi.fn()
     render(

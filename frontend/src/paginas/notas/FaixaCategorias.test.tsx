@@ -104,6 +104,23 @@ describe('FaixaCategorias', () => {
     await waitFor(() => expect(apagou).toBe(true))
   })
 
+  it('chips_de_filtro_usam_raio_de_chip_e_o_ponto_de_cor_continua_circulo', () => {
+    renderizar()
+
+    for (const nome of ['Todas', 'Sem categoria', '+ Categoria']) {
+      const chip = screen.getByRole('button', { name: nome })
+      expect(chip, nome).toHaveClass('rounded-md')
+      expect(chip, nome).not.toHaveClass('rounded-full')
+    }
+    // Chip da categoria e botão de editar formam um par: cantos de 6 px nas pontas externas.
+    expect(screen.getByRole('button', { name: 'Trabalho' })).toHaveClass('rounded-l-md')
+    expect(screen.getByRole('button', { name: 'Editar categoria Trabalho' })).toHaveClass('rounded-r-md')
+    for (const nome of ['Trabalho', 'Editar categoria Trabalho']) {
+      expect(screen.getByRole('button', { name: nome }).className, nome).not.toMatch(/rounded-[lr]-full/)
+    }
+    expect(screen.getByRole('button', { name: 'Trabalho' }).querySelector('span[aria-hidden]')).toHaveClass('rounded-full')
+  })
+
   it('categoriaSelecionadaFicaMarcadaComAriaPressed', async () => {
     const user = userEvent.setup()
     const { aoSelecionar } = renderizar(undefined, 2)

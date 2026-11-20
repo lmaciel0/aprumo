@@ -57,9 +57,9 @@ export function AtalhosRapidosMobile() {
               to={destino}
               state={atalho.state}
               aria-label={atalho.rotulo}
-              className="group flex flex-col items-center gap-1.5 rounded-2xl p-1 text-center no-underline transition-transform active:scale-95"
+              className="group flex flex-col items-center gap-1.5 rounded-[10px] p-1 text-center no-underline transition-transform active:scale-95"
             >
-              <div className="flex size-13 items-center justify-center rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-principal)] shadow-xs transition-colors group-hover:border-[var(--cor-principal)] group-hover:bg-[var(--cor-principal)]/10">
+              <div className="flex size-13 items-center justify-center rounded-[var(--raio-card)] border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-principal)] shadow-xs transition-colors group-hover:border-[var(--cor-principal)] group-hover:bg-[var(--cor-principal)]/10">
                 {atalho.icone('size-6')}
               </div>
               <span className="w-full truncate text-[11px] font-semibold text-[var(--cor-texto)]">
