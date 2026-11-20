@@ -118,7 +118,8 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 ### Layout e navegação (`frontend/src/layout`)
 
 - `AppShell`, `HeaderPrincipal`, `Sidebar` e `DockLateral` (desktop), `DockInferior` (celular, menos de 768 px).
-- `DockInferior`: pílula flutuante com Início, Notas, Orçamento e Mais; o botão "Criar" fica elevado no centro e abre `FolhaAcaoRapida` (`AcaoRapida.tsx`). Só o item ativo mostra o rótulo (`.dock-rotulo`).
+- `DockInferior`: barra flutuante sólida (`rounded-2xl`, `--cor-card`, `--sombra-elevada`) com Início, Notas, Orçamento e Mais; o botão "Criar" é o único círculo, fica elevado no centro, usa `--cor-principal-fundo` e abre `FolhaAcaoRapida` (`AcaoRapida.tsx`). Só o item ativo mostra o rótulo (`.dock-rotulo`) e leva fundo `--cor-elevado`, sem fio de prumo.
+- Item ativo de `Sidebar` e `DockLateral`: degrau `--cor-elevado` com texto `--cor-texto` em peso 500 e o fio de prumo (`shadow-[inset_2px_0_0_var(--cor-principal)]`), nunca bloco preenchido no acento.
 - `CabecalhoPagina`: título (só para leitor de tela no celular), `SeletorMes` e atalho "+ Lançar" nas telas do mês.
 - `PaletaNavegacao` ("Ir para...", Ctrl K), `AvisoServidor`, `Logo`, `useDialogoModal` (foco preso, Esc e rolagem travada).
 - `BotaoTema` (`frontend/src/tema`): interruptor de tema com contraste não textual de 3:1.
@@ -159,7 +160,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Contraste: 4,5:1 para texto e 3:1 para contornos de campo e de componentes, nos dois temas e nos três presets. Texto pequeno em verde ou vermelho usa os tons `*-texto`.
 - Foco visível em todo controle (`foco` de `classesFoco.ts` ou o equivalente com contorno de 2 px em `--cor-principal`); alvos de 44 px.
 - Rótulo visível em campo (`CampoTexto`), `aria-label` em botão só de ícone, `role="alert"` em erro, `role="status"` em carregamento.
-- Cor nunca é o único sinal: o item ativo da dock é um bloco preenchido com texto, o status pago tem chip com texto.
+- Cor nunca é o único sinal: o item ativo da dock é um degrau elevado com texto (e, na lateral, o fio de prumo), o status pago tem chip com texto.
 - Movimento: uma só curva (`--curva`); toda animação e transição respeita `prefers-reduced-motion`.
 - Gráfico com tabela equivalente para leitor de tela (`GraficoResultado`); título de página único (`<h1>`), mesmo quando só leitor de tela o vê no celular.
 - Modais prendem o foco, fecham com Esc e devolvem o foco ao elemento de origem (`useDialogoModal`, `Moldura`).

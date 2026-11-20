@@ -184,6 +184,22 @@ describe('DockInferior', () => {
     expect(criar.className).not.toMatch(/#[0-9a-f]{3,6}|rgb\(|(bg|text|border|ring)-(white|black|gray|slate|zinc)/i)
   })
 
+  it('a dock é uma superfície sólida arredondada, sem pílula nem desfoque nem sombra colorida', () => {
+    renderizar()
+    const nav = screen.getByRole('navigation', { name: 'Navegação principal' })
+    expect(nav).toHaveClass('rounded-2xl', 'bg-[var(--cor-card)]', 'shadow-[var(--sombra-elevada)]')
+    expect(nav.className).not.toMatch(/backdrop-blur|rounded-full/)
+    expect(nav.className).not.toMatch(/--cor-principal/)
+  })
+
+  it('o item ativo é um degrau elevado sem fio de prumo e sem pílula', () => {
+    renderizar('/notas')
+    const ativo = screen.getByRole('link', { name: 'Notas' })
+    expect(ativo).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]', 'rounded-[10px]', 'font-medium')
+    expect(ativo.className).not.toMatch(/inset_2px|rounded-full|font-bold|bg-\[var\(--cor-principal\)\]/)
+    expect(screen.getByRole('link', { name: 'Início' })).toHaveClass('rounded-[10px]', 'font-medium')
+  })
+
   it('o rótulo do item ativo anima só por classe que respeita prefers-reduced-motion', () => {
     renderizar('/notas')
     expect(screen.getByText('Notas')).toHaveClass('dock-rotulo')
@@ -194,7 +210,16 @@ describe('DockInferior: botão Criar', () => {
   it('é um círculo de pelo menos 56 px, destacado, com ícone SVG e animação que respeita reduced-motion', () => {
     renderizar()
     const criar = screen.getByRole('button', { name: 'Criar' })
-    expect(criar).toHaveClass('size-14', 'rounded-full', 'bg-[var(--cor-principal)]')
+    expect(criar).toHaveClass(
+      'size-14',
+      'rounded-full',
+      'bg-[var(--cor-principal-fundo)]',
+      'text-[var(--cor-sobre-principal-fundo)]',
+      'shadow-[var(--sombra-elevada)]',
+      'ring-4',
+      'ring-[var(--cor-card)]',
+    )
+    expect(criar.className).not.toMatch(/color-mix/)
     expect(criar.className).toMatch(/motion-safe:active:scale-95/)
     expect(criar.className).toMatch(/motion-reduce:transition-none/)
     expect(criar.querySelector('svg')).not.toBeNull()

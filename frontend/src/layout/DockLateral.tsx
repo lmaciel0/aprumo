@@ -101,11 +101,11 @@ export function DockLateral({
                   recolhida
                     ? `group relative grid size-11 place-items-center rounded-2xl transition-all duration-150 ${foco} ` +
                       (isActive
-                        ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] shadow-md font-semibold'
+                        ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
                         : 'text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)]')
                     : `${linhaBase} ` +
                       (isActive
-                        ? 'bg-[var(--cor-principal)] font-semibold text-[var(--cor-sobre-principal)] shadow-xs'
+                        ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
                         : 'text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]')
                 }
               >
