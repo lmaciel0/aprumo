@@ -78,5 +78,6 @@ describe('CardReflexao', () => {
 
     expect(writeTextMock).toHaveBeenCalledTimes(1)
     expect(writeTextMock).toHaveBeenCalledWith(expect.stringContaining('“'))
+    expect(botaoCopiar).toHaveAttribute('title', 'Copiado')
   })
 })

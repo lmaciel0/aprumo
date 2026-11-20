@@ -97,35 +97,30 @@ afterEach(() => {
 })
 
 describe('PainelPage', () => {
-  it('mostra a saudação com o primeiro nome e a data', async () => {
-    relogioEm('2026-10-31T15:00:00Z')
+  it('mostra o mês como título, sem saudação nem nome, e a data por extenso abaixo', async () => {
+    relogioEm('2026-11-20T15:00:00Z')
     comSessao({ ...usuarioFicticio, nome: 'Lucas Maciel' })
     responderResumo()
     renderizar()
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Boa tarde, Lucas' })).toBeInTheDocument()
-    expect(screen.getByText('sábado, 31 de outubro')).toBeInTheDocument()
+    const titulo = await screen.findByRole('heading', { level: 1, name: 'Novembro de 2026' })
+    expect(titulo).toHaveClass('font-medium')
+    expect(titulo).not.toHaveTextContent(/Bom dia|Boa tarde|Boa noite|Lucas/)
+    expect(screen.queryByText(/Bom dia|Boa tarde|Boa noite|Lucas/)).not.toBeInTheDocument()
+    const data = screen.getByText('sexta-feira, 20 de novembro')
+    expect(data).toHaveClass('text-[var(--cor-secundario)]')
   })
 
-  it.each(['', '   '])('sem nome (%j) mostra só a saudação, sem vírgula sobrando', async (nome) => {
-    relogioEm('2026-10-31T11:00:00Z')
-    comSessao({ ...usuarioFicticio, nome })
+  it('o título é o mesmo com ou sem nome do usuário', async () => {
+    relogioEm('2026-11-20T23:00:00Z')
+    comSessao({ ...usuarioFicticio, nome: '' })
     responderResumo()
     renderizar()
 
-    expect(await screen.findByRole('heading', { level: 1, name: /^Bom dia/ })).toHaveAccessibleName('Bom dia')
+    expect(await screen.findByRole('heading', { level: 1, name: 'Novembro de 2026' })).toBeInTheDocument()
   })
 
-  it('nome de uma palavra só não leva espaço nem vírgula a mais', async () => {
-    relogioEm('2026-10-31T23:00:00Z')
-    comSessao({ ...usuarioFicticio, nome: '  Ana ' })
-    responderResumo()
-    renderizar()
-
-    expect(await screen.findByRole('heading', { level: 1, name: 'Boa noite, Ana' })).toBeInTheDocument()
-  })
-
-  it('o resumo falhando mostra erro com Tentar de novo e mantém a saudação', async () => {
+  it('o resumo falhando mostra erro com Tentar de novo e mantém o título', async () => {
     comSessao()
     // Falha até o teste mandar parar: uma consulta que sobrou de teste anterior não pode "gastar" a falha.
     let falhar = true
@@ -139,7 +134,7 @@ describe('PainelPage', () => {
     const alerta = await screen.findByRole('alert')
     expect(alerta).toHaveClass('card')
     expect(within(alerta).getByText('Falha no servidor.')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 1, name: /^(Bom dia|Boa tarde|Boa noite), Ana$/ })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /^\p{Lu}\p{L}+ de \d{4}$/u })).toBeInTheDocument()
 
     falhar = false
     expect(within(alerta).getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
@@ -149,13 +144,13 @@ describe('PainelPage', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
-  it('enquanto carrega mostra "Carregando" e já exibe a saudação', async () => {
+  it('enquanto carrega mostra "Carregando" e já exibe o título', async () => {
     comSessao()
     servidor.use(http.get('/api/resumo', () => new Promise<never>(() => {})))
     renderizar()
 
-    // O "Carregando…" da sessão também é um status; o do bloco só existe depois que a saudação aparece.
-    expect(await screen.findByRole('heading', { level: 1, name: /, Ana$/ })).toBeInTheDocument()
+    // O "Carregando…" da sessão também é um status; o do bloco só existe depois que o título aparece.
+    expect(await screen.findByRole('heading', { level: 1, name: /^\p{Lu}\p{L}+ de \d{4}$/u })).toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent('Carregando')
   })
 

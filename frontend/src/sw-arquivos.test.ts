@@ -15,7 +15,7 @@ describe('public/sw.js', () => {
   })
 
   it('guarda_em_cache_so_a_pagina_offline_e_o_icone', () => {
-    expect(sw).toContain("'aprumo-offline-v1'")
+    expect(sw).toContain("'aprumo-offline-v2'")
     expect(sw).toContain("'/offline.html'")
     expect(sw).toContain("'/icon-192.png'")
     expect(sw).not.toContain("'/index.html'")
@@ -55,8 +55,17 @@ describe('public/offline.html', () => {
     expect(offline).toContain('/icon-192.png')
   })
 
-  it('so_tema_claro_porque_sem_script_nao_le_o_tema_salvo', () => {
-    expect(offline).not.toContain('prefers-color-scheme')
+  it('segue_o_tema_do_sistema_so_com_css_porque_sem_script_nao_le_o_tema_salvo', () => {
+    expect(offline).toContain('@media (prefers-color-scheme: dark)')
+  })
+
+  it('usa_a_paleta_nova_e_nenhum_peso_acima_de_600', () => {
+    for (const cor of ['#f4ede0', '#14213d', '#3a4459', '#ff6b5b', '#141415', '#ededed', '#a1a1a6']) {
+      expect(offline.toLowerCase(), cor).toContain(cor)
+    }
+    expect(offline.toLowerCase()).not.toContain('#27187e')
+    expect(offline).not.toMatch(/font-weight:\s*(700|800|900|bold)/)
+    expect(offline).not.toMatch(/gradient/i)
   })
 
   it('tem_alvo_de_toque_de_44px_e_respeita_movimento_reduzido', () => {
