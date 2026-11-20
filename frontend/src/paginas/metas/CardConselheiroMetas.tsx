@@ -49,7 +49,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span
-                      className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[var(--cor-sobre-principal)]"
+                      className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[var(--cor-sobre-imagem)]"
                       style={{
                         background: `linear-gradient(135deg, ${sugestao.corGradienteInicio || preset.corGradienteInicio}, ${sugestao.corGradienteFim || preset.corGradienteFim})`,
                       }}

@@ -39,7 +39,7 @@ export function Sidebar({ nomeUsuario, aoSair, aoNavegar }: Props) {
                 className={({ isActive }) =>
                   `${linhaBase} ` +
                   (isActive
-                    ? 'bg-[var(--cor-principal)] font-semibold text-[var(--cor-sobre-principal)]'
+                    ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
                     : 'text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]')
                 }
               >

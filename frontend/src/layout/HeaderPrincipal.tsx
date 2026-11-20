@@ -150,7 +150,7 @@ export function HeaderPrincipal({
             <div
               role="menu"
               aria-label="Opções da conta"
-              className="item-entra absolute top-full right-0 mt-2.5 w-64 rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-2 shadow-xl backdrop-blur-md"
+              className="item-entra absolute top-full right-0 mt-2.5 w-64 rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-2 shadow-xl"
             >
               {/* Cabeçalho do Perfil */}
               <div className="flex items-center gap-3 border-b border-[var(--cor-linha)] p-2.5 pb-3 mb-1">

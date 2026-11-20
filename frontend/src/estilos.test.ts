@@ -36,20 +36,67 @@ function contrasteHex(a: string, b: string): number {
   return contrasteRgb(rgbDeHex(a), rgbDeHex(b))
 }
 
-/** `color-mix(in srgb, frente <pct>%, tras)`: mistura linear por canal, como o navegador. */
-function misturar(frente: [number, number, number], pct: number, tras: [number, number, number]): [number, number, number] {
-  return frente.map((c, i) => c * pct + (tras[i] as number) * (1 - pct)) as [number, number, number]
+const PRESETS = ['base', 'musgo', 'ceu'] as const
+const TEMAS = ['claro', 'escuro'] as const
+type Tema = (typeof TEMAS)[number]
+type Preset = (typeof PRESETS)[number]
+
+const blocoDe = (regex: RegExp): string => regex.exec(css)?.[1] ?? ''
+const blocoClaro = blocoDe(/:root\s*\{([^}]*)\}/)
+const blocoEscuro = blocoDe(/:root\[data-tema='escuro'\]\s*\{([^}]*)\}/)
+
+/** Bloco do preset no tema: `html[data-preset=x]` no claro, `html[data-tema='escuro'][data-preset=x]` no escuro. */
+function blocoDoPreset(tema: Tema, preset: Preset): string {
+  if (preset === 'base') return ''
+  const seletor =
+    tema === 'claro' ? `html\\[data-preset='${preset}'\\]` : `html\\[data-tema='escuro'\\]\\[data-preset='${preset}'\\]`
+  const bloco = blocoDe(new RegExp(`${seletor}\\s*\\{([^}]*)\\}`))
+  if (bloco === '') throw new Error(`bloco do preset ${preset} (${tema}) ausente`)
+  return bloco
 }
 
+/**
+ * Hex do token no tema e preset: bloco do preset, senão o do tema, senão o de `:root` (o escuro herda do claro).
+ * Token declarado no primeiro bloco que o traz; se o valor não for hex (var(), color-mix()), falha com o nome
+ * em vez de cair no valor do bloco seguinte.
+ */
+function cor(tema: Tema, preset: Preset, nome: string): string {
+  const re = new RegExp(`--${nome}:\\s*([^;]+);`)
+  const blocos = [blocoDoPreset(tema, preset), tema === 'escuro' ? blocoEscuro : '', blocoClaro]
+  for (const bloco of blocos) {
+    const valor = re.exec(bloco)?.[1]?.trim()
+    if (valor === undefined) continue
+    if (!/^#[0-9a-fA-F]{3,6}$/.test(valor)) throw new Error(`token --${nome} não é cor hex (${tema}, ${preset}): ${valor}`)
+    return valor.length === 4 ? '#' + [...valor.slice(1)].map((c) => c + c).join('') : valor.toLowerCase()
+  }
+  throw new Error(`token --${nome} ausente (${tema}, ${preset})`)
+}
+
+const CASOS_TEMA_PRESET = TEMAS.flatMap((tema) => PRESETS.map((preset) => [tema, preset] as const))
+
 describe('tokens de cor', () => {
-  it('verde e vermelho da paleta ficam para barras e fundos', () => {
-    expect(token('cor-positivo')).toBe('#2e9e5b')
-    expect(token('cor-negativo')).toBe('#d64545')
+  it('o leitor de hex falha com o nome do token quando o valor declarado é expressão', () => {
+    for (const nome of ['cor-principal-clara', 'cor-grafico-despesas', 'cor-grafico-receitas-previstas', 'cor-grafico-despesas-previstas']) {
+      expect(() => cor('claro', 'base', nome), nome).toThrow(new RegExp(`--${nome} não é cor hex`))
+      expect(() => cor('escuro', 'musgo', nome), nome).toThrow(new RegExp(`--${nome} não é cor hex`))
+    }
   })
 
-  it('texto pequeno usa tons mais escuros (contraste AA)', () => {
-    expect(token('cor-positivo-texto')).toBe('#1f7a45')
-    expect(token('cor-negativo-texto')).toBe('#b73333')
+  it('o claro usa marinho, creme e coral; o escuro usa grafite', () => {
+    expect(token('cor-fundo')).toBe('#f4ede0')
+    expect(token('cor-texto')).toBe('#14213d')
+    expect(token('cor-principal-fundo')).toBe('#ff6b5b')
+    expect(blocoEscuro).toMatch(/--cor-fundo:\s*#141415;/)
+    expect(blocoEscuro).toMatch(/--cor-card:\s*#19191b;/)
+    expect(blocoEscuro).toMatch(/--cor-elevado:\s*#232325;/)
+  })
+
+  it('sobre-imagem é creme em :root e não é redefinido no escuro nem nos presets', () => {
+    expect(blocoClaro).toMatch(/--cor-sobre-imagem:\s*#f4ede0;/)
+    expect(blocoEscuro).not.toMatch(/--cor-sobre-imagem/)
+    for (const [tema, preset] of [['claro', 'musgo'], ['claro', 'ceu'], ['escuro', 'musgo'], ['escuro', 'ceu']] as const) {
+      expect(blocoDoPreset(tema, preset)).not.toMatch(/--cor-sobre-imagem/)
+    }
   })
 
   it('celula_paga_e_diferenca_negativa_usam_os_tons_de_texto', () => {
@@ -57,32 +104,61 @@ describe('tokens de cor', () => {
     expect(css).toMatch(/\.diferenca-negativa\s*\{\s*color:\s*var\(--cor-negativo-texto\);?\s*\}/)
   })
 
-  it('o tema escuro usa fundo neutro obsidian e card acetinado', () => {
-    const bloco = /:root\[data-tema='escuro'\]\s*\{([^}]*)\}/.exec(css)?.[1]
-    expect(bloco).toBeDefined()
-    expect(bloco).toMatch(/--cor-fundo:\s*#0b0d13;/)
-    expect(bloco).toMatch(/--cor-card:\s*#131622;/)
-    expect(bloco).toMatch(/--cor-linha:\s*#202538;/)
-  })
-
-  it('declara regras para os presets de destaque (lima, esmeralda, indigo)', () => {
-    expect(css).toMatch(/html\[data-preset='lima'\]/)
-    expect(css).toMatch(/html\[data-preset='esmeralda'\]/)
-    expect(css).toMatch(/html\[data-preset='indigo'\]/)
-  })
-
-  it('o tema escuro mantém contraste AA entre texto e fundos', () => {
-    const bloco = /:root\[data-tema='escuro'\]\s*\{([^}]*)\}/.exec(css)?.[1]
-    expect(bloco, "bloco :root[data-tema='escuro'] ausente").toBeDefined()
-    const escuro = (nome: string): string => {
-      const valor = new RegExp(`--${nome}:\\s*(#[0-9a-fA-F]{6})\\s*;`).exec(bloco ?? '')?.[1]
-      if (!valor) throw new Error(`token --${nome} ausente no tema escuro`)
-      return valor
+  it('declara só os presets musgo e ceu, sem lima, esmeralda nem indigo', () => {
+    expect(css).toMatch(/html\[data-preset='musgo'\]/)
+    expect(css).toMatch(/html\[data-preset='ceu'\]/)
+    expect(css).toMatch(/html\[data-tema='escuro'\]\[data-preset='musgo'\]/)
+    expect(css).toMatch(/html\[data-tema='escuro'\]\[data-preset='ceu'\]/)
+    for (const removido of ['lima', 'esmeralda', 'indigo']) {
+      expect(css).not.toContain(`data-preset='${removido}'`)
     }
-    for (const texto of ['cor-texto', 'cor-mutado', 'cor-positivo-texto', 'cor-negativo-texto']) {
-      for (const fundo of ['cor-card', 'cor-fundo']) {
-        expect(contrasteHex(escuro(texto), escuro(fundo)), `${texto} sobre ${fundo}`).toBeGreaterThanOrEqual(4.5)
+  })
+
+  it('não declara os tokens removidos (principal-fim, auth-borda, auth-fundo-fim)', () => {
+    for (const nome of ['cor-principal-fim', 'cor-auth-borda', 'cor-auth-fundo-fim']) {
+      expect(css, `--${nome} ainda no index.css`).not.toContain(`--${nome}`)
+    }
+  })
+
+  it.each(CASOS_TEMA_PRESET)('texto, secundário e mutado passam de 4,5:1 sobre card, fundo e elevado (%s, %s)', (tema, preset) => {
+    for (const texto of ['cor-texto', 'cor-secundario', 'cor-mutado']) {
+      for (const fundo of ['cor-card', 'cor-fundo', 'cor-elevado']) {
+        expect(contrasteHex(cor(tema, preset, texto), cor(tema, preset, fundo)), `${texto} sobre ${fundo}`).toBeGreaterThanOrEqual(4.5)
       }
+    }
+  })
+
+  it.each(CASOS_TEMA_PRESET)('principal como texto passa de 4,5:1 sobre card e fundo (%s, %s)', (tema, preset) => {
+    for (const fundo of ['cor-card', 'cor-fundo']) {
+      expect(contrasteHex(cor(tema, preset, 'cor-principal'), cor(tema, preset, fundo)), `cor-principal sobre ${fundo}`).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
+  it.each(CASOS_TEMA_PRESET)('sobre-principal, sobre-principal-fundo e sobre-principal-suave passam de 4,5:1 sobre seus fundos (%s, %s)', (tema, preset) => {
+    const pares: Array<[string, string]> = [
+      ['cor-sobre-principal', 'cor-principal'],
+      ['cor-sobre-principal-fundo', 'cor-principal-fundo'],
+      ['cor-sobre-principal-suave', 'cor-principal'],
+    ]
+    for (const [texto, fundo] of pares) {
+      expect(contrasteHex(cor(tema, preset, texto), cor(tema, preset, fundo)), `${texto} sobre ${fundo}`).toBeGreaterThanOrEqual(4.5)
+    }
+  })
+
+  it.each(TEMAS)('sobre-negativo e os tons de texto de positivo, negativo e aviso passam de 4,5:1 (%s)', (tema) => {
+    const pares: Array<[string, string]> = [
+      ['cor-sobre-negativo', 'cor-negativo'],
+      ['cor-sobre-positivo', 'cor-positivo'],
+      ['cor-positivo-texto', 'cor-card'],
+      ['cor-positivo-texto', 'cor-fundo'],
+      ['cor-positivo-texto', 'cor-ok-fundo'],
+      ['cor-negativo-texto', 'cor-card'],
+      ['cor-negativo-texto', 'cor-fundo'],
+      ['cor-negativo-texto', 'cor-erro-fundo'],
+      ['cor-aviso-texto', 'cor-aviso-fundo'],
+    ]
+    for (const [texto, fundo] of pares) {
+      expect(contrasteHex(cor(tema, 'base', texto), cor(tema, 'base', fundo)), `${texto} sobre ${fundo}`).toBeGreaterThanOrEqual(4.5)
     }
   })
 })
@@ -119,43 +195,11 @@ describe('cores fixas', () => {
     const botao = /\.auth-card button\[type='submit'\]\s*\{[^}]*\}/.exec(css)?.[0] ?? ''
     expect(botao).not.toMatch(/#[0-9a-fA-F]{3,6}/)
   })
-
-  it('no tema escuro, texto sobre o principal e sobre o negativo passa de 4,5:1', () => {
-    const bloco = /:root\[data-tema='escuro'\]\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
-    const hex = (nome: string): string => {
-      const valor = new RegExp(`--${nome}:\\s*(#[0-9a-fA-F]{6})\\s*;`).exec(bloco)?.[1]
-      if (!valor) throw new Error(`token --${nome} ausente no tema escuro`)
-      return valor
-    }
-    const pares: Array<[string, string]> = [
-      ['cor-sobre-principal', 'cor-principal'],
-      ['cor-sobre-principal', 'cor-principal-fim'],
-      ['cor-sobre-principal-suave', 'cor-principal'],
-      ['cor-sobre-negativo', 'cor-negativo'],
-    ]
-    for (const [texto, fundo] of pares) {
-      expect(contrasteHex(hex(texto), hex(fundo)), `${texto} sobre ${fundo}`).toBeGreaterThanOrEqual(4.5)
-    }
-  })
 })
 
 describe('campos das telas de auth: contraste não textual (WCAG 1.4.11, 3:1)', () => {
-  const bloco = /:root\[data-tema='escuro'\]\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
-  const hex = (nome: string): string => {
-    const valor = new RegExp(`--${nome}:\\s*(#[0-9a-fA-F]{6})\\s*;`).exec(bloco)?.[1]
-    if (!valor) throw new Error(`token --${nome} ausente no tema escuro`)
-    return valor
-  }
-
-  it('no escuro, a borda do campo passa de 3:1 sobre o início e o fim do degradê do card', () => {
-    for (const fundo of ['cor-card', 'cor-auth-fundo-fim']) {
-      expect(contrasteHex(hex('cor-auth-campo-borda'), hex(fundo)), `cor-auth-campo-borda sobre ${fundo}`).toBeGreaterThanOrEqual(3)
-    }
-  })
-
-  it('o tema claro mantém a borda do campo transparente e o escuro aplica o token', () => {
-    expect(token('cor-auth-campo-borda')).toBe('transparent')
-    expect(css).toMatch(/:root\[data-tema='escuro'\] \.auth-card input\s*\{[^}]*var\(--cor-auth-campo-borda\)/)
+  it.each(TEMAS)('a borda do campo de auth passa de 3:1 sobre o card (%s)', (tema) => {
+    expect(contrasteHex(cor(tema, 'base', 'cor-auth-campo-borda'), cor(tema, 'base', 'cor-card'))).toBeGreaterThanOrEqual(3)
   })
 })
 
@@ -210,13 +254,85 @@ describe('fluidez e animações', () => {
   })
 })
 
-describe('superfícies flutuantes', () => {
-  it('declara_os_tokens_de_superficie', () => {
-    for (const nome of ['superficie', 'superficie-borda', 'sombra-flutuante', 'fundo-degrade']) {
-      expect(token(nome), `--${nome} ausente em :root`).toBeDefined()
+describe('superfícies sólidas, sombras e curva', () => {
+  const cssSemComentarios = css.replace(/\/\*[\s\S]*?\*\//g, '')
+  const authCard = /\.auth-card\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+  const authH1 = /\.auth-card h1\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+  const authInput = /\.auth-card input\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+  const authFoco = /\.auth-card input:focus\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+  const authBotao = /\.auth-card button\[type='submit'\]\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+
+  it('declara superfície sólida, sombras e curva; sem degradê de fundo', () => {
+    expect(token('superficie')).toBe('var(--cor-card)')
+    expect(token('superficie-borda')).toBe('var(--cor-linha)')
+    expect(token('fundo-degrade')).toBeUndefined()
+    expect(token('raio-card')).toBe('14px')
+    expect(token('curva')).toBe('cubic-bezier(0.22, 1, 0.36, 1)')
+    expect(token('sombra-elevada')).toBeDefined()
+  })
+
+  it('a sombra elevada e a flutuante mudam entre o claro e o escuro', () => {
+    expect(blocoClaro).toMatch(/--sombra-flutuante:\s*0 1px 2px rgb\(20 33 61 \/ 6%\);/)
+    expect(blocoClaro).toMatch(/--sombra-elevada:\s*0 8px 24px rgb\(20 33 61 \/ 8%\);/)
+    expect(blocoEscuro).toMatch(/--sombra-flutuante:\s*none;/)
+    expect(blocoEscuro).toMatch(/--sombra-elevada:\s*inset 0 1px 0 rgb\(255 255 255 \/ 6%\);/)
+    expect(blocoEscuro).not.toMatch(/--superficie-borda/)
+  })
+
+  it('nenhum backdrop-filter no index.css nem backdrop-blur em TSX de produção', () => {
+    expect(cssSemComentarios).not.toMatch(/backdrop-filter/)
+    const infratores = tsxDeProducao().filter((arquivo) =>
+      /backdrop-blur|backdrop-filter/.test(readFileSync(resolve(process.cwd(), 'src', arquivo), 'utf8')),
+    )
+    expect(infratores).toEqual([])
+  })
+
+  it('o card de auth é sólido, sem degradê, sem peso 900 e sem hover com scale', () => {
+    expect(authCard).not.toMatch(/gradient/)
+    expect(authCard).toMatch(/border-radius:\s*18px/)
+    expect(authCard).toMatch(/padding:\s*24px 32px/)
+    expect(authCard).toMatch(/border:\s*1px solid var\(--cor-linha\)/)
+    expect(authCard).toMatch(/background:\s*var\(--cor-card\)/)
+    expect(authCard).toMatch(/box-shadow:\s*var\(--sombra-elevada\)/)
+    expect(authH1).toMatch(/font-size:\s*28px/)
+    expect(authH1).toMatch(/font-weight:\s*500/)
+    expect(authH1).toMatch(/color:\s*var\(--cor-texto\)/)
+    expect(authH1).not.toMatch(/font-weight:\s*900/)
+    expect(authBotao).not.toMatch(/gradient/)
+    expect(authBotao).toMatch(/background:\s*var\(--cor-principal-fundo\)/)
+    expect(authBotao).toMatch(/color:\s*var\(--cor-sobre-principal-fundo\)/)
+    expect(authBotao).toMatch(/transition:\s*transform 150ms var\(--curva\)/)
+    const hover = /\.auth-card button\[type='submit'\]:hover:not\(:disabled\)\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(hover).not.toMatch(/scale/)
+    const ativo = /\.auth-card button\[type='submit'\]:active:not\(:disabled\)\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(ativo).toMatch(/scale\(0\.98\)/)
+  })
+
+  it('o campo de auth tem borda de 1px em --cor-auth-campo-borda nos dois temas, sem sombra', () => {
+    expect(authInput).toMatch(/border:\s*1px solid var\(--cor-auth-campo-borda\)/)
+    expect(authInput).not.toMatch(/border-inline/)
+    expect(authInput).toMatch(/border-radius:\s*10px/)
+    expect(authInput).toMatch(/padding:\s*12px 16px/)
+    expect(authInput).not.toMatch(/box-shadow/)
+    expect(authFoco).toMatch(/border-color:\s*var\(--cor-principal\)/)
+    // Sem regra própria do escuro: o contorno completo já vale nos dois temas.
+    expect(css).not.toMatch(/:root\[data-tema='escuro'\]\s*\.auth-card/)
+    expect(authBotao).toMatch(/border-radius:\s*10px/)
+    expect(authBotao).toMatch(/padding-block:\s*12px/)
+  })
+
+  it('o ponto do spinner não tem box-shadow', () => {
+    const ponto = /\.dot-spinner__dot::before\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(ponto).not.toMatch(/box-shadow/)
+  })
+
+  it('nenhuma animação usa a curva antiga nem ease-out', () => {
+    expect(cssSemComentarios).not.toMatch(/cubic-bezier\(0\.16, 1, 0\.3, 1\)/)
+    expect(cssSemComentarios).not.toMatch(/ease-out/)
+    for (const regra of ['.nota-entra', '.item-entra', '.paleta-entra', '.menu-painel']) {
+      const bloco = new RegExp(`\\${regra}\\s*\\{([^}]*)\\}`).exec(css)?.[1] ?? ''
+      expect(bloco, `${regra} sem var(--curva)`).toMatch(/var\(--curva\)/)
     }
-    expect(token('superficie')).toContain('color-mix')
-    expect(token('superficie')).toContain('var(--cor-card)')
   })
 
   it('card_e_superficie_usam_os_tokens', () => {
@@ -226,7 +342,7 @@ describe('superfícies flutuantes', () => {
       expect(bloco).toMatch(/background:\s*var\(--superficie\)/)
       expect(bloco).toMatch(/border:\s*1px solid var\(--superficie-borda\)/)
       expect(bloco).toMatch(/box-shadow:\s*var\(--sombra-flutuante\)/)
-      expect(bloco).toMatch(/backdrop-filter:\s*blur\(8px\)/)
+      expect(bloco).not.toMatch(/backdrop-filter/)
     }
   })
 
@@ -234,36 +350,5 @@ describe('superfícies flutuantes', () => {
     const bloco = /\.card\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
     expect(bloco).toMatch(/border-radius:\s*var\(--raio-card\)/)
     expect(bloco).toMatch(/padding:\s*1rem/)
-  })
-
-  const presets = ['lima', 'esmeralda', 'indigo']
-  const casos = [
-    ...['claro', 'escuro'].map((tema) => [tema, 'base'] as const),
-    ...['claro', 'escuro'].flatMap((tema) => presets.map((preset) => [tema, preset] as const)),
-  ]
-
-  it.each(casos)('superficie_translucida_mantem_contraste_AA (%s, %s)', (tema, preset) => {
-    const bloco = (regex: RegExp): string => regex.exec(css)?.[1] ?? ''
-    const base =
-      tema === 'claro' ? bloco(/:root\s*\{([^}]*)\}/) : bloco(/:root\[data-tema='escuro'\]\s*\{([^}]*)\}/)
-    const sobreposto =
-      preset === 'base'
-        ? ''
-        : tema === 'claro'
-          ? bloco(new RegExp(`html\\[data-preset='${preset}'\\]\\s*\\{([^}]*)\\}`))
-          : bloco(new RegExp(`html\\[data-tema='escuro'\\]\\[data-preset='${preset}'\\]\\s*\\{([^}]*)\\}`))
-    if (preset !== 'base') expect(sobreposto, `bloco do preset ${preset} (${tema}) ausente`).not.toBe('')
-    const cor = (nome: string): [number, number, number] => {
-      const re = new RegExp(`--${nome}:\\s*(#[0-9a-fA-F]{3,6})\\s*;`)
-      const valor = re.exec(sobreposto)?.[1] ?? re.exec(base)?.[1]
-      if (!valor) throw new Error(`token --${nome} ausente`)
-      return rgbDeHex(valor)
-    }
-    // Pior ponto do degradê: principal a 12% sobre o fundo. Sobre ele, o card entra a 75% (a superfície).
-    const piorFundo = misturar(cor('cor-principal'), 0.12, cor('cor-fundo'))
-    const superficie = misturar(cor('cor-card'), 0.75, piorFundo)
-    for (const texto of ['cor-texto', 'cor-mutado']) {
-      expect(contrasteRgb(cor(texto), superficie), `${texto} sobre a superfície`).toBeGreaterThanOrEqual(4.5)
-    }
   })
 })

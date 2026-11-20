@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
@@ -36,6 +36,20 @@ function renderizar(
 describe('DockLateral', () => {
   beforeEach(() => {
     localStorage.clear()
+  })
+
+  it.each([
+    ['expandida', false],
+    ['recolhida', true],
+  ])('link ativo %s é um degrau elevado com fio de prumo', (_nome, recolher) => {
+    renderizar()
+    if (recolher) fireEvent.click(screen.getByRole('button', { name: /recolher menu/i }))
+    const nav = screen.getByRole('navigation', { name: 'Menu principal' })
+    const ativo = within(nav).getAllByRole('link').find((l) => l.getAttribute('aria-current') === 'page')!
+
+    expect(ativo).toHaveClass('bg-[var(--cor-elevado)]', 'shadow-[inset_2px_0_0_var(--cor-principal)]')
+    expect(ativo.className).not.toMatch(/bg-\[var\(--cor-principal\)\]/)
+    expect(ativo.className).not.toMatch(/shadow-(md|xs)|font-semibold/)
   })
 
   it('com forcarExpandida nao repete o logo nem o botao de recolher (o cabecalho do menu ja tem)', () => {

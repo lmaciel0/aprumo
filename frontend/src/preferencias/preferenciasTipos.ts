@@ -1,5 +1,5 @@
 export type ModoTema = 'claro' | 'escuro' | 'sistema'
-export type PresetCor = 'azul' | 'lima' | 'esmeralda' | 'indigo'
+export type PresetCor = 'coral' | 'musgo' | 'ceu'
 export type LayoutLargura = 'centralizado' | 'largura-total'
 
 export type IdAtalhoMobile =

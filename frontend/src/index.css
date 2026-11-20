@@ -6,40 +6,47 @@
 }
 
 :root {
-  --cor-fundo: #f7f7ff;
-  --cor-principal: #27187e;
-  --cor-principal-clara: #a49ddb;
-  --cor-positivo: #2e9e5b;
-  --cor-negativo: #d64545;
+  /* Claro: creme quente, texto marinho e coral. O coral vivo (--cor-principal-fundo) só preenche; como texto
+     usa-se --cor-principal, o tom mais escuro (ver estilos.test.ts). */
+  --cor-fundo: #f4ede0;
+  --cor-card: #fbf7f0;
+  --cor-elevado: #ece3d3;
+  --cor-linha: #ded9d0;
+  --cor-texto: #14213d;
+  --cor-secundario: #3a4459;
+  /* Todos os textos passam de 4,5:1 sobre card, fundo e elevado (ver estilos.test.ts). */
+  --cor-mutado: #5a6275;
+  --cor-principal: #b83e31;
+  --cor-principal-clara: color-mix(in srgb, var(--cor-principal) 45%, var(--cor-card));
+  /* Acento vivo, só preenchimento (botão, barra, selo), com --cor-sobre-principal-fundo por cima. */
+  --cor-principal-fundo: #ff6b5b;
+  /* Texto sobre --cor-principal. */
+  --cor-sobre-principal: #f4ede0;
+  /* Texto sobre --cor-principal-fundo. */
+  --cor-sobre-principal-fundo: #14213d;
+  /* Texto secundário sobre --cor-principal (ex.: card de sobra). */
+  --cor-sobre-principal-suave: #fbede9;
+  /* Texto e ícone sobre foto ou imagem com véu escuro; igual nos dois temas. */
+  --cor-sobre-imagem: #f4ede0;
+  --cor-positivo: #2e7d4f;
   /* Verde e vermelho da paleta servem para barras e fundos. Texto pequeno usa estes tons mais escuros,
-     que chegam a 4,5:1 (WCAG AA) sobre branco e sobre os fundos claros dos chips. */
-  --cor-positivo-texto: #1f7a45;
-  --cor-negativo-texto: #b73333;
-  --cor-texto: #16123a;
-  /* Escurecido de #7d7a99 (3,8:1) para passar de 4,5:1 sobre a superfície translúcida (ver estilos.test.ts). */
-  --cor-mutado: #706e8a;
-  --cor-linha: #e9e8f5;
-  --cor-card: #fff;
-  --cor-erro-fundo: #fdecec;
-  --cor-ok-fundo: #e9f6ee;
-  --cor-aviso-fundo: #fff2cb;
-  --cor-aviso-texto: #7a5f00;
-  /* Texto sobre fundo principal (card de sobra, botões) e sobre o vermelho de ações destrutivas. */
-  --cor-sobre-principal: #fff;
-  --cor-sobre-negativo: #fff;
-  /* Texto secundário sobre fundo principal (ex.: card de sobra). */
-  --cor-sobre-principal-suave: #cfcbf2;
-  /* Fim do degradê do botão das telas de auth (o começo é --cor-principal). */
-  --cor-principal-fim: #4a36c4;
-  /* Card das telas de auth: borda e fim do degradê (o começo é --cor-card). */
-  --cor-auth-borda: #fff;
-  --cor-auth-fundo-fim: #f4f7fb;
-  /* Borda dos campos de auth: transparente no claro (visual inalterado); no escuro ver o bloco abaixo. */
-  --cor-auth-campo-borda: transparent;
-  --cor-grafico-receitas: #27187e;
-  --cor-grafico-despesas: #a49ddb;
-  --cor-grafico-receitas-previstas: #7d73c4;
-  --cor-grafico-despesas-previstas: #e6e4f7;
+     que chegam a 4,5:1 (WCAG AA) sobre o card, o fundo e os fundos de chip. */
+  --cor-positivo-texto: #1f6b3f;
+  --cor-negativo: #b42318;
+  --cor-negativo-texto: #a11d14;
+  /* Texto sobre o vermelho de ações destrutivas. */
+  --cor-sobre-negativo: #f4ede0;
+  --cor-sobre-positivo: #ffffff;
+  --cor-erro-fundo: #f6dcd5;
+  --cor-ok-fundo: #dcead9;
+  --cor-aviso-fundo: #f5e2b8;
+  --cor-aviso-texto: #6b4e00;
+  /* Borda dos campos de auth: 3:1 sobre o card (WCAG 1.4.11, ver estilos.test.ts). */
+  --cor-auth-campo-borda: #7d8496;
+  --cor-grafico-receitas: #14213d;
+  --cor-grafico-despesas: var(--cor-principal-fundo);
+  --cor-grafico-receitas-previstas: color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card));
+  --cor-grafico-despesas-previstas: color-mix(in srgb, var(--cor-grafico-despesas) 40%, var(--cor-card));
   /* Cores das categorias de nota: destaque com 4,5:1 sobre --cor-card (ver coresCategoria.test.ts). */
   --cor-nota-vermelho: #c0392b;
   --cor-nota-laranja: #b45309;
@@ -49,49 +56,44 @@
   --cor-nota-roxo: #7c3aed;
   --cor-nota-rosa: #be185d;
   --cor-nota-cinza: #5b5876;
-  --raio-card: 22px;
-  /* Superfícies flutuantes: card a 75% sobre o fundo em degradê, com borda e sombra leves. */
-  --superficie: color-mix(in srgb, var(--cor-card) 75%, transparent);
-  --superficie-borda: color-mix(in srgb, var(--cor-card) 90%, transparent);
-  --sombra-flutuante: 0 2px 8px color-mix(in srgb, var(--cor-principal) 10%, transparent);
-  --fundo-degrade: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--cor-principal) 10%, var(--cor-fundo)) 0%,
-    var(--cor-fundo) 45%,
-    color-mix(in srgb, var(--cor-principal) 12%, var(--cor-fundo)) 100%
-  );
+  --raio-card: 14px;
+  /* Superfícies sólidas: card com borda fina. A profundidade vem dos degraus de cor, não de blur nem degradê. */
+  --superficie: var(--cor-card);
+  --superficie-borda: var(--cor-linha);
+  /* Sombra mínima dos cards; `--sombra-elevada` é só dos flutuantes (dock, menu, modal). */
+  --sombra-flutuante: 0 1px 2px rgb(20 33 61 / 6%);
+  --sombra-elevada: 0 8px 24px rgb(20 33 61 / 8%);
+  /* Curva única de todo movimento (entrada rápida, parada suave). */
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Tema escuro: fundo neutro obsidian (#0b0d13), card acetinado (#131622) e detalhes em azul moderno.
-   Texto e chips de texto passam de 4,5:1 (WCAG AA) sobre fundo e card (ver estilos.test.ts). */
+/* Tema escuro: grafite neutro (#141415), card (#19191b) e elevado (#232325), com o coral claro como acento.
+   Texto e chips de texto passam de 4,5:1 (WCAG AA) sobre fundo, card e elevado (ver estilos.test.ts). */
 :root[data-tema='escuro'] {
-  --cor-fundo: #0b0d13;
-  --cor-principal: #60a5fa;
-  --cor-principal-clara: #3b82f6;
-  --cor-positivo: #34d399;
-  --cor-negativo: #ef6b6b;
+  --cor-fundo: #141415;
+  --cor-card: #19191b;
+  --cor-elevado: #232325;
+  --cor-linha: #2a2a2c;
+  --cor-texto: #ededed;
+  --cor-secundario: #a1a1a6;
+  --cor-mutado: #8e8e94;
+  --cor-principal: #ff6b5b;
+  --cor-principal-fundo: #ff6b5b;
+  --cor-sobre-principal: #141415;
+  --cor-sobre-principal-fundo: #141415;
+  --cor-sobre-principal-suave: #3a1a16;
+  --cor-positivo: #4cc38a;
   --cor-positivo-texto: #5fd68f;
-  --cor-negativo-texto: #ff8a8a;
-  --cor-texto: #f1f3f9;
-  --cor-mutado: #8e95b0;
-  --cor-linha: #202538;
-  --cor-card: #131622;
-  --cor-erro-fundo: #2a151b;
-  --cor-ok-fundo: #0f291e;
-  --cor-aviso-fundo: #2b230d;
-  --cor-aviso-texto: #fde047;
-  --cor-sobre-principal-suave: #1e293b;
-  --cor-sobre-principal: #0b0d13;
-  --cor-sobre-negativo: #0b0d13;
-  --cor-principal-fim: #3b82f6;
-  --cor-auth-borda: #202538;
-  --cor-auth-fundo-fim: #0f121a;
-  /* Contorno do campo de auth: 3:1 sobre --cor-card e --cor-auth-fundo-fim (WCAG 1.4.11, ver estilos.test.ts). */
-  --cor-auth-campo-borda: #3b82f6;
-  --cor-grafico-receitas: #60a5fa;
-  --cor-grafico-despesas: #3b82f6;
-  --cor-grafico-receitas-previstas: #2563eb;
-  --cor-grafico-despesas-previstas: #1e3a8a;
+  --cor-negativo: #e5484d;
+  --cor-negativo-texto: #ff8a80;
+  --cor-sobre-negativo: #141415;
+  --cor-sobre-positivo: #141415;
+  --cor-erro-fundo: #2e1a1a;
+  --cor-ok-fundo: #15261c;
+  --cor-aviso-fundo: #2b2410;
+  --cor-aviso-texto: #f2c94c;
+  --cor-auth-campo-borda: #6e6e73;
+  --cor-grafico-receitas: #a9b8d6;
   --cor-nota-vermelho: #ff8a8a;
   --cor-nota-laranja: #fb9a4b;
   --cor-nota-amarelo: #f2c94c;
@@ -100,46 +102,32 @@
   --cor-nota-roxo: #a78bfa;
   --cor-nota-rosa: #f472b6;
   --cor-nota-cinza: #9ca3af;
-  /* Escuro: borda vira a linha do tema e a sombra fica mais forte para destacar do fundo. */
-  --superficie-borda: var(--cor-linha);
-  --sombra-flutuante: 0 2px 8px rgb(0 0 0 / 35%);
+  /* Escuro: sem sombra nos cards; o flutuante ganha só um fio de luz no topo. */
+  --sombra-flutuante: none;
+  --sombra-elevada: inset 0 1px 0 rgb(255 255 255 / 6%);
 }
 
-/* Presets de cor de destaque */
-html[data-preset='lima'] {
-  --cor-principal: #84cc16;
-  --cor-principal-clara: #4d7c0f;
-  --cor-principal-fim: #65a30d;
+/* Presets de cor de destaque. `coral` é o padrão: sem bloco próprio, valem os tokens base. */
+html[data-preset='musgo'] {
+  --cor-principal: #3f6b47;
+  --cor-sobre-principal: #f4ede0;
+  --cor-principal-fundo: #8db384;
 }
-html[data-tema='escuro'][data-preset='lima'] {
-  --cor-principal: #a3e635;
-  --cor-principal-clara: #4d7c0f;
-  --cor-principal-fim: #84cc16;
-  --cor-sobre-principal: #0b0d13;
-}
-
-html[data-preset='esmeralda'] {
-  --cor-principal: #059669;
-  --cor-principal-clara: #047857;
-  --cor-principal-fim: #10b981;
-}
-html[data-tema='escuro'][data-preset='esmeralda'] {
-  --cor-principal: #10b981;
-  --cor-principal-clara: #047857;
-  --cor-principal-fim: #34d399;
-  --cor-sobre-principal: #0b0d13;
+html[data-tema='escuro'][data-preset='musgo'] {
+  --cor-principal: #9cc79f;
+  --cor-sobre-principal: #141415;
+  --cor-principal-fundo: #9cc79f;
 }
 
-html[data-preset='indigo'] {
-  --cor-principal: #4f46e5;
-  --cor-principal-clara: #3730a3;
-  --cor-principal-fim: #6366f1;
+html[data-preset='ceu'] {
+  --cor-principal: #245e86;
+  --cor-sobre-principal: #f4ede0;
+  --cor-principal-fundo: #7fb3d5;
 }
-html[data-tema='escuro'][data-preset='indigo'] {
-  --cor-principal: #6366f1;
-  --cor-principal-clara: #3730a3;
-  --cor-principal-fim: #818cf8;
-  --cor-sobre-principal: #0b0d13;
+html[data-tema='escuro'][data-preset='ceu'] {
+  --cor-principal: #8ec1e3;
+  --cor-sobre-principal: #141415;
+  --cor-principal-fundo: #8ec1e3;
 }
 
 html {
@@ -160,22 +148,20 @@ body {
 }
 
 @layer components {
-  /* Superfície flutuante translúcida: base do shell e do .card. */
+  /* Superfície sólida com borda fina: base do .card e dos modais. */
   .superficie {
     background: var(--superficie);
     border: 1px solid var(--superficie-borda);
     box-shadow: var(--sombra-flutuante);
-    backdrop-filter: blur(8px);
   }
 
-  /* Card padrão das telas (mockups: cantos de 20 a 24 px): a mesma superfície com raio e padding. */
+  /* Card padrão das telas: a mesma superfície com raio de 14 px e padding. */
   .card {
     background: var(--superficie);
     border: 1px solid var(--superficie-borda);
     border-radius: var(--raio-card);
     box-shadow: var(--sombra-flutuante);
     padding: 1rem;
-    backdrop-filter: blur(8px);
   }
 
   /* Valores monetários alinhados em coluna. */
@@ -198,55 +184,42 @@ body {
  * Rótulos seguem visíveis, nenhum texto fica abaixo de 12 px e os campos mantêm 16 px (no iOS menos que isso dá zoom).
  */
 .auth-card {
-  border-radius: 40px;
-  padding: 25px 35px;
-  border: 5px solid var(--cor-auth-borda);
-  background: linear-gradient(0deg, var(--cor-card) 0%, var(--cor-auth-fundo-fim) 100%);
-  box-shadow: rgb(39 24 126 / 25%) 0 30px 30px -20px;
+  border-radius: 18px;
+  padding: 24px 32px;
+  border: 1px solid var(--cor-linha);
+  background: var(--cor-card);
+  box-shadow: var(--sombra-elevada);
 }
 
 .auth-card h1 {
   margin: 0 0 20px;
   text-align: center;
-  font-size: 30px;
-  font-weight: 900;
-  color: var(--cor-principal);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--cor-texto);
 }
 
+/* Contorno completo de 1 px nos dois temas: o campo tem a cor do card, então a borda é o que o delimita (3:1). */
 .auth-card input {
-  border: 0;
-  border-inline: 2px solid var(--cor-auth-campo-borda);
-  border-radius: 20px;
-  padding: 15px 20px;
-  box-shadow: rgb(39 24 126 / 12%) 0 10px 10px -5px;
+  border: 1px solid var(--cor-auth-campo-borda);
+  border-radius: 10px;
+  padding: 12px 16px;
 }
 
 .auth-card input:focus {
-  border-inline-color: var(--cor-principal);
-}
-
-/* No escuro o campo tem a mesma cor do card, então ganha contorno de 2 px nos quatro lados (o claro não muda). */
-:root[data-tema='escuro'] .auth-card input {
-  border: 2px solid var(--cor-auth-campo-borda);
-}
-
-:root[data-tema='escuro'] .auth-card input:focus {
   border-color: var(--cor-principal);
 }
 
 .auth-card button[type='submit'] {
-  background: linear-gradient(45deg, var(--cor-principal) 0%, var(--cor-principal-fim) 100%);
-  border-radius: 20px;
-  padding-block: 15px;
-  transition: transform 0.2s ease;
-}
-
-.auth-card button[type='submit']:hover:not(:disabled) {
-  transform: scale(1.03);
+  background: var(--cor-principal-fundo);
+  color: var(--cor-sobre-principal-fundo);
+  border-radius: 10px;
+  padding-block: 12px;
+  transition: transform 150ms var(--curva);
 }
 
 .auth-card button[type='submit']:active:not(:disabled) {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 /* Troca de tela: deslize de 24 px com fade. `entra-direita` vem da direita (avançar); `entra-esquerda`, da esquerda. */
@@ -273,11 +246,11 @@ body {
 }
 
 .auth-entra-direita {
-  animation: auth-desliza-da-direita 300ms ease-out;
+  animation: auth-desliza-da-direita 300ms var(--curva);
 }
 
 .auth-entra-esquerda {
-  animation: auth-desliza-da-esquerda 300ms ease-out;
+  animation: auth-desliza-da-esquerda 300ms var(--curva);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -311,11 +284,11 @@ body {
 }
 
 .menu-painel {
-  animation: menu-painel-entra 200ms ease-out;
+  animation: menu-painel-entra 200ms var(--curva);
 }
 
 .menu-fundo {
-  animation: menu-fundo-entra 200ms ease-out;
+  animation: menu-fundo-entra 200ms var(--curva);
 }
 
 /*
@@ -335,7 +308,7 @@ body {
 
 .folha-painel,
 .dock-rotulo {
-  animation: entra-deslizando 200ms ease-out;
+  animation: entra-deslizando 200ms var(--curva);
 }
 
 .folha-painel {
@@ -368,7 +341,7 @@ body {
 }
 
 .paleta-entra {
-  animation: paleta-entra 150ms ease-out;
+  animation: paleta-entra 150ms var(--curva);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -390,7 +363,7 @@ body {
 }
 
 .nota-entra {
-  animation: nota-entra 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: nota-entra 220ms var(--curva) both;
   animation-delay: calc(min(var(--i, 0), 8) * 30ms);
 }
 
@@ -433,7 +406,6 @@ body {
   transform: scale(0);
   opacity: 0.5;
   animation: pulse0112 calc(var(--uib-speed) * 1.111) ease-in-out infinite;
-  box-shadow: 0 0 16px rgba(39, 24, 126, 0.2);
 }
 
 .dot-spinner__dot:nth-child(2) {
@@ -526,7 +498,7 @@ body {
 }
 
 .item-entra {
-  animation: item-entra 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: item-entra 200ms var(--curva) both;
   animation-delay: calc(min(var(--i, 0), 10) * 25ms);
 }
 
@@ -543,7 +515,7 @@ input,
 select,
 textarea {
   transition-property: color, background-color, border-color, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-timing-function: var(--curva);
   transition-duration: 150ms;
 }
 

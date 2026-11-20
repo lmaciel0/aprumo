@@ -48,6 +48,16 @@ describe('Sidebar', () => {
     expect(atuais.map((link) => link.textContent)).toEqual(['Cartões'])
   })
 
+  it('o link ativo é um degrau elevado com fio de prumo, sem bloco preenchido no acento', () => {
+    renderizar('/cartoes?ano=2026&mes=10')
+
+    const ativo = screen.getByRole('link', { name: 'Cartões' })
+
+    expect(ativo).toHaveClass('bg-[var(--cor-elevado)]', 'shadow-[inset_2px_0_0_var(--cor-principal)]')
+    expect(ativo.className).not.toMatch(/bg-\[var\(--cor-principal\)\]/)
+    expect(ativo.className).not.toMatch(/font-semibold/)
+  })
+
   it('links financeiros preservam o mês da URL', () => {
     renderizar('/?ano=2026&mes=10')
 

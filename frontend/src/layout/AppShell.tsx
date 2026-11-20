@@ -171,7 +171,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
   // trocam, então cruzar 1280 px não remonta a rota nem perde o que foi digitado.
   return (
     <PaletaContext value={paleta}>
-      <div className="min-h-dvh" style={{ background: 'var(--fundo-degrade)' }}>
+      <div className="min-h-dvh bg-[var(--cor-fundo)]">
         <AvisoServidor />
         <div className={ehDesktop ? 'grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-3 p-3' : undefined}>
           {ehDesktop ? dockDesktop : !ehCelular && barraSuperior}
@@ -187,7 +187,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
                 <div
                   aria-hidden="true"
                   data-testid="fundo-da-barra-fixa"
-                  className="pointer-events-none absolute -inset-x-3 -top-3 -bottom-5 -z-10 bg-[var(--cor-fundo)]/60 backdrop-blur-md"
+                  className="pointer-events-none absolute -inset-x-3 -top-3 -bottom-5 -z-10 bg-[var(--cor-fundo)]"
                   style={{
                     maskImage: 'linear-gradient(to bottom, black 85%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent)',

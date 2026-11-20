@@ -4,6 +4,7 @@ import {
   gravarPreferencias,
   PREFERENCIAS_PADRAO,
   CHAVE_PREFERENCIAS,
+  migrarPresetCor,
 } from './preferenciasStorage'
 
 describe('preferenciasStorage', () => {
@@ -18,7 +19,7 @@ describe('preferenciasStorage', () => {
   it('grava e recupera as preferências salvas corretamente', () => {
     const custom = {
       modoTema: 'escuro' as const,
-      presetCor: 'lima' as const,
+      presetCor: 'musgo' as const,
       layoutLargura: 'largura-total' as const,
       barraFixa: false,
       dockRecolhida: true,
@@ -37,7 +38,7 @@ describe('preferenciasStorage', () => {
     localStorage.setItem('aprumo-tema', 'escuro')
     const lido = lerPreferenciasSalvas()
     expect(lido.modoTema).toBe('escuro')
-    expect(lido.presetCor).toBe('azul')
+    expect(lido.presetCor).toBe('coral')
   })
 
   it('migra atalhos de tarefas e projetos removidos preservando os válidos e preenchendo com padrões até 4', () => {
@@ -50,5 +51,25 @@ describe('preferenciasStorage', () => {
     )
     const lido = lerPreferenciasSalvas()
     expect(lido.atalhosMobile).toEqual(['novo-lancamento', 'cartoes', 'nova-receita', 'nova-nota'])
+  })
+
+  it.each([
+    ['coral', 'coral'],
+    ['musgo', 'musgo'],
+    ['ceu', 'ceu'],
+    ['azul', 'coral'],
+    ['lima', 'musgo'],
+    ['esmeralda', 'musgo'],
+    ['indigo', 'ceu'],
+    ['roxo', 'coral'],
+    [undefined, 'coral'],
+    [42, 'coral'],
+  ])('migrarPresetCor(%s) devolve %s', (entrada, esperado) => {
+    expect(migrarPresetCor(entrada)).toBe(esperado)
+  })
+
+  it('lerPreferenciasSalvas migra o preset antigo salvo', () => {
+    localStorage.setItem(CHAVE_PREFERENCIAS, JSON.stringify({ presetCor: 'indigo' }))
+    expect(lerPreferenciasSalvas().presetCor).toBe('ceu')
   })
 })

@@ -23,7 +23,7 @@ export const ID_FOLHA_ACAO_RAPIDA = 'folha-acao-rapida'
 /**
  * Folha de ações rápidas do celular (menos de 768 px): Nova nota, Nova despesa e Nova receita. Quem a abre é o botão
  * "Criar" da `DockInferior`, que também guarda o estado e a renderiza como irmã do `<nav>` (nunca dentro dele: o
- * `backdrop-blur` do nav cria um bloco de contenção e quebraria o `fixed inset-0`). A folha (z-[35]) cobre a dock e fica
+ * `<nav>` é `fixed` com z-30 e cria um contexto de empilhamento próprio, que limitaria o z-[35] da folha). A folha (z-[35]) cobre a dock e fica
  * abaixo do menu (z-40) e dos modais (z-50). Mesmo comportamento do menu deslizante (foco, Esc, fundo, rolagem travada,
  * Tab preso), via `useDialogoModal`; `aoFechar` decide o que acontece depois (a dock devolve o foco ao botão).
  *

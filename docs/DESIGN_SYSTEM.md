@@ -5,43 +5,47 @@ Fonte da verdade: `frontend/src/index.css` (tokens) e os componentes de `fronten
 ## Identidade
 
 - Produto: Aprumo, finanças pessoais e notas. Tom calmo e direto, textos curtos em português do Brasil.
-- Dois temas: claro (padrão, fundo lavanda `#f7f7ff` e destaque índigo escuro) e escuro (fundo neutro obsidian e destaque azul). O tema escuro liga com `data-tema='escuro'` no `<html>`.
+- Dois temas: claro (padrão, fundo creme `#f4ede0`, texto marinho e destaque coral) e escuro (fundo grafite `#141415` e destaque coral claro). O tema escuro liga com `data-tema='escuro'` no `<html>`.
 - Três presets de cor de destaque (ver Presets). O destaque muda, o resto da paleta não.
-- Superfícies translúcidas com leve desfoque (`backdrop-filter: blur(8px)`) sobre um fundo em degradê. O desfoque dos cards é decisão do dono e não se remove.
+- Superfícies sólidas com borda fina de 1 px. A profundidade vem de degraus de cor (`--cor-fundo`, `--cor-card`, `--cor-elevado`), não de desfoque, degradê entre matizes nem sombra colorida.
+- Assinatura "fio de prumo": linha vertical de 2 px em `--cor-principal`, só no item ativo da navegação lateral, no mês atual do gráfico e na conta mais próxima de hoje.
 - Só tokens `--cor-*`. Cor nunca é o único sinal: estado ativo, erro e pago também têm texto ou forma.
 
 ## Cores
 
-Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "Escuro" é o de `:root[data-tema='escuro']`. Em um preset, `--cor-principal`, `--cor-principal-clara` e `--cor-principal-fim` mudam (ver Presets).
+Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "Escuro" é o de `:root[data-tema='escuro']`. Em um preset, `--cor-principal`, `--cor-sobre-principal` e `--cor-principal-fundo` mudam (ver Presets); `--cor-principal-clara` e os tons de gráfico que dependem deles acompanham.
 
 | Token | Claro | Escuro | Uso |
 |---|---|---|---|
-| `--cor-fundo` | `#f7f7ff` | `#0b0d13` | Fundo da página e base do degradê. |
-| `--cor-principal` | `#27187e` | `#60a5fa` | Destaque: botões primários, links, item ativo, card da sobra. |
-| `--cor-principal-clara` | `#a49ddb` | `#3b82f6` | Variação suave do destaque. |
-| `--cor-positivo` | `#2e9e5b` | `#34d399` | Verde de receitas em barras e fundos (não em texto pequeno). |
-| `--cor-negativo` | `#d64545` | `#ef6b6b` | Vermelho de despesas, bordas de erro e ações destrutivas em barras e fundos. |
-| `--cor-positivo-texto` | `#1f7a45` | `#5fd68f` | Verde para texto pequeno (4,5:1 sobre card e fundo). |
-| `--cor-negativo-texto` | `#b73333` | `#ff8a8a` | Vermelho para texto pequeno (4,5:1 sobre card e fundo). |
-| `--cor-texto` | `#16123a` | `#f1f3f9` | Texto principal. |
-| `--cor-mutado` | `#706e8a` | `#8e95b0` | Texto secundário, rótulos, legendas. |
-| `--cor-linha` | `#e9e8f5` | `#202538` | Bordas, divisores e fundo dos esqueletos. |
-| `--cor-card` | `#fff` | `#131622` | Fundo de cards, campos e modais; base da superfície translúcida. |
-| `--cor-erro-fundo` | `#fdecec` | `#2a151b` | Fundo de mensagem de erro. |
-| `--cor-ok-fundo` | `#e9f6ee` | `#0f291e` | Fundo de chip e aviso de sucesso. |
-| `--cor-aviso-fundo` | `#fff2cb` | `#2b230d` | Fundo de aviso. |
-| `--cor-aviso-texto` | `#7a5f00` | `#fde047` | Texto de aviso sobre `--cor-aviso-fundo`. |
-| `--cor-sobre-principal` | `#fff` | `#0b0d13` | Texto e ícone sobre `--cor-principal`. |
-| `--cor-sobre-negativo` | `#fff` | `#0b0d13` | Texto sobre `--cor-negativo` (ações destrutivas). |
-| `--cor-sobre-principal-suave` | `#cfcbf2` | `#1e293b` | Texto secundário sobre `--cor-principal` (card da sobra). |
-| `--cor-principal-fim` | `#4a36c4` | `#3b82f6` | Fim do degradê do botão das telas de auth (o início é `--cor-principal`). |
-| `--cor-auth-borda` | `#fff` | `#202538` | Borda do card das telas de auth. |
-| `--cor-auth-fundo-fim` | `#f4f7fb` | `#0f121a` | Fim do degradê do card de auth (o início é `--cor-card`). |
-| `--cor-auth-campo-borda` | `transparent` | `#3b82f6` | Contorno dos campos de auth: transparente no claro, 3:1 no escuro (WCAG 1.4.11). |
-| `--cor-grafico-receitas` | `#27187e` | `#60a5fa` | Barras de receitas realizadas no gráfico do ano. |
-| `--cor-grafico-despesas` | `#a49ddb` | `#3b82f6` | Barras de despesas realizadas no gráfico do ano. |
-| `--cor-grafico-receitas-previstas` | `#7d73c4` | `#2563eb` | Fundo das receitas previstas no gráfico do ano. |
-| `--cor-grafico-despesas-previstas` | `#e6e4f7` | `#1e3a8a` | Fundo das despesas previstas no gráfico do ano. |
+| `--cor-fundo` | `#f4ede0` | `#141415` | Fundo da página, o degrau mais baixo. |
+| `--cor-card` | `#fbf7f0` | `#19191b` | Fundo de cards, campos e modais (`--superficie`). |
+| `--cor-elevado` | `#ece3d3` | `#232325` | Superfície acima do card, como campo dentro de card ou item em foco. |
+| `--cor-linha` | `#ded9d0` | `#2a2a2c` | Bordas, divisores e fundo dos esqueletos. |
+| `--cor-texto` | `#14213d` | `#ededed` | Texto principal. |
+| `--cor-secundario` | `#3a4459` | `#a1a1a6` | Texto de apoio, um degrau abaixo do principal. |
+| `--cor-mutado` | `#5a6275` | `#8e8e94` | Texto secundário, rótulos, legendas. |
+| `--cor-principal` | `#b83e31` | `#ff6b5b` | Tom do acento seguro como texto, link, borda, anel de foco e fio de prumo. |
+| `--cor-principal-clara` | `color-mix(in srgb, var(--cor-principal) 45%, var(--cor-card))` | `color-mix(in srgb, var(--cor-principal) 45%, var(--cor-card))` | Variação suave do acento, misturada com o card. |
+| `--cor-principal-fundo` | `#ff6b5b` | `#ff6b5b` | Acento vivo, só preenchimento, com `--cor-sobre-principal-fundo` por cima; nunca texto no claro (2,4:1 sobre o creme). |
+| `--cor-sobre-principal` | `#f4ede0` | `#141415` | Texto e ícone sobre `--cor-principal`. |
+| `--cor-sobre-principal-fundo` | `#14213d` | `#141415` | Texto e ícone sobre `--cor-principal-fundo`. |
+| `--cor-sobre-principal-suave` | `#fbede9` | `#3a1a16` | Texto secundário sobre `--cor-principal` (card da sobra). |
+| `--cor-sobre-imagem` | `#f4ede0` | `#f4ede0` | Texto e ícone sobre foto ou imagem com véu escuro, igual nos dois temas. |
+| `--cor-positivo` | `#2e7d4f` | `#4cc38a` | Verde de receitas em barras e fundos (não em texto pequeno). |
+| `--cor-positivo-texto` | `#1f6b3f` | `#5fd68f` | Verde para texto pequeno (4,5:1 sobre card, fundo e chip). |
+| `--cor-negativo` | `#b42318` | `#e5484d` | Vermelho de despesas, bordas de erro e ações destrutivas em barras e fundos. |
+| `--cor-negativo-texto` | `#a11d14` | `#ff8a80` | Vermelho para texto pequeno (4,5:1 sobre card, fundo e chip). |
+| `--cor-sobre-negativo` | `#f4ede0` | `#141415` | Texto sobre `--cor-negativo` (ações destrutivas). |
+| `--cor-sobre-positivo` | `#ffffff` | `#141415` | Texto sobre `--cor-positivo` (botões e selos de status positivo). |
+| `--cor-erro-fundo` | `#f6dcd5` | `#2e1a1a` | Fundo de mensagem de erro. |
+| `--cor-ok-fundo` | `#dcead9` | `#15261c` | Fundo de chip e aviso de sucesso. |
+| `--cor-aviso-fundo` | `#f5e2b8` | `#2b2410` | Fundo de aviso. |
+| `--cor-aviso-texto` | `#6b4e00` | `#f2c94c` | Texto de aviso sobre `--cor-aviso-fundo`. |
+| `--cor-auth-campo-borda` | `#7d8496` | `#6e6e73` | Contorno dos campos de auth, 3:1 sobre o card (WCAG 1.4.11). |
+| `--cor-grafico-receitas` | `#14213d` | `#a9b8d6` | Barras de receitas realizadas no gráfico do ano. |
+| `--cor-grafico-despesas` | `var(--cor-principal-fundo)` | `var(--cor-principal-fundo)` | Barras de despesas realizadas no gráfico do ano. |
+| `--cor-grafico-receitas-previstas` | `color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card))` | `color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card))` | Fundo das receitas previstas no gráfico do ano. |
+| `--cor-grafico-despesas-previstas` | `color-mix(in srgb, var(--cor-grafico-despesas) 40%, var(--cor-card))` | `color-mix(in srgb, var(--cor-grafico-despesas) 40%, var(--cor-card))` | Fundo das despesas previstas no gráfico do ano. |
 | `--cor-nota-vermelho` | `#c0392b` | `#ff8a8a` | Categoria de nota vermelha (4,5:1 sobre `--cor-card`). |
 | `--cor-nota-laranja` | `#b45309` | `#fb9a4b` | Categoria de nota laranja. |
 | `--cor-nota-amarelo` | `#8a6500` | `#f2c94c` | Categoria de nota amarela. |
@@ -59,13 +63,13 @@ Regras de uso:
 
 ## Presets
 
-Três presets de cor de destaque, escolhidos pelo usuário e aplicados com `data-preset` no `<html>`: `lima`, `esmeralda` e `indigo`. Cada um troca só `--cor-principal`, `--cor-principal-clara` e `--cor-principal-fim`; no tema escuro também fixa `--cor-sobre-principal` em `#0b0d13`. Sem preset, valem os tokens da tabela de Cores.
+Três presets de cor de destaque, escolhidos pelo usuário e aplicados com `data-preset` no `<html>`: `coral`, `musgo` e `ceu`. `coral` é o padrão e não tem bloco próprio: valem os tokens da tabela de Cores. `musgo` e `ceu` trocam só `--cor-principal`, `--cor-sobre-principal` e `--cor-principal-fundo`, em cada tema.
 
-| Preset | Principal (claro) | Clara (claro) | Fim (claro) | Principal (escuro) | Clara (escuro) | Fim (escuro) |
+| Preset | Principal (claro) | Sobre principal (claro) | Fundo (claro) | Principal (escuro) | Sobre principal (escuro) | Fundo (escuro) |
 |---|---|---|---|---|---|---|
-| `lima` | `#84cc16` | `#4d7c0f` | `#65a30d` | `#a3e635` | `#4d7c0f` | `#84cc16` |
-| `esmeralda` | `#059669` | `#047857` | `#10b981` | `#10b981` | `#047857` | `#34d399` |
-| `indigo` | `#4f46e5` | `#3730a3` | `#6366f1` | `#6366f1` | `#3730a3` | `#818cf8` |
+| `coral` | `#b83e31` | `#f4ede0` | `#ff6b5b` | `#ff6b5b` | `#141415` | `#ff6b5b` |
+| `musgo` | `#3f6b47` | `#f4ede0` | `#8db384` | `#9cc79f` | `#141415` | `#9cc79f` |
+| `ceu` | `#245e86` | `#f4ede0` | `#7fb3d5` | `#8ec1e3` | `#141415` | `#8ec1e3` |
 
 Todo componente novo precisa ficar legível nos três presets nos dois temas, o que só vale se ele usar tokens.
 
@@ -74,20 +78,22 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 - Fonte única: Inter Variable (`@fontsource-variable/inter`), declarada em `--font-sans` e no `html`, com `ui-sans-serif, system-ui, sans-serif` de reserva.
 - Valores de dinheiro usam a classe `.valor` (`font-variant-numeric: tabular-nums`) para alinhar em coluna.
 - Corpo no celular: campos de formulário com 16 px (menos que isso o iOS dá zoom ao focar); nenhum texto abaixo de 12 px em tela de auth. Rótulos e legendas pequenas usam 11 a 12 px com `--cor-mutado`.
-- Título de página: `text-[28px] font-bold tracking-tight`. Número de destaque: 26 a 30 px em negrito (`CardSobra`, `FaixaSaldo`). Título do card de auth: 30 px, peso 900.
+- Título de página: `text-[28px] font-bold tracking-tight`. Número de destaque: 26 a 30 px em negrito (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500.
 
 ## Raio, superfícies e sombras
 
 | Token | Valor | Uso |
 |---|---|---|
-| `--raio-card` | `22px` | Raio de `.card`, cards de nota e card da sobra. |
-| `--superficie` | `color-mix(in srgb, var(--cor-card) 75%, transparent)` | Fundo translúcido de `.superficie` e `.card`. |
-| `--superficie-borda` | `color-mix(in srgb, var(--cor-card) 90%, transparent)` no claro; `var(--cor-linha)` no escuro | Borda de `.superficie` e `.card`. |
-| `--sombra-flutuante` | `0 2px 8px` do principal a 10% no claro; `0 2px 8px rgb(0 0 0 / 35%)` no escuro | Sombra de `.superficie` e `.card`. |
-| `--fundo-degrade` | degradê de 160 graus entre o principal a 10%, o fundo e o principal a 12% | Fundo do shell. |
+| `--raio-card` | `14px` | Raio de `.card`, cards de nota e card da sobra. |
+| `--superficie` | `var(--cor-card)` | Fundo sólido de `.superficie` e `.card`. |
+| `--superficie-borda` | `var(--cor-linha)` | Borda de 1 px de `.superficie` e `.card`. |
+| `--sombra-flutuante` | `0 1px 2px rgb(20 33 61 / 6%)` no claro; `none` no escuro | Sombra mínima de `.superficie` e `.card`. |
+| `--sombra-elevada` | `0 8px 24px rgb(20 33 61 / 8%)` no claro; `inset 0 1px 0 rgb(255 255 255 / 6%)` no escuro | Só para o que flutua: dock, menu, modal e card de auth. |
+| `--curva` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva única de toda animação e transição. |
 
-- `.card`: superfície com `--raio-card`, `padding: 1rem` e `backdrop-filter: blur(8px)`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
-- Outros raios em uso: `rounded-2xl` (cards de meta, atalhos), `rounded-xl` (campos, botões de modal, mensagens de erro), `rounded-full` (chips, botões de ação, dock). O card de auth usa 40 px e seus campos 20 px.
+- `.card`: superfície sólida com `--raio-card`, `padding: 1rem`, sem `backdrop-filter`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
+- Escala de raio: tag 6 px, controle (campo e botão) 10 px, card 14 px, painel e folha de 16 a 20 px. Pílula (`rounded-full`) só em avatar, botão "Criar", ponto de status e interruptor de tema. O card de auth usa 18 px e seus campos e botão 10 px.
+- Código antigo ainda usa `rounded-2xl`, `rounded-3xl` e `rounded-full` em chips e botões; a migração para a escala acontece por tela e não por esta tabela.
 
 ## Espaçamento e primeira dobra no celular
 
@@ -114,7 +120,8 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 ### Layout e navegação (`frontend/src/layout`)
 
 - `AppShell`, `HeaderPrincipal`, `Sidebar` e `DockLateral` (desktop), `DockInferior` (celular, menos de 768 px).
-- `DockInferior`: pílula flutuante com Início, Notas, Orçamento e Mais; o botão "Criar" fica elevado no centro e abre `FolhaAcaoRapida` (`AcaoRapida.tsx`). Só o item ativo mostra o rótulo (`.dock-rotulo`).
+- `DockInferior`: barra flutuante sólida (`rounded-2xl`, `--cor-card`, `--sombra-elevada`) com Início, Notas, Orçamento e Mais; o botão "Criar" é o único círculo, fica elevado no centro, usa `--cor-principal-fundo` e abre `FolhaAcaoRapida` (`AcaoRapida.tsx`). Só o item ativo mostra o rótulo (`.dock-rotulo`) e leva fundo `--cor-elevado`, sem fio de prumo.
+- Item ativo de `Sidebar` e `DockLateral`: degrau `--cor-elevado` com texto `--cor-texto` em peso 500 e o fio de prumo (`shadow-[inset_2px_0_0_var(--cor-principal)]`), nunca bloco preenchido no acento.
 - `CabecalhoPagina`: título (só para leitor de tela no celular), `SeletorMes` e atalho "+ Lançar" nas telas do mês.
 - `PaletaNavegacao` ("Ir para...", Ctrl K), `AvisoServidor`, `Logo`, `useDialogoModal` (foco preso, Esc e rolagem travada).
 - `BotaoTema` (`frontend/src/tema`): interruptor de tema com contraste não textual de 3:1.
@@ -155,8 +162,8 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Contraste: 4,5:1 para texto e 3:1 para contornos de campo e de componentes, nos dois temas e nos três presets. Texto pequeno em verde ou vermelho usa os tons `*-texto`.
 - Foco visível em todo controle (`foco` de `classesFoco.ts` ou o equivalente com contorno de 2 px em `--cor-principal`); alvos de 44 px.
 - Rótulo visível em campo (`CampoTexto`), `aria-label` em botão só de ícone, `role="alert"` em erro, `role="status"` em carregamento.
-- Cor nunca é o único sinal: o item ativo da dock é um bloco preenchido com texto, o status pago tem chip com texto.
-- Movimento: toda animação e transição respeita `prefers-reduced-motion`.
+- Cor nunca é o único sinal: o item ativo da dock é um degrau elevado com texto (e, na lateral, o fio de prumo), o status pago tem chip com texto.
+- Movimento: uma só curva (`--curva`); toda animação e transição respeita `prefers-reduced-motion`.
 - Gráfico com tabela equivalente para leitor de tela (`GraficoResultado`); título de página único (`<h1>`), mesmo quando só leitor de tela o vê no celular.
 - Modais prendem o foco, fecham com Esc e devolvem o foco ao elemento de origem (`useDialogoModal`, `Moldura`).
 
@@ -174,6 +181,8 @@ Estas referências não substituem os tokens existentes. Em conflito, o design s
 
 Perguntar ao Lucas o que ele gosta em cada app antes de redesenhar uma tela.
 
+unslop, de Damir Sokolovsky (https://github.com/heydamir/unslop), CC BY 4.0
+
 ## O que NÃO fazer
 
 Nasce das armadilhas registradas no projeto e das regras de 360 px.
@@ -181,7 +190,12 @@ Nasce das armadilhas registradas no projeto e das regras de 360 px.
 - Não usar cor fixa (`bg-white`, `text-white`, `bg-[#...]`, `text-[#...]`): `estilos.test.ts` reprova. Use `--cor-*`.
 - Não usar a paleta do Tailwind (`red-600`, `emerald-500`, `amber-*`, `from-black/80`) em tela nova. Hoje há desvios em `metas` (`CardMeta`, `MetasPage`, `ModalMetaForm`, `ModalAporteMeta`, `CardConselheiroMetas`, `WidgetMetaInicio`), em `CardCartao` e em um ponto de `CardReflexao`. São dívida a corrigir com os tokens `--cor-negativo`, `--cor-positivo` e `--cor-sobre-*`, não padrão a copiar.
 - Não usar `--cor-positivo` e `--cor-negativo` em texto pequeno: use `--cor-positivo-texto` e `--cor-negativo-texto` (4,5:1).
-- Não remover o `backdrop-filter: blur` de `.card` nem de `.superficie` (pedido explícito do dono).
+- Não usar `backdrop-filter` nem `backdrop-blur`: `estilos.test.ts` reprova no `index.css` e em todo TSX de produção. Superfície que precisa esconder o que rola por baixo usa fundo sólido (`--cor-fundo` ou `--cor-card`).
+- Não usar degradê entre matizes, brilho nem sombra colorida (como `shadow-[0_8px_18px_color-mix(... --cor-principal ...)]`).
+- Não usar peso 700 a 900 em título ou rótulo novo; use 500 ou 600.
+- Não usar caixa-alta com tracking em rótulo (`uppercase tracking-wider`).
+- Não usar `--cor-principal-fundo` como texto nem como linha fina: ele é só preenchimento (2,4:1 sobre o creme). Texto e linha usam `--cor-principal`.
+- Valor negativo vai na cor do texto com o sinal "−"; vermelho (`--cor-negativo`, `--cor-negativo-texto`) só em status e alerta.
 - Não trocar paleta, fonte ou presets por sugestão de ferramenta (`ui-ux-pro-max`, 21st) sem o Lucas pedir. O resultado delas é referência; este documento vence.
 - Não instalar HeroUI, shadcn, framer-motion nem 21st como dependência. Código de referência do 21st é só inspiração de estrutura, reescrito com os tokens.
 - Não animar `width`, `height` nem `top`. Só cor, opacidade e transform, de 150 a 250 ms, e sempre com `prefers-reduced-motion`.

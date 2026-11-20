@@ -55,7 +55,7 @@ describe('PreferenciasModal', () => {
     expect(fechar).toHaveBeenCalledTimes(2)
   })
 
-  it('permite selecionar modo escuro e preset lima', () => {
+  it('permite selecionar modo escuro e preset musgo', () => {
     render(
       <PreferenciasProvider>
         <PreferenciasModal aberta={true} aoFechar={() => {}} />
@@ -64,7 +64,21 @@ describe('PreferenciasModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /^escuro$/i }))
     expect(document.documentElement.dataset.tema).toBe('escuro')
 
-    fireEvent.click(screen.getByRole('button', { name: /lima/i }))
-    expect(document.documentElement.dataset.preset).toBe('lima')
+    fireEvent.click(screen.getByRole('button', { name: /^musgo$/i }))
+    expect(document.documentElement.dataset.preset).toBe('musgo')
+  })
+
+  it('lista exatamente os presets Coral, Musgo e Céu', () => {
+    render(
+      <PreferenciasProvider>
+        <PreferenciasModal aberta={true} aoFechar={() => {}} />
+      </PreferenciasProvider>
+    )
+    expect(screen.getByRole('button', { name: /^coral$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^musgo$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^céu$/i })).toBeInTheDocument()
+    for (const antigo of [/azul/i, /lima/i, /esmeralda/i, /índigo/i]) {
+      expect(screen.queryByRole('button', { name: antigo })).toBeNull()
+    }
   })
 })

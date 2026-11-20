@@ -51,6 +51,19 @@ describe('CardConselheiroMetas', () => {
     expect(screen.getByRole('link', { name: /ver metas/i })).toHaveAttribute('href', '/metas')
   })
 
+  it('o ícone sobre o gradiente da sugestão usa sobre-imagem, não sobre-principal', async () => {
+    servidor.use(
+      http.get('/api/metas/conselheiro', () => HttpResponse.json(conselheiroComSugestoes)),
+    )
+
+    renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
+
+    const titulo = await screen.findByRole('heading', { name: 'IPVA 2027' })
+    const icone = titulo.closest('div.flex')?.querySelector('span')
+    expect(icone?.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(icone?.className).not.toContain('--cor-sobre-principal')
+  })
+
   it('exibe mensagem amigável quando a sobra do mês for zero ou negativa', async () => {
     servidor.use(
       http.get('/api/metas/conselheiro', () =>

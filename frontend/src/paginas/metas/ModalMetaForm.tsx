@@ -226,7 +226,7 @@ export function ModalMetaForm({
                     }`}
                   >
                     <span
-                      className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[var(--cor-sobre-principal)]"
+                      className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[var(--cor-sobre-imagem)]"
                       style={{
                         background: `linear-gradient(135deg, ${p.corGradienteInicio}, ${p.corGradienteFim})`,
                       }}
