@@ -94,6 +94,15 @@ describe('ModalMetaForm', () => {
     )
   })
 
+  it('o ícone do preset sobre o gradiente usa sobre-imagem, não sobre-principal', () => {
+    render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+
+    const botao = screen.getByRole('button', { name: /viagem & férias/i })
+    const icone = botao.querySelector('span')
+    expect(icone?.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(icone?.className).not.toContain('--cor-sobre-principal')
+  })
+
   it('preenche dados na edição e permite exclusão da meta', async () => {
     const user = userEvent.setup()
     const aoSalvar = vi.fn()

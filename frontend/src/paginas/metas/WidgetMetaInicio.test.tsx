@@ -49,4 +49,15 @@ describe('WidgetMetaInicio', () => {
     const link = screen.getByRole('link', { name: /ver metas/i })
     expect(link).toHaveAttribute('href', '/metas')
   })
+
+  it('o ícone sobre o gradiente usa sobre-imagem, não sobre-principal', async () => {
+    servidor.use(http.get('/api/metas', () => HttpResponse.json([metaExemplo])))
+
+    const { container } = renderComApp(<WidgetMetaInicio />, '/')
+
+    await screen.findByRole('heading', { name: 'Reserva de Emergência' })
+    const icone = container.querySelector('svg')?.parentElement
+    expect(icone?.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(icone?.className).not.toContain('--cor-sobre-principal')
+  })
 })

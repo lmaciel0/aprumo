@@ -48,6 +48,19 @@ describe('CardMeta', () => {
     expect(barra).toHaveAttribute('aria-valuenow', '40')
   })
 
+  it('título e ícone de editar sobre a foto usam sobre-imagem, não sobre-principal', () => {
+    render(<CardMeta meta={metaExemplo} aoEditar={vi.fn()} />)
+
+    const titulo = screen.getByRole('heading', { name: 'Reserva de Emergência' })
+    expect(titulo.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(titulo.className).not.toContain('--cor-sobre-principal')
+
+    const editar = screen.getByRole('button', { name: /editar reserva de emergência/i })
+    expect(editar.className).toContain('text-[var(--cor-sobre-imagem)]/80')
+    expect(editar.className).toContain('hover:text-[var(--cor-sobre-imagem)]')
+    expect(editar.className).not.toContain('--cor-sobre-principal')
+  })
+
   it('exibe ritmo mensal sugerido quando houver prazo', () => {
     render(<CardMeta meta={metaExemplo} />)
 

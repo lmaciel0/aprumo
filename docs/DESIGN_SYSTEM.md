@@ -30,6 +30,7 @@ Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "E
 | `--cor-sobre-principal` | `#f4ede0` | `#141415` | Texto e ícone sobre `--cor-principal`. |
 | `--cor-sobre-principal-fundo` | `#14213d` | `#141415` | Texto e ícone sobre `--cor-principal-fundo`. |
 | `--cor-sobre-principal-suave` | `#fbede9` | `#3a1a16` | Texto secundário sobre `--cor-principal` (card da sobra). |
+| `--cor-sobre-imagem` | `#f4ede0` | `#f4ede0` | Texto e ícone sobre foto ou imagem com véu escuro, igual nos dois temas. |
 | `--cor-positivo` | `#2e7d4f` | `#4cc38a` | Verde de receitas em barras e fundos (não em texto pequeno). |
 | `--cor-positivo-texto` | `#1f6b3f` | `#5fd68f` | Verde para texto pequeno (4,5:1 sobre card, fundo e chip). |
 | `--cor-negativo` | `#b42318` | `#e5484d` | Vermelho de despesas, bordas de erro e ações destrutivas em barras e fundos. |

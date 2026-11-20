@@ -41,7 +41,7 @@ export function WidgetMetaInicio({ className, style }: WidgetMetaInicioProps = {
       <div className="flex min-w-0 flex-1 items-center gap-3">
         {/* Ícone com gradiente do preset */}
         <div
-          className="flex size-9 shrink-0 items-center justify-center rounded-xl text-[var(--cor-sobre-principal)] shadow-xs"
+          className="flex size-9 shrink-0 items-center justify-center rounded-xl text-[var(--cor-sobre-imagem)] shadow-xs"
           style={{
             background: `linear-gradient(135deg, ${metaAtiva.corGradienteInicio || preset.corGradienteInicio}, ${metaAtiva.corGradienteFim || preset.corGradienteFim})`,
           }}

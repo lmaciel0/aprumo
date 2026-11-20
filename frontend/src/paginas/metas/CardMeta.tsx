@@ -70,7 +70,7 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
                 onClick={() => aoEditar(meta)}
                 aria-label={`Editar ${meta.titulo}`}
                 title={`Editar ${meta.titulo}`}
-                className="inline-flex size-7 cursor-pointer items-center justify-center rounded-full bg-black/30 text-[var(--cor-sobre-principal)]/80 transition-colors hover:bg-black/50 hover:text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-[var(--cor-sobre-principal)]"
+                className="inline-flex size-7 cursor-pointer items-center justify-center rounded-full bg-black/30 text-[var(--cor-sobre-imagem)]/80 transition-colors hover:bg-black/50 hover:text-[var(--cor-sobre-imagem)] focus-visible:outline-2 focus-visible:outline-[var(--cor-sobre-imagem)]"
               >
                 <Pencil className="size-3.5" />
               </button>
@@ -82,7 +82,7 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
         <div className="absolute right-3 bottom-3 left-3 z-10">
           <h3
             id={idTitulo}
-            className="m-0 truncate text-base font-bold text-[var(--cor-sobre-principal)] drop-shadow-sm"
+            className="m-0 truncate text-base font-bold text-[var(--cor-sobre-imagem)] drop-shadow-sm"
           >
             {meta.titulo}
           </h3>

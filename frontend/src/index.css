@@ -26,6 +26,8 @@
   --cor-sobre-principal-fundo: #14213d;
   /* Texto secundário sobre --cor-principal (ex.: card de sobra). */
   --cor-sobre-principal-suave: #fbede9;
+  /* Texto e ícone sobre foto ou imagem com véu escuro; igual nos dois temas. */
+  --cor-sobre-imagem: #f4ede0;
   --cor-positivo: #2e7d4f;
   /* Verde e vermelho da paleta servem para barras e fundos. Texto pequeno usa estes tons mais escuros,
      que chegam a 4,5:1 (WCAG AA) sobre o card, o fundo e os fundos de chip. */

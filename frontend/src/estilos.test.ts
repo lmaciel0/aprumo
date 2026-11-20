@@ -78,6 +78,14 @@ describe('tokens de cor', () => {
     expect(blocoEscuro).toMatch(/--cor-elevado:\s*#232325;/)
   })
 
+  it('sobre-imagem é creme em :root e não é redefinido no escuro nem nos presets', () => {
+    expect(blocoClaro).toMatch(/--cor-sobre-imagem:\s*#f4ede0;/)
+    expect(blocoEscuro).not.toMatch(/--cor-sobre-imagem/)
+    for (const [tema, preset] of [['claro', 'musgo'], ['claro', 'ceu'], ['escuro', 'musgo'], ['escuro', 'ceu']] as const) {
+      expect(blocoDoPreset(tema, preset)).not.toMatch(/--cor-sobre-imagem/)
+    }
+  })
+
   it('celula_paga_e_diferenca_negativa_usam_os_tons_de_texto', () => {
     expect(css).toMatch(/\.celula-paga\s*\{\s*color:\s*var\(--cor-positivo-texto\);?\s*\}/)
     expect(css).toMatch(/\.diferenca-negativa\s*\{\s*color:\s*var\(--cor-negativo-texto\);?\s*\}/)
