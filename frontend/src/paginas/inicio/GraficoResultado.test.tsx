@@ -29,6 +29,60 @@ async function renderizar(serie = serieDeTeste()) {
   return grafico
 }
 
+// 15/10/2026 ao meio-dia em São Paulo: outubro é o mês atual.
+const HOJE = new Date('2026-10-15T15:00:00Z')
+
+describe('GraficoResultado: fio de prumo', () => {
+  async function comHoje(hoje: Date, mes = 10, serie = serieDeTeste()) {
+    render(<GraficoResultado ano={2026} mes={mes} serie={serie} hoje={hoje} />)
+    const grafico = await screen.findByRole('group', { name: 'Gráfico do resultado de cada mês em 2026' })
+    await waitFor(() => expect(grafico.querySelectorAll('.recharts-bar')).toHaveLength(4))
+    return grafico
+  }
+
+  it('o mês atual tem um fio de 2 px em --cor-principal, escondido do leitor de tela', async () => {
+    const grafico = await comHoje(HOJE)
+
+    const fios = grafico.querySelectorAll('[data-fio-prumo]')
+    expect(fios).toHaveLength(1)
+    const linha = fios[0]!.tagName === 'line' ? fios[0]! : fios[0]!.querySelector('line')!
+    expect(linha).toHaveAttribute('stroke', 'var(--cor-principal)')
+    expect(linha).toHaveAttribute('stroke-width', '2')
+    expect(fios[0]!.closest('[aria-hidden="true"]') ?? fios[0]).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('o fio fica na coluna do mês atual, não na do mês selecionado', async () => {
+    const grafico = await comHoje(HOJE, 3)
+
+    const x = (el: Element) => Number(el.getAttribute('x1') ?? el.getAttribute('x'))
+    const fio = grafico.querySelector('[data-fio-prumo]')!
+    const linha = fio.tagName === 'line' ? fio : fio.querySelector('line')!
+    const rotuloOut = within(grafico).getByText('Out').closest('g')!
+    const centroOut = Number(/translate\(([-\d.]+)/.exec(rotuloOut.getAttribute('transform') ?? '')?.[1])
+    expect(x(linha)).toBeCloseTo(centroOut, 0)
+  })
+
+  it('mês atual sem valores ainda mostra o fio', async () => {
+    const grafico = await comHoje(HOJE, 10, zeroSerie())
+
+    expect(grafico.querySelectorAll('[data-fio-prumo]')).toHaveLength(1)
+  })
+
+  it('ano exibido diferente do atual não tem fio', async () => {
+    const grafico = await comHoje(new Date('2027-10-15T15:00:00Z'))
+
+    expect(grafico.querySelectorAll('[data-fio-prumo]')).toHaveLength(0)
+  })
+
+  it('não há mais contorno em caixa no mês', async () => {
+    const grafico = await comHoje(HOJE)
+
+    expect(grafico.querySelector('.recharts-reference-area')).toBeNull()
+    expect(grafico.innerHTML).not.toContain('--cor-principal-fundo')
+    expect(grafico.innerHTML).not.toMatch(/outline/)
+  })
+})
+
 describe('GraficoResultado', () => {
   it('tem_regiao_nomeada_grupo_e_legenda', async () => {
     await renderizar()
