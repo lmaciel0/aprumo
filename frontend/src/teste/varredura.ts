@@ -5,7 +5,6 @@ import { join, resolve } from 'node:path'
 /** Arquivos e pastas que ficam para as fases 3 e 4 (caminhos relativos a `src/`; pasta termina em `/`). */
 export const EXCECOES_FASE_3_4: string[] = [
   'paginas/metas/',
-  'paginas/cartoes/CardCartao.tsx',
 ]
 
 /**
@@ -22,6 +21,7 @@ export const PILULAS_PERMITIDAS: Array<{ arquivo: string; motivo: string }> = [
   { arquivo: 'layout/Logo.tsx', motivo: 'marca do logo, círculo com a inicial (como avatar)' },
   { arquivo: 'auth/LayoutAuth.tsx', motivo: 'marca do logo, círculo com a inicial (como avatar)' },
   { arquivo: 'paginas/mais/MaisPage.tsx', motivo: 'avatar da conta' },
+  { arquivo: 'paginas/cartoes/CardCartao.tsx', motivo: 'trilho e barra de progresso do limite' },
   { arquivo: 'paginas/cartoes/CartoesPage.tsx', motivo: 'trilho do esqueleto de progresso do limite' },
   { arquivo: 'paginas/inicio/OndeMaisGastou.tsx', motivo: 'trilho e barra de progresso' },
   { arquivo: 'paginas/inicio/ResumoCartoes.tsx', motivo: 'trilho e barra de progresso do limite' },
