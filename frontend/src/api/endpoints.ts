@@ -1,3 +1,4 @@
+import { conselheiroDaApi, metaDaApi, metaParaApi } from './adaptadorMetas'
 import { api } from './cliente'
 
 import type {
@@ -18,6 +19,7 @@ import type {
   ItemResponse,
   LancamentoResponse,
   LoginRequest,
+  MetaApi,
   MetaRequest,
   MetaResponse,
   NotaFixadaResponse,
@@ -26,6 +28,7 @@ import type {
   NotaResumoResponse,
   RedefinirSenhaRequest,
   RelatorioAnualResponse,
+  ResumoConselheiroApi,
   ResumoConselheiroResponse,
   ResumoResponse,
   SaldoResponse,
@@ -123,18 +126,20 @@ export const endpoints = {
   relatorios: {
     ano: (ano: number) => api<RelatorioAnualResponse>(`/api/relatorios/ano/${ano}`),
   },
+  // A API de metas tem outro formato; o adaptador converte na ida e na volta.
   metas: {
-    listar: () => api<MetaResponse[]>('/api/metas'),
-    criar: (req: MetaRequest) => api<MetaResponse>('/api/metas', { method: 'POST', ...json(req) }),
-    atualizar: (id: number, req: MetaRequest) =>
-      api<MetaResponse>(`/api/metas/${id}`, { method: 'PUT', ...json(req) }),
-    guardar: (id: number, req: AporteMetaRequest) =>
-      api<MetaResponse>(`/api/metas/${id}/guardar`, { method: 'PATCH', ...json(req) }),
-    resgatar: (id: number, req: AporteMetaRequest) =>
-      api<MetaResponse>(`/api/metas/${id}/resgatar`, { method: 'PATCH', ...json(req) }),
+    listar: async (): Promise<MetaResponse[]> => (await api<MetaApi[]>('/api/metas')).map(metaDaApi),
+    criar: async (req: MetaRequest): Promise<MetaResponse> =>
+      metaDaApi(await api<MetaApi>('/api/metas', { method: 'POST', ...json(metaParaApi(req)) })),
+    atualizar: async (id: number, req: MetaRequest): Promise<MetaResponse> =>
+      metaDaApi(await api<MetaApi>(`/api/metas/${id}`, { method: 'PUT', ...json(metaParaApi(req)) })),
+    guardar: async (id: number, req: AporteMetaRequest): Promise<MetaResponse> =>
+      metaDaApi(await api<MetaApi>(`/api/metas/${id}/guardar`, { method: 'PATCH', ...json(req) })),
+    resgatar: async (id: number, req: AporteMetaRequest): Promise<MetaResponse> =>
+      metaDaApi(await api<MetaApi>(`/api/metas/${id}/resgatar`, { method: 'PATCH', ...json(req) })),
     excluir: (id: number) => api<void>(`/api/metas/${id}`, { method: 'DELETE' }),
-    conselheiro: (ano: number, mes: number) =>
-      api<ResumoConselheiroResponse>(`/api/metas/conselheiro?${consulta(ano, mes)}`),
+    conselheiro: async (ano: number, mes: number): Promise<ResumoConselheiroResponse> =>
+      conselheiroDaApi(await api<ResumoConselheiroApi>(`/api/metas/conselheiro?${consulta(ano, mes)}`)),
   },
   resumo: (ano: number, mes: number) => api<ResumoResponse>(`/api/resumo?${consulta(ano, mes)}`),
   saldo: (ano: number, mes: number) => api<SaldoResponse>(`/api/saldo?${consulta(ano, mes)}`),
