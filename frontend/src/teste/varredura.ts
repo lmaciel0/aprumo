@@ -6,7 +6,6 @@ import { join, resolve } from 'node:path'
 export const EXCECOES_FASE_3_4: string[] = [
   'paginas/metas/',
   'paginas/cartoes/CardCartao.tsx',
-  'paginas/painel/CardReflexao.tsx',
   'paginas/lancamentos/FaixaSaldo.tsx',
   'paginas/lancamentos/ReceitasCard.tsx',
   'paginas/inicio/GraficoResultado.tsx',
