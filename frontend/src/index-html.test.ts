@@ -39,7 +39,7 @@ describe('index.html: metadados', () => {
   })
 
   it('preserva_as_metas_existentes', () => {
-    expect(meta('name', 'theme-color')).toBe('#27187E')
+    expect(meta('name', 'theme-color')).toBe('#14213D')
     expect(meta('name', 'viewport')).toContain('width=device-width')
     expect(html).toContain('<link rel="manifest" href="/manifest.webmanifest" />')
     expect(html).toContain('<title>Aprumo</title>')

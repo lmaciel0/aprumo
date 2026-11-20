@@ -25,6 +25,7 @@ interface Manifest {
   name?: string
   description?: string
   lang?: string
+  background_color?: string
   theme_color?: string
   categories?: string[]
   icons?: Icone[]
@@ -43,7 +44,11 @@ describe('manifest.webmanifest', () => {
   it('identifica o app pela raiz e usa idioma e cor do tema', () => {
     expect(manifest.id).toBe('/')
     expect(manifest.lang).toBe('pt-BR')
-    expect(manifest.theme_color).toBe('#27187E')
+    expect(manifest.theme_color).toBe('#14213D')
+  })
+
+  it('usa o creme da marca como cor de fundo do app', () => {
+    expect(manifest.background_color).toBe('#F4EDE0')
   })
 
   it('descreve o app atual, sem promessa de futuro, citando finanças e notas', () => {
