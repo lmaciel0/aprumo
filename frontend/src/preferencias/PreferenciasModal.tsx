@@ -12,10 +12,9 @@ const foco =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
 
 const PRESETS: Array<{ id: PresetCor; nome: string; cor: string }> = [
-  { id: 'azul', nome: 'Azul Aprumo', cor: '#3b82f6' },
-  { id: 'lima', nome: 'Lima', cor: '#84cc16' },
-  { id: 'esmeralda', nome: 'Esmeralda', cor: '#10b981' },
-  { id: 'indigo', nome: 'Índigo', cor: '#6366f1' },
+  { id: 'coral', nome: 'Coral', cor: '#FF6B5B' },
+  { id: 'musgo', nome: 'Musgo', cor: '#8DB384' },
+  { id: 'ceu', nome: 'Céu', cor: '#7FB3D5' },
 ]
 
 export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) {
@@ -153,7 +152,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
             <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
               Preset de cor
             </label>
-            <div className="mt-2 grid grid-cols-2 gap-2">
+            <div className="mt-2 grid grid-cols-3 gap-2">
               {PRESETS.map((p) => {
                 const ativo = preferencias.presetCor === p.id
                 return (

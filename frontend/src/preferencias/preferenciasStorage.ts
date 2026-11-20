@@ -1,4 +1,4 @@
-import type { IdAtalhoMobile, PreferenciasUsuario } from './preferenciasTipos'
+import type { IdAtalhoMobile, PresetCor, PreferenciasUsuario } from './preferenciasTipos'
 
 export const CHAVE_PREFERENCIAS = 'aprumo-preferencias'
 
@@ -6,11 +6,30 @@ export const ATALHOS_PADRAO: IdAtalhoMobile[] = ['novo-lancamento', 'cartoes', '
 
 export const PREFERENCIAS_PADRAO: PreferenciasUsuario = {
   modoTema: 'sistema',
-  presetCor: 'azul',
+  presetCor: 'coral',
   layoutLargura: 'centralizado',
   barraFixa: true,
   dockRecolhida: false,
   atalhosMobile: ATALHOS_PADRAO,
+}
+
+const PRESETS_VALIDOS: PresetCor[] = ['coral', 'musgo', 'ceu']
+
+const PRESETS_ANTIGOS: Record<string, PresetCor> = {
+  azul: 'coral',
+  lima: 'musgo',
+  esmeralda: 'musgo',
+  indigo: 'ceu',
+}
+
+export function migrarPresetCor(valor: unknown): PresetCor {
+  if (typeof valor !== 'string') {
+    return PREFERENCIAS_PADRAO.presetCor
+  }
+  if (PRESETS_VALIDOS.includes(valor as PresetCor)) {
+    return valor as PresetCor
+  }
+  return (Object.hasOwn(PRESETS_ANTIGOS, valor) && PRESETS_ANTIGOS[valor]) || PREFERENCIAS_PADRAO.presetCor
 }
 
 const ATALHOS_VALIDOS: IdAtalhoMobile[] = [
@@ -55,9 +74,7 @@ export function lerPreferenciasSalvas(): PreferenciasUsuario {
         modoTema: ['claro', 'escuro', 'sistema'].includes(parsed.modoTema)
           ? parsed.modoTema
           : PREFERENCIAS_PADRAO.modoTema,
-        presetCor: ['azul', 'lima', 'esmeralda', 'indigo'].includes(parsed.presetCor)
-          ? parsed.presetCor
-          : PREFERENCIAS_PADRAO.presetCor,
+        presetCor: migrarPresetCor(parsed.presetCor),
         layoutLargura: ['centralizado', 'largura-total'].includes(parsed.layoutLargura)
           ? parsed.layoutLargura
           : PREFERENCIAS_PADRAO.layoutLargura,
