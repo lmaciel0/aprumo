@@ -6,8 +6,6 @@ import { join, resolve } from 'node:path'
 export const EXCECOES_FASE_3_4: string[] = [
   'paginas/metas/',
   'paginas/cartoes/CardCartao.tsx',
-  'paginas/lancamentos/FaixaSaldo.tsx',
-  'paginas/lancamentos/ReceitasCard.tsx',
   'paginas/inicio/GraficoResultado.tsx',
 ]
 
@@ -28,6 +26,7 @@ export const PILULAS_PERMITIDAS: Array<{ arquivo: string; motivo: string }> = [
   { arquivo: 'paginas/cartoes/CartoesPage.tsx', motivo: 'trilho do esqueleto de progresso do limite' },
   { arquivo: 'paginas/inicio/OndeMaisGastou.tsx', motivo: 'trilho e barra de progresso' },
   { arquivo: 'paginas/inicio/ResumoCartoes.tsx', motivo: 'trilho e barra de progresso do limite' },
+  { arquivo: 'paginas/lancamentos/ReceitasCard.tsx', motivo: 'trilho e barra de progresso do recebido' },
   { arquivo: 'paginas/categorias/CabecalhoCategorias.tsx', motivo: 'pontos de tipo (despesa e receita)' },
   { arquivo: 'paginas/categorias/LinhaCategoria.tsx', motivo: 'ponto de cor da categoria' },
   { arquivo: 'paginas/categorias/LinhaSubcategoria.tsx', motivo: 'ponto de cor da subcategoria' },
