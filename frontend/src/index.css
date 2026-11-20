@@ -36,6 +36,7 @@
   --cor-negativo-texto: #a11d14;
   /* Texto sobre o vermelho de ações destrutivas. */
   --cor-sobre-negativo: #f4ede0;
+  --cor-sobre-positivo: #ffffff;
   --cor-erro-fundo: #f6dcd5;
   --cor-ok-fundo: #dcead9;
   --cor-aviso-fundo: #f5e2b8;
@@ -86,6 +87,7 @@
   --cor-negativo: #e5484d;
   --cor-negativo-texto: #ff8a80;
   --cor-sobre-negativo: #141415;
+  --cor-sobre-positivo: #141415;
   --cor-erro-fundo: #2e1a1a;
   --cor-ok-fundo: #15261c;
   --cor-aviso-fundo: #2b2410;

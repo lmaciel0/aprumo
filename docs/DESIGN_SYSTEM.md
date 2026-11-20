@@ -36,6 +36,7 @@ Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "E
 | `--cor-negativo` | `#b42318` | `#e5484d` | Vermelho de despesas, bordas de erro e ações destrutivas em barras e fundos. |
 | `--cor-negativo-texto` | `#a11d14` | `#ff8a80` | Vermelho para texto pequeno (4,5:1 sobre card, fundo e chip). |
 | `--cor-sobre-negativo` | `#f4ede0` | `#141415` | Texto sobre `--cor-negativo` (ações destrutivas). |
+| `--cor-sobre-positivo` | `#ffffff` | `#141415` | Texto sobre `--cor-positivo` (botões e selos de status positivo). |
 | `--cor-erro-fundo` | `#f6dcd5` | `#2e1a1a` | Fundo de mensagem de erro. |
 | `--cor-ok-fundo` | `#dcead9` | `#15261c` | Fundo de chip e aviso de sucesso. |
 | `--cor-aviso-fundo` | `#f5e2b8` | `#2b2410` | Fundo de aviso. |

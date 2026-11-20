@@ -55,13 +55,19 @@ function blocoDoPreset(tema: Tema, preset: Preset): string {
   return bloco
 }
 
-/** Hex do token no tema e preset: bloco do preset, senão o do tema, senão o de `:root` (o escuro herda do claro). */
+/**
+ * Hex do token no tema e preset: bloco do preset, senão o do tema, senão o de `:root` (o escuro herda do claro).
+ * Token declarado no primeiro bloco que o traz; se o valor não for hex (var(), color-mix()), falha com o nome
+ * em vez de cair no valor do bloco seguinte.
+ */
 function cor(tema: Tema, preset: Preset, nome: string): string {
-  const re = new RegExp(`--${nome}:\\s*(#[0-9a-fA-F]{3,6})\\s*;`)
+  const re = new RegExp(`--${nome}:\\s*([^;]+);`)
   const blocos = [blocoDoPreset(tema, preset), tema === 'escuro' ? blocoEscuro : '', blocoClaro]
   for (const bloco of blocos) {
-    const valor = re.exec(bloco)?.[1]
-    if (valor) return valor.length === 4 ? '#' + [...valor.slice(1)].map((c) => c + c).join('') : valor.toLowerCase()
+    const valor = re.exec(bloco)?.[1]?.trim()
+    if (valor === undefined) continue
+    if (!/^#[0-9a-fA-F]{3,6}$/.test(valor)) throw new Error(`token --${nome} não é cor hex (${tema}, ${preset}): ${valor}`)
+    return valor.length === 4 ? '#' + [...valor.slice(1)].map((c) => c + c).join('') : valor.toLowerCase()
   }
   throw new Error(`token --${nome} ausente (${tema}, ${preset})`)
 }
@@ -69,6 +75,13 @@ function cor(tema: Tema, preset: Preset, nome: string): string {
 const CASOS_TEMA_PRESET = TEMAS.flatMap((tema) => PRESETS.map((preset) => [tema, preset] as const))
 
 describe('tokens de cor', () => {
+  it('o leitor de hex falha com o nome do token quando o valor declarado é expressão', () => {
+    for (const nome of ['cor-principal-clara', 'cor-grafico-despesas', 'cor-grafico-receitas-previstas', 'cor-grafico-despesas-previstas']) {
+      expect(() => cor('claro', 'base', nome), nome).toThrow(new RegExp(`--${nome} não é cor hex`))
+      expect(() => cor('escuro', 'musgo', nome), nome).toThrow(new RegExp(`--${nome} não é cor hex`))
+    }
+  })
+
   it('o claro usa marinho, creme e coral; o escuro usa grafite', () => {
     expect(token('cor-fundo')).toBe('#f4ede0')
     expect(token('cor-texto')).toBe('#14213d')
@@ -135,6 +148,7 @@ describe('tokens de cor', () => {
   it.each(TEMAS)('sobre-negativo e os tons de texto de positivo, negativo e aviso passam de 4,5:1 (%s)', (tema) => {
     const pares: Array<[string, string]> = [
       ['cor-sobre-negativo', 'cor-negativo'],
+      ['cor-sobre-positivo', 'cor-positivo'],
       ['cor-positivo-texto', 'cor-card'],
       ['cor-positivo-texto', 'cor-fundo'],
       ['cor-positivo-texto', 'cor-ok-fundo'],
