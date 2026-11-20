@@ -72,7 +72,7 @@ export function FaixaSaldo({ ano, mes }: Props) {
     <section
       aria-label="Saldo em conta"
       className={`${medidas} mb-3 text-[var(--cor-sobre-principal)] shadow-[var(--sombra-flutuante)]`}
-      style={{ background: 'linear-gradient(120deg, var(--cor-principal), var(--cor-principal-fim))' }}
+      style={{ background: 'linear-gradient(120deg, var(--cor-principal), var(--cor-principal))' }}
     >
       <Miolo rotulo={rotulo} saldo={consulta.data.saldo} recebido={consulta.data.recebidoNoMes} />
     </section>

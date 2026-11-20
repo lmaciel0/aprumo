@@ -5,43 +5,44 @@ Fonte da verdade: `frontend/src/index.css` (tokens) e os componentes de `fronten
 ## Identidade
 
 - Produto: Aprumo, finanças pessoais e notas. Tom calmo e direto, textos curtos em português do Brasil.
-- Dois temas: claro (padrão, fundo lavanda `#f7f7ff` e destaque índigo escuro) e escuro (fundo neutro obsidian e destaque azul). O tema escuro liga com `data-tema='escuro'` no `<html>`.
+- Dois temas: claro (padrão, fundo creme `#f4ede0`, texto marinho e destaque coral) e escuro (fundo grafite `#141415` e destaque coral claro). O tema escuro liga com `data-tema='escuro'` no `<html>`.
 - Três presets de cor de destaque (ver Presets). O destaque muda, o resto da paleta não.
 - Superfícies translúcidas com leve desfoque (`backdrop-filter: blur(8px)`) sobre um fundo em degradê. O desfoque dos cards é decisão do dono e não se remove.
 - Só tokens `--cor-*`. Cor nunca é o único sinal: estado ativo, erro e pago também têm texto ou forma.
 
 ## Cores
 
-Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "Escuro" é o de `:root[data-tema='escuro']`. Em um preset, `--cor-principal`, `--cor-principal-clara` e `--cor-principal-fim` mudam (ver Presets).
+Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "Escuro" é o de `:root[data-tema='escuro']`. Em um preset, `--cor-principal`, `--cor-sobre-principal` e `--cor-principal-fundo` mudam (ver Presets); `--cor-principal-clara` e os tons de gráfico que dependem deles acompanham.
 
 | Token | Claro | Escuro | Uso |
 |---|---|---|---|
-| `--cor-fundo` | `#f7f7ff` | `#0b0d13` | Fundo da página e base do degradê. |
-| `--cor-principal` | `#27187e` | `#60a5fa` | Destaque: botões primários, links, item ativo, card da sobra. |
-| `--cor-principal-clara` | `#a49ddb` | `#3b82f6` | Variação suave do destaque. |
-| `--cor-positivo` | `#2e9e5b` | `#34d399` | Verde de receitas em barras e fundos (não em texto pequeno). |
-| `--cor-negativo` | `#d64545` | `#ef6b6b` | Vermelho de despesas, bordas de erro e ações destrutivas em barras e fundos. |
-| `--cor-positivo-texto` | `#1f7a45` | `#5fd68f` | Verde para texto pequeno (4,5:1 sobre card e fundo). |
-| `--cor-negativo-texto` | `#b73333` | `#ff8a8a` | Vermelho para texto pequeno (4,5:1 sobre card e fundo). |
-| `--cor-texto` | `#16123a` | `#f1f3f9` | Texto principal. |
-| `--cor-mutado` | `#706e8a` | `#8e95b0` | Texto secundário, rótulos, legendas. |
-| `--cor-linha` | `#e9e8f5` | `#202538` | Bordas, divisores e fundo dos esqueletos. |
-| `--cor-card` | `#fff` | `#131622` | Fundo de cards, campos e modais; base da superfície translúcida. |
-| `--cor-erro-fundo` | `#fdecec` | `#2a151b` | Fundo de mensagem de erro. |
-| `--cor-ok-fundo` | `#e9f6ee` | `#0f291e` | Fundo de chip e aviso de sucesso. |
-| `--cor-aviso-fundo` | `#fff2cb` | `#2b230d` | Fundo de aviso. |
-| `--cor-aviso-texto` | `#7a5f00` | `#fde047` | Texto de aviso sobre `--cor-aviso-fundo`. |
-| `--cor-sobre-principal` | `#fff` | `#0b0d13` | Texto e ícone sobre `--cor-principal`. |
-| `--cor-sobre-negativo` | `#fff` | `#0b0d13` | Texto sobre `--cor-negativo` (ações destrutivas). |
-| `--cor-sobre-principal-suave` | `#cfcbf2` | `#1e293b` | Texto secundário sobre `--cor-principal` (card da sobra). |
-| `--cor-principal-fim` | `#4a36c4` | `#3b82f6` | Fim do degradê do botão das telas de auth (o início é `--cor-principal`). |
-| `--cor-auth-borda` | `#fff` | `#202538` | Borda do card das telas de auth. |
-| `--cor-auth-fundo-fim` | `#f4f7fb` | `#0f121a` | Fim do degradê do card de auth (o início é `--cor-card`). |
-| `--cor-auth-campo-borda` | `transparent` | `#3b82f6` | Contorno dos campos de auth: transparente no claro, 3:1 no escuro (WCAG 1.4.11). |
-| `--cor-grafico-receitas` | `#27187e` | `#60a5fa` | Barras de receitas realizadas no gráfico do ano. |
-| `--cor-grafico-despesas` | `#a49ddb` | `#3b82f6` | Barras de despesas realizadas no gráfico do ano. |
-| `--cor-grafico-receitas-previstas` | `#7d73c4` | `#2563eb` | Fundo das receitas previstas no gráfico do ano. |
-| `--cor-grafico-despesas-previstas` | `#e6e4f7` | `#1e3a8a` | Fundo das despesas previstas no gráfico do ano. |
+| `--cor-fundo` | `#f4ede0` | `#141415` | Fundo da página e base do degradê. |
+| `--cor-card` | `#fbf7f0` | `#19191b` | Fundo de cards, campos e modais; base da superfície translúcida. |
+| `--cor-elevado` | `#ece3d3` | `#232325` | Superfície acima do card, como campo dentro de card ou item em foco. |
+| `--cor-linha` | `#ded9d0` | `#2a2a2c` | Bordas, divisores e fundo dos esqueletos. |
+| `--cor-texto` | `#14213d` | `#ededed` | Texto principal. |
+| `--cor-secundario` | `#3a4459` | `#a1a1a6` | Texto de apoio, um degrau abaixo do principal. |
+| `--cor-mutado` | `#5a6275` | `#8e8e94` | Texto secundário, rótulos, legendas. |
+| `--cor-principal` | `#b83e31` | `#ff6b5b` | Tom do acento seguro como texto, link, borda, anel de foco e fio de prumo. |
+| `--cor-principal-clara` | `color-mix(in srgb, var(--cor-principal) 45%, var(--cor-card))` | `color-mix(in srgb, var(--cor-principal) 45%, var(--cor-card))` | Variação suave do acento, misturada com o card. |
+| `--cor-principal-fundo` | `#ff6b5b` | `#ff6b5b` | Acento vivo, só preenchimento, com `--cor-sobre-principal-fundo` por cima; nunca texto no claro (2,4:1 sobre o creme). |
+| `--cor-sobre-principal` | `#f4ede0` | `#141415` | Texto e ícone sobre `--cor-principal`. |
+| `--cor-sobre-principal-fundo` | `#14213d` | `#141415` | Texto e ícone sobre `--cor-principal-fundo`. |
+| `--cor-sobre-principal-suave` | `#fbede9` | `#3a1a16` | Texto secundário sobre `--cor-principal` (card da sobra). |
+| `--cor-positivo` | `#2e7d4f` | `#4cc38a` | Verde de receitas em barras e fundos (não em texto pequeno). |
+| `--cor-positivo-texto` | `#1f6b3f` | `#5fd68f` | Verde para texto pequeno (4,5:1 sobre card, fundo e chip). |
+| `--cor-negativo` | `#b42318` | `#e5484d` | Vermelho de despesas, bordas de erro e ações destrutivas em barras e fundos. |
+| `--cor-negativo-texto` | `#a11d14` | `#ff8a80` | Vermelho para texto pequeno (4,5:1 sobre card, fundo e chip). |
+| `--cor-sobre-negativo` | `#f4ede0` | `#141415` | Texto sobre `--cor-negativo` (ações destrutivas). |
+| `--cor-erro-fundo` | `#f6dcd5` | `#2e1a1a` | Fundo de mensagem de erro. |
+| `--cor-ok-fundo` | `#dcead9` | `#15261c` | Fundo de chip e aviso de sucesso. |
+| `--cor-aviso-fundo` | `#f5e2b8` | `#2b2410` | Fundo de aviso. |
+| `--cor-aviso-texto` | `#6b4e00` | `#f2c94c` | Texto de aviso sobre `--cor-aviso-fundo`. |
+| `--cor-auth-campo-borda` | `#7d8496` | `#6e6e73` | Contorno dos campos de auth, 3:1 sobre o card (WCAG 1.4.11). |
+| `--cor-grafico-receitas` | `#14213d` | `#a9b8d6` | Barras de receitas realizadas no gráfico do ano. |
+| `--cor-grafico-despesas` | `var(--cor-principal-fundo)` | `var(--cor-principal-fundo)` | Barras de despesas realizadas no gráfico do ano. |
+| `--cor-grafico-receitas-previstas` | `color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card))` | `color-mix(in srgb, var(--cor-grafico-receitas) 40%, var(--cor-card))` | Fundo das receitas previstas no gráfico do ano. |
+| `--cor-grafico-despesas-previstas` | `color-mix(in srgb, var(--cor-grafico-despesas) 40%, var(--cor-card))` | `color-mix(in srgb, var(--cor-grafico-despesas) 40%, var(--cor-card))` | Fundo das despesas previstas no gráfico do ano. |
 | `--cor-nota-vermelho` | `#c0392b` | `#ff8a8a` | Categoria de nota vermelha (4,5:1 sobre `--cor-card`). |
 | `--cor-nota-laranja` | `#b45309` | `#fb9a4b` | Categoria de nota laranja. |
 | `--cor-nota-amarelo` | `#8a6500` | `#f2c94c` | Categoria de nota amarela. |
@@ -59,13 +60,13 @@ Regras de uso:
 
 ## Presets
 
-Três presets de cor de destaque, escolhidos pelo usuário e aplicados com `data-preset` no `<html>`: `lima`, `esmeralda` e `indigo`. Cada um troca só `--cor-principal`, `--cor-principal-clara` e `--cor-principal-fim`; no tema escuro também fixa `--cor-sobre-principal` em `#0b0d13`. Sem preset, valem os tokens da tabela de Cores.
+Três presets de cor de destaque, escolhidos pelo usuário e aplicados com `data-preset` no `<html>`: `coral`, `musgo` e `ceu`. `coral` é o padrão e não tem bloco próprio: valem os tokens da tabela de Cores. `musgo` e `ceu` trocam só `--cor-principal`, `--cor-sobre-principal` e `--cor-principal-fundo`, em cada tema.
 
-| Preset | Principal (claro) | Clara (claro) | Fim (claro) | Principal (escuro) | Clara (escuro) | Fim (escuro) |
+| Preset | Principal (claro) | Sobre principal (claro) | Fundo (claro) | Principal (escuro) | Sobre principal (escuro) | Fundo (escuro) |
 |---|---|---|---|---|---|---|
-| `lima` | `#84cc16` | `#4d7c0f` | `#65a30d` | `#a3e635` | `#4d7c0f` | `#84cc16` |
-| `esmeralda` | `#059669` | `#047857` | `#10b981` | `#10b981` | `#047857` | `#34d399` |
-| `indigo` | `#4f46e5` | `#3730a3` | `#6366f1` | `#6366f1` | `#3730a3` | `#818cf8` |
+| `coral` | `#b83e31` | `#f4ede0` | `#ff6b5b` | `#ff6b5b` | `#141415` | `#ff6b5b` |
+| `musgo` | `#3f6b47` | `#f4ede0` | `#8db384` | `#9cc79f` | `#141415` | `#9cc79f` |
+| `ceu` | `#245e86` | `#f4ede0` | `#7fb3d5` | `#8ec1e3` | `#141415` | `#8ec1e3` |
 
 Todo componente novo precisa ficar legível nos três presets nos dois temas, o que só vale se ele usar tokens.
 

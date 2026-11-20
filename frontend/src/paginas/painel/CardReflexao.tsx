@@ -45,7 +45,7 @@ export function CardReflexao() {
   return (
     <section
       aria-labelledby="titulo-reflexao-dia"
-      className="relative overflow-hidden rounded-[var(--raio-card,22px)] bg-gradient-to-br from-[var(--cor-principal)] to-[var(--cor-principal-fim)] p-5 text-[var(--cor-sobre-principal)] shadow-sm transition-all duration-200 sm:p-6"
+      className="relative overflow-hidden rounded-[var(--raio-card,22px)] bg-gradient-to-br from-[var(--cor-principal)] to-[var(--cor-principal)] p-5 text-[var(--cor-sobre-principal)] shadow-sm transition-all duration-200 sm:p-6"
     >
       {/* Luz ambiente suave decorativa no fundo */}
       <div
