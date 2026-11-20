@@ -48,7 +48,7 @@ export function GrupoCategoria({ nome, lancamentos, busca, idMudandoStatus, aoMu
                 <span className="valor font-semibold">{l.vencimento === null ? '—' : diaEMes(l.vencimento)}</span>
                 <span className="line-clamp-2 min-w-0 break-words font-medium">{l.itemNome}</span>
                 <span
-                  className={`valor font-medium ${l.tipo === 'RECEITA' ? 'text-[var(--cor-positivo)]' : ''}`}
+                  className={`valor font-medium ${l.tipo === 'RECEITA' ? 'text-[var(--cor-positivo-texto)]' : ''}`}
                 >
                   {formatarMoeda(l.valor)}
                 </span>
@@ -59,7 +59,7 @@ export function GrupoCategoria({ nome, lancamentos, busca, idMudandoStatus, aoMu
                 aria-label={`${l.itemNome}: ${rotulo}. Tocar para marcar como ${pago ? 'previsto' : 'pago'}`}
                 onClick={() => aoMudarStatus(l.id, pago ? 'PREVISTO' : 'PAGO')}
                 className={`inline-flex min-h-11 min-w-[5.5rem] items-center justify-center gap-1 rounded-md px-3 text-[12px] font-semibold disabled:opacity-60 ${classeFoco} ${
-                  pago ? 'bg-[var(--cor-ok-fundo)] text-[var(--cor-positivo)]' : 'bg-[var(--cor-fundo)] text-[var(--cor-principal)]'
+                  pago ? 'bg-[var(--cor-ok-fundo)] text-[var(--cor-positivo-texto)]' : 'bg-[var(--cor-fundo)] text-[var(--cor-principal)]'
                 }`}
               >
                 {pago && <Check size={12} aria-hidden="true" />}

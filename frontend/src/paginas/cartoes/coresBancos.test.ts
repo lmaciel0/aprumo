@@ -55,6 +55,9 @@ describe('materialDoBanco', () => {
     ['Nubank Ultravioleta', 'Nubank'],
     ['Banco Inter', 'Inter'],
     ['c6 carbon', 'C6 Bank'],
+    ['C6Bank', 'C6 Bank'],
+    ['C6 Bank', 'C6 Bank'],
+    ['c6bank black', 'C6 Bank'],
   ])('"%s" casa com %s, sem depender de acento nem de caixa', (nome, banco) => {
     const esperado = BANCOS.find(([n]) => n === banco)!
     expect(materialDoBanco(nome).fundo).toBe(gradiente(esperado[1], esperado[2]))
@@ -66,7 +69,7 @@ describe('materialDoBanco', () => {
     expect(materialDoBanco('Nubank Itaú')).toEqual(materialDoBanco('Nubank'))
   })
 
-  it.each(['', '   ', 'Cartão Loja', 'Cartão Roxo', 'Cartão Azul', 'Cartão Verde', 'Cartão Vermelho', 'Ultravioleta'])(
+  it.each(['', '   ', 'Cartão Loja', 'Cartão Roxo', 'Cartão Azul', 'Cartão Verde', 'Cartão Vermelho', 'Ultravioleta', 'abc6x'])(
     '"%s" é neutro, com variáveis de tema',
     (nome) => {
       expect(materialDoBanco(nome)).toEqual(NEUTRO)

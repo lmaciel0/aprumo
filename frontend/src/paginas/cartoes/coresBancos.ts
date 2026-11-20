@@ -29,7 +29,7 @@ const BANCOS: Banco[] = [
   { rotulo: 'Bradesco', casa: /bradesco/, claro: '#CC092F', escuro: '#8E0620', texto: '#F4EDE0' },
   { rotulo: 'Santander', casa: /santander/, claro: '#EC0000', escuro: '#B00000', texto: '#FFFFFF' },
   { rotulo: 'American Express', casa: /\bamex\b|american express/, claro: '#2E77BB', escuro: '#1F5A91', texto: '#FFFFFF' },
-  { rotulo: 'C6 Bank', casa: /\bc6\b/, claro: '#2B2B2B', escuro: '#141414', texto: '#EDEDED' },
+  { rotulo: 'C6 Bank', casa: /\bc6(\b|bank)/, claro: '#2B2B2B', escuro: '#141414', texto: '#EDEDED' },
   { rotulo: 'Caixa', casa: /\bcaixa\b/, claro: '#005CA9', escuro: '#003F75', texto: '#F4EDE0' },
   { rotulo: 'Mercado Pago', casa: /mercado ?pago/, claro: '#00B1EA', escuro: '#0090C1', texto: '#000000' },
   { rotulo: 'Banco do Brasil', casa: /banco do brasil|\bbb\b/, claro: '#FCFC30', escuro: '#E3E32A', texto: '#14213D' },
