@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { renderComApp } from '../../teste/render'
@@ -30,6 +30,52 @@ describe('CardReflexao', () => {
     renderComApp(<CardReflexao />)
 
     expect(screen.getByText('Sabedoria diária')).toHaveClass('hidden', 'sm:inline')
+  })
+
+  it('é um card neutro, sem bloco coral, degradê, caixa-alta nem negrito', () => {
+    relogioEm('2026-10-31T15:00:00Z')
+    const { container } = renderComApp(<CardReflexao />)
+
+    const secao = container.querySelector('section') as HTMLElement
+    expect(secao).toHaveClass('card')
+    const html = secao.outerHTML
+    expect(html).not.toMatch(/bg-\[var\(--cor-principal\)\]/)
+    expect(html).not.toMatch(/gradient|blur|uppercase|font-bold|tracking-wide|amber|--cor-sobre-principal/)
+  })
+
+  it('rotula a seção em sentence case, em texto discreto', () => {
+    relogioEm('2026-10-31T15:00:00Z')
+    renderComApp(<CardReflexao />)
+
+    const titulo = screen.getByRole('heading', { level: 2, name: 'Reflexão do dia' })
+    expect(titulo).toHaveClass('text-xs', 'font-medium', 'text-[var(--cor-mutado)]')
+    expect(titulo).not.toHaveClass('uppercase')
+  })
+
+  it('mantém os três botões só de ícone com alvo de 44 px e foco visível', () => {
+    relogioEm('2026-10-31T15:00:00Z')
+    renderComApp(<CardReflexao />)
+
+    for (const nome of [/copiar reflexão/i, /favoritar reflexão/i, /outra reflexão/i]) {
+      const botao = screen.getByRole('button', { name: nome })
+      expect(botao).toHaveClass('size-11', 'rounded-[10px]', 'text-[var(--cor-secundario)]')
+      expect(botao.className).toMatch(/focus-visible:outline-2/)
+    }
+  })
+
+  it('quebra a citação longa sem estourar o card', () => {
+    relogioEm('2026-10-31T15:00:00Z')
+    renderComApp(<CardReflexao />)
+
+    expect(screen.getByTestId('frase-reflexao').closest('blockquote')).toHaveClass('min-w-0', 'break-words', 'font-normal')
+    expect(screen.getByTestId('autor-reflexao')).toHaveClass('font-medium', 'text-[var(--cor-secundario)]')
+  })
+
+  it('título do botão de copiar volta a "Copiar citação" antes de copiar', () => {
+    relogioEm('2026-10-31T15:00:00Z')
+    renderComApp(<CardReflexao />)
+
+    expect(screen.getByRole('button', { name: /copiar reflexão/i })).toHaveAttribute('title', 'Copiar citação')
   })
 
   it('permite alternar para outra reflexão ao clicar no botão', async () => {
@@ -79,5 +125,28 @@ describe('CardReflexao', () => {
     expect(writeTextMock).toHaveBeenCalledTimes(1)
     expect(writeTextMock).toHaveBeenCalledWith(expect.stringContaining('“'))
     expect(botaoCopiar).toHaveAttribute('title', 'Copiado')
+  })
+
+  it('o título "Copiado" volta a "Copiar citação" depois do tempo', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-10-31T15:00:00Z'))
+    Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } })
+    renderComApp(<CardReflexao />)
+
+    const botao = screen.getByRole('button', { name: /copiar reflexão/i })
+    await act(async () => {
+      fireEvent.click(botao)
+    })
+    expect(botao).toHaveAttribute('title', 'Copiado')
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1999)
+    })
+    expect(botao).toHaveAttribute('title', 'Copiado')
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2)
+    })
+    expect(botao).toHaveAttribute('title', 'Copiar citação')
   })
 })

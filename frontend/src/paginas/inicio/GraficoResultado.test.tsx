@@ -23,11 +23,86 @@ const serieDeTeste = (): PontoSerie[] => {
 }
 
 async function renderizar(serie = serieDeTeste()) {
-  render(<GraficoResultado ano={2026} mes={10} serie={serie} />)
+  render(<GraficoResultado ano={2026} mes={10} serie={serie} hoje={new Date('2026-10-15T15:00:00Z')} />)
   const grafico = await screen.findByRole('group', { name: 'Gráfico do resultado de cada mês em 2026' })
   await waitFor(() => expect(grafico.querySelectorAll('.recharts-bar')).toHaveLength(4))
   return grafico
 }
+
+// 15/10/2026 ao meio-dia em São Paulo: outubro é o mês atual.
+const HOJE = new Date('2026-10-15T15:00:00Z')
+
+describe('GraficoResultado: fio de prumo', () => {
+  async function comHoje(hoje: Date, mes = 10, serie = serieDeTeste()) {
+    render(<GraficoResultado ano={2026} mes={mes} serie={serie} hoje={hoje} />)
+    const grafico = await screen.findByRole('group', { name: 'Gráfico do resultado de cada mês em 2026' })
+    await waitFor(() => expect(grafico.querySelectorAll('.recharts-bar')).toHaveLength(4))
+    return grafico
+  }
+
+  it('o mês atual tem um fio de 2 px em --cor-principal, escondido do leitor de tela', async () => {
+    const grafico = await comHoje(HOJE)
+
+    const fios = grafico.querySelectorAll('[data-fio-prumo]')
+    expect(fios).toHaveLength(1)
+    const linha = fios[0]!.tagName === 'line' ? fios[0]! : fios[0]!.querySelector('line')!
+    expect(linha).toHaveAttribute('stroke', 'var(--cor-principal)')
+    expect(linha).toHaveAttribute('stroke-width', '2')
+    expect(fios[0]!.closest('[aria-hidden="true"]') ?? fios[0]).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('o fio fica na coluna do mês atual, não na do mês selecionado', async () => {
+    const grafico = await comHoje(HOJE, 3)
+
+    const x = (el: Element) => Number(el.getAttribute('x1') ?? el.getAttribute('x'))
+    const fio = grafico.querySelector('[data-fio-prumo]')!
+    const linha = fio.tagName === 'line' ? fio : fio.querySelector('line')!
+    const rotuloOut = within(grafico).getByText('Out').closest('g')!
+    const centroOut = Number(/translate\(([-\d.]+)/.exec(rotuloOut.getAttribute('transform') ?? '')?.[1])
+    expect(x(linha)).toBeCloseTo(centroOut, 0)
+  })
+
+  it('mês atual sem valores ainda mostra o fio', async () => {
+    const grafico = await comHoje(HOJE, 10, zeroSerie())
+
+    expect(grafico.querySelectorAll('[data-fio-prumo]')).toHaveLength(1)
+  })
+
+  it('ano exibido diferente do atual não tem fio', async () => {
+    const grafico = await comHoje(new Date('2027-10-15T15:00:00Z'))
+
+    expect(grafico.querySelectorAll('[data-fio-prumo]')).toHaveLength(0)
+  })
+
+  it('o rótulo do mês atual fica em peso 500 e cor do texto, os demais em 400 e mutado, seja qual for o selecionado', async () => {
+    const grafico = await comHoje(HOJE, 11)
+
+    const out = within(grafico).getByText('Out')
+    const nov = within(grafico).getByText('Nov')
+    expect(out).toHaveAttribute('font-weight', '500')
+    expect(out).toHaveAttribute('fill', 'var(--cor-texto)')
+    expect(nov).toHaveAttribute('font-weight', '400')
+    expect(nov).toHaveAttribute('fill', 'var(--cor-mutado)')
+  })
+
+  it('ano exibido diferente do atual não destaca nenhum rótulo de mês', async () => {
+    const grafico = await comHoje(new Date('2027-10-15T15:00:00Z'), 10)
+
+    for (const rotulo of ['Out', 'Nov', 'Jan']) {
+      const texto = within(grafico).getByText(rotulo)
+      expect(texto).toHaveAttribute('font-weight', '400')
+      expect(texto).toHaveAttribute('fill', 'var(--cor-mutado)')
+    }
+  })
+
+  it('não há mais contorno em caixa no mês', async () => {
+    const grafico = await comHoje(HOJE)
+
+    expect(grafico.querySelector('.recharts-reference-area')).toBeNull()
+    expect(grafico.innerHTML).not.toContain('--cor-principal-fundo')
+    expect(grafico.innerHTML).not.toMatch(/outline/)
+  })
+})
 
 describe('GraficoResultado', () => {
   it('tem_regiao_nomeada_grupo_e_legenda', async () => {
@@ -74,9 +149,9 @@ describe('GraficoResultado', () => {
 
     expect(within(grafico).getByText('+200')).toBeInTheDocument()
     expect(within(grafico).getAllByText('0')).toHaveLength(11)
-    expect(within(grafico).getByText('Out')).toHaveAttribute('data-selecionado', 'true')
-    expect(within(grafico).getByText('Nov')).not.toHaveAttribute('data-selecionado', 'true')
-    expect(within(grafico).getByText('Jan')).not.toHaveAttribute('data-selecionado', 'true')
+    expect(within(grafico).getByText('Out')).toHaveAttribute('data-mes-atual', 'true')
+    expect(within(grafico).getByText('Nov')).not.toHaveAttribute('data-mes-atual', 'true')
+    expect(within(grafico).getByText('Jan')).not.toHaveAttribute('data-mes-atual', 'true')
   })
 
   it('mes_com_deficit_leva_sinal_menos_sem_cor_de_alerta_e_sobra_idem', async () => {
@@ -128,6 +203,15 @@ describe('GraficoResultado', () => {
     const celulas = (linha: HTMLElement) => [...linha.querySelectorAll('th, td')].map((c) => semNbsp(c.textContent))
     expect(celulas(linhas[0]!)).toEqual(['Mês', 'Receitas', 'Despesas', 'Resultado'])
     expect(celulas(linhas[11]!)).toEqual(['Nov', 'R$ 1.000,00', 'R$ 800,00', 'R$ 200,00'])
+  })
+
+  it('tabela_escondida_marca_o_mes_atual_no_texto', async () => {
+    await renderizar()
+
+    const tabela = screen.getByRole('table', { name: 'Resultado de cada mês em 2026' })
+    expect(within(tabela).getByRole('rowheader', { name: 'Out (mês atual)' })).toBeInTheDocument()
+    expect(within(tabela).getByRole('rowheader', { name: 'Nov' })).toBeInTheDocument()
+    expect(within(tabela).getAllByText(/mês atual/)).toHaveLength(1)
   })
 
   it('serie_vazia_nao_quebra', async () => {

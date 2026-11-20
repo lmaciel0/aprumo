@@ -16,10 +16,10 @@ const ponto = (resultado: number): PontoDoResultado => ({
   sentido: resultado > 0 ? 'sobrou' : resultado < 0 ? 'faltou' : 'zero',
 })
 
-function renderizar(resultado: number, compacto: boolean, mesSelecionado = 3) {
+function renderizar(resultado: number, compacto: boolean, mesAtual: number | undefined = 3) {
   const { container } = render(
     <svg>
-      <MesNoEixo x={10} y={0} payload={{ value: 'mar' }} dados={[ponto(resultado)]} mesSelecionado={mesSelecionado} compacto={compacto} />
+      <MesNoEixo x={10} y={0} payload={{ value: 'mar' }} dados={[ponto(resultado)]} mesAtual={mesAtual} compacto={compacto} />
     </svg>,
   )
   const textos = [...container.querySelectorAll('text')]
@@ -27,9 +27,12 @@ function renderizar(resultado: number, compacto: boolean, mesSelecionado = 3) {
 }
 
 describe('MesNoEixo', () => {
-  it('o mês selecionado usa peso 500, os demais 400', () => {
+  it('o mês atual usa peso 500 e cor do texto, os demais 400 e mutado', () => {
     expect(renderizar(80, false).rotuloMes).toHaveAttribute('font-weight', '500')
+    expect(renderizar(80, false).rotuloMes).toHaveAttribute('fill', 'var(--cor-texto)')
     expect(renderizar(80, false, 5).rotuloMes).toHaveAttribute('font-weight', '400')
+    expect(renderizar(80, false, 5).rotuloMes).toHaveAttribute('fill', 'var(--cor-mutado)')
+    expect(renderizar(80, false, 0).rotuloMes).toHaveAttribute('font-weight', '400')
   })
 
   it('no compacto, o milhar quebra em duas linhas: número e, abaixo, "mil"', () => {
@@ -43,6 +46,18 @@ describe('MesNoEixo', () => {
     for (const linha of linhas) {
       expect(linha.textContent!.length).toBeLessThanOrEqual(5)
     }
+  })
+
+  it('o rótulo do resultado usa peso 500 e corpo 11 quando cabe (até 4 caracteres no número)', () => {
+    for (const [resultado, compacto] of [[-1200, true], [80, true], [-1200, false]] as const) {
+      const { rotuloResultado } = renderizar(resultado, compacto)
+      expect(rotuloResultado).toHaveAttribute('font-weight', '500')
+      expect(rotuloResultado).toHaveAttribute('font-size', '11')
+    }
+  })
+
+  it('no compacto, número de 5 caracteres ("−12,3") cai para 10 para não encostar no vizinho', () => {
+    expect(renderizar(-12300, true).rotuloResultado).toHaveAttribute('font-size', '10')
   })
 
   it('no compacto, valor abaixo de mil fica em uma linha só', () => {

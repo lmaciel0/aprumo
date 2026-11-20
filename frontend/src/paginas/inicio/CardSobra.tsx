@@ -38,7 +38,7 @@ export function CardSobra({ sobra, sobraAno, receitas, anterior, nomeMesAnterior
   const percentual = percentualDaReceita(sobra, receitas)
 
   return (
-    <section aria-labelledby="titulo-sobra" className="card flex flex-col md:col-span-11">
+    <section aria-labelledby="titulo-sobra" className="card flex flex-col md:col-span-11 md:self-start">
       <h2 id="titulo-sobra" className="m-0 text-xs font-normal text-[var(--cor-secundario)]">
         Sobra do mês
       </h2>

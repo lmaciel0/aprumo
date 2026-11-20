@@ -76,7 +76,7 @@ function CardTotal({ id, titulo, atual, ...chip }: CardProps) {
 /** Receitas e despesas do mês, lado a lado no celular e empilhadas no computador. */
 export function CardsTotais({ receitas, despesas, anterior, nomeMesAnterior }: Props) {
   return (
-    <div className="grid grid-cols-2 gap-2.5 md:col-span-10 md:grid-cols-1 md:grid-rows-2 md:gap-3.5">
+    <div className="grid grid-cols-2 gap-2.5 md:col-span-10 md:grid-cols-1 md:grid-rows-2 md:gap-3.5 md:self-start">
       <CardTotal
         id="titulo-receitas"
         titulo="Receitas"

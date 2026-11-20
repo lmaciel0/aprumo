@@ -33,6 +33,32 @@ describe('ReceitasCard', () => {
     expect(within(regiao).getByRole('button', { name: /Camila.*Recebido/ })).toBeInTheDocument()
   })
 
+  it('numero_em_peso_medio_na_cor_do_texto_e_sem_pontilhado_nem_degrade', () => {
+    const { regiao } = renderizar([salario(), camila('PREVISTO')])
+
+    const total = within(regiao).getByText('R$ 5.500,00', { selector: '[data-total]' })
+    expect(total).toHaveClass('font-medium', 'text-[var(--cor-texto)]')
+    expect(regiao.outerHTML).not.toMatch(/gradient|font-extrabold|font-bold|radial|backgroundImage/)
+    expect(regiao.querySelector('[style*="background"]')).toBeNull()
+  })
+
+  it('barra_solida_na_cor_das_receitas_sobre_trilho_elevado', () => {
+    const { regiao } = renderizar([salario(), camila('PREVISTO')])
+
+    const trilho = within(regiao).getByRole('progressbar')
+    const barra = trilho.firstElementChild as HTMLElement
+    expect(trilho).toHaveClass('rounded-full', 'bg-[var(--cor-elevado)]')
+    expect(barra).toHaveClass('rounded-full', 'bg-[var(--cor-grafico-receitas)]')
+  })
+
+  it('selo_de_status_nao_e_pilula', () => {
+    const { regiao } = renderizar([salario(), camila('PREVISTO')])
+
+    const selo = within(regiao).getByRole('button', { name: /Salário.*Recebido/ })
+    expect(selo).toHaveClass('rounded-md')
+    expect(selo).not.toHaveClass('rounded-full')
+  })
+
   it('selo_recebido_usa_icone_check_e_nao_glifo', () => {
     const { regiao } = renderizar([salario(), camila('PREVISTO')])
 
@@ -56,6 +82,17 @@ describe('ReceitasCard', () => {
 
     await userEvent.click(within(regiao).getByRole('button', { name: /Salário.*Recebido/ }))
     expect(aoMudarStatus).toHaveBeenCalledWith(1, 'PREVISTO')
+  })
+
+  it('selo_de_status_tem_alvo_de_44_px_e_o_nome_quebra_em_ate_2_linhas', () => {
+    const { regiao } = renderizar([salario(), camila('PREVISTO')])
+
+    const selo = within(regiao).getByRole('button', { name: /Salário.*Recebido/ })
+    expect(selo).toHaveClass('min-h-11')
+    expect(selo).not.toHaveClass('min-h-8')
+    const nome = within(regiao).getByText('Salário')
+    expect(nome).toHaveClass('line-clamp-2', 'break-words')
+    expect(nome).not.toHaveClass('truncate')
   })
 
   it('a_linha_abre_o_lancamento_mantendo_o_mes', () => {

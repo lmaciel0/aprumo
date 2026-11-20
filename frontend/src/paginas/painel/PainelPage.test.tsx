@@ -223,6 +223,13 @@ describe('PainelPage', () => {
     expect(bloco).not.toHaveClass('item-entra')
   })
 
+  it('em 1280 px a sobra não estica até a altura da coluna vizinha', async () => {
+    responderResumo()
+    comSessao()
+    renderizar()
+    expect(await screen.findByRole('region', { name: 'Sobra do mês' })).toHaveClass('md:self-start')
+  })
+
   it('abre sem erro com ?ano=2026&mes=10 na URL e consulta o mês atual', async () => {
     relogioEm('2026-11-15T15:00:00Z')
     comSessao()

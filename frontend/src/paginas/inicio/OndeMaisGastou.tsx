@@ -14,7 +14,7 @@ interface Props {
 /** Barras horizontais com o peso de cada categoria de despesa no mês. */
 export function OndeMaisGastou({ nomeMes, categorias, className = 'md:col-span-20' }: Props) {
   return (
-    <section aria-labelledby="titulo-onde" className={`card ${className}`.trim()}>
+    <section aria-labelledby="titulo-onde" className={`card md:self-start ${className}`.trim()}>
       <h2 id="titulo-onde" className="m-0 text-[15px] font-medium">
         Onde você mais gastou em {nomeMes}
       </h2>
