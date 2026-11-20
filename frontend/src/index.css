@@ -53,17 +53,15 @@
   --cor-nota-roxo: #7c3aed;
   --cor-nota-rosa: #be185d;
   --cor-nota-cinza: #5b5876;
-  --raio-card: 22px;
-  /* Superfícies flutuantes: card a 75% sobre o fundo em degradê, com borda e sombra leves. */
-  --superficie: color-mix(in srgb, var(--cor-card) 75%, transparent);
-  --superficie-borda: color-mix(in srgb, var(--cor-card) 90%, transparent);
-  --sombra-flutuante: 0 2px 8px color-mix(in srgb, var(--cor-principal) 10%, transparent);
-  --fundo-degrade: linear-gradient(
-    160deg,
-    color-mix(in srgb, var(--cor-principal) 10%, var(--cor-fundo)) 0%,
-    var(--cor-fundo) 45%,
-    color-mix(in srgb, var(--cor-principal) 12%, var(--cor-fundo)) 100%
-  );
+  --raio-card: 14px;
+  /* Superfícies sólidas: card com borda fina. A profundidade vem dos degraus de cor, não de blur nem degradê. */
+  --superficie: var(--cor-card);
+  --superficie-borda: var(--cor-linha);
+  /* Sombra mínima dos cards; `--sombra-elevada` é só dos flutuantes (dock, menu, modal). */
+  --sombra-flutuante: 0 1px 2px rgb(20 33 61 / 6%);
+  --sombra-elevada: 0 8px 24px rgb(20 33 61 / 8%);
+  /* Curva única de todo movimento (entrada rápida, parada suave). */
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Tema escuro: grafite neutro (#141415), card (#19191b) e elevado (#232325), com o coral claro como acento.
@@ -100,9 +98,9 @@
   --cor-nota-roxo: #a78bfa;
   --cor-nota-rosa: #f472b6;
   --cor-nota-cinza: #9ca3af;
-  /* Escuro: borda vira a linha do tema e a sombra fica mais forte para destacar do fundo. */
-  --superficie-borda: var(--cor-linha);
-  --sombra-flutuante: 0 2px 8px rgb(0 0 0 / 35%);
+  /* Escuro: sem sombra nos cards; o flutuante ganha só um fio de luz no topo. */
+  --sombra-flutuante: none;
+  --sombra-elevada: inset 0 1px 0 rgb(255 255 255 / 6%);
 }
 
 /* Presets de cor de destaque. `coral` é o padrão: sem bloco próprio, valem os tokens base. */
@@ -146,22 +144,20 @@ body {
 }
 
 @layer components {
-  /* Superfície flutuante translúcida: base do shell e do .card. */
+  /* Superfície sólida com borda fina: base do .card e dos modais. */
   .superficie {
     background: var(--superficie);
     border: 1px solid var(--superficie-borda);
     box-shadow: var(--sombra-flutuante);
-    backdrop-filter: blur(8px);
   }
 
-  /* Card padrão das telas (mockups: cantos de 20 a 24 px): a mesma superfície com raio e padding. */
+  /* Card padrão das telas: a mesma superfície com raio de 14 px e padding. */
   .card {
     background: var(--superficie);
     border: 1px solid var(--superficie-borda);
     border-radius: var(--raio-card);
     box-shadow: var(--sombra-flutuante);
     padding: 1rem;
-    backdrop-filter: blur(8px);
   }
 
   /* Valores monetários alinhados em coluna. */
@@ -184,55 +180,42 @@ body {
  * Rótulos seguem visíveis, nenhum texto fica abaixo de 12 px e os campos mantêm 16 px (no iOS menos que isso dá zoom).
  */
 .auth-card {
-  border-radius: 40px;
-  padding: 25px 35px;
-  border: 5px solid var(--cor-linha);
-  background: linear-gradient(0deg, var(--cor-card) 0%, var(--cor-card) 100%);
-  box-shadow: rgb(39 24 126 / 25%) 0 30px 30px -20px;
+  border-radius: 18px;
+  padding: 24px 32px;
+  border: 1px solid var(--cor-linha);
+  background: var(--cor-card);
+  box-shadow: var(--sombra-elevada);
 }
 
 .auth-card h1 {
   margin: 0 0 20px;
   text-align: center;
-  font-size: 30px;
-  font-weight: 900;
-  color: var(--cor-principal);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--cor-texto);
 }
 
+/* Contorno completo de 1 px nos dois temas: o campo tem a cor do card, então a borda é o que o delimita (3:1). */
 .auth-card input {
-  border: 0;
-  border-inline: 2px solid var(--cor-auth-campo-borda);
-  border-radius: 20px;
-  padding: 15px 20px;
-  box-shadow: rgb(39 24 126 / 12%) 0 10px 10px -5px;
+  border: 1px solid var(--cor-auth-campo-borda);
+  border-radius: 10px;
+  padding: 12px 16px;
 }
 
 .auth-card input:focus {
-  border-inline-color: var(--cor-principal);
-}
-
-/* No escuro o campo tem a mesma cor do card, então ganha contorno de 2 px nos quatro lados (o claro não muda). */
-:root[data-tema='escuro'] .auth-card input {
-  border: 2px solid var(--cor-auth-campo-borda);
-}
-
-:root[data-tema='escuro'] .auth-card input:focus {
   border-color: var(--cor-principal);
 }
 
 .auth-card button[type='submit'] {
-  background: linear-gradient(45deg, var(--cor-principal) 0%, var(--cor-principal) 100%);
-  border-radius: 20px;
-  padding-block: 15px;
-  transition: transform 0.2s ease;
-}
-
-.auth-card button[type='submit']:hover:not(:disabled) {
-  transform: scale(1.03);
+  background: var(--cor-principal-fundo);
+  color: var(--cor-sobre-principal-fundo);
+  border-radius: 10px;
+  padding-block: 12px;
+  transition: transform 150ms var(--curva);
 }
 
 .auth-card button[type='submit']:active:not(:disabled) {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 /* Troca de tela: deslize de 24 px com fade. `entra-direita` vem da direita (avançar); `entra-esquerda`, da esquerda. */
@@ -259,11 +242,11 @@ body {
 }
 
 .auth-entra-direita {
-  animation: auth-desliza-da-direita 300ms ease-out;
+  animation: auth-desliza-da-direita 300ms var(--curva);
 }
 
 .auth-entra-esquerda {
-  animation: auth-desliza-da-esquerda 300ms ease-out;
+  animation: auth-desliza-da-esquerda 300ms var(--curva);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -297,11 +280,11 @@ body {
 }
 
 .menu-painel {
-  animation: menu-painel-entra 200ms ease-out;
+  animation: menu-painel-entra 200ms var(--curva);
 }
 
 .menu-fundo {
-  animation: menu-fundo-entra 200ms ease-out;
+  animation: menu-fundo-entra 200ms var(--curva);
 }
 
 /*
@@ -321,7 +304,7 @@ body {
 
 .folha-painel,
 .dock-rotulo {
-  animation: entra-deslizando 200ms ease-out;
+  animation: entra-deslizando 200ms var(--curva);
 }
 
 .folha-painel {
@@ -354,7 +337,7 @@ body {
 }
 
 .paleta-entra {
-  animation: paleta-entra 150ms ease-out;
+  animation: paleta-entra 150ms var(--curva);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -376,7 +359,7 @@ body {
 }
 
 .nota-entra {
-  animation: nota-entra 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: nota-entra 220ms var(--curva) both;
   animation-delay: calc(min(var(--i, 0), 8) * 30ms);
 }
 
@@ -419,7 +402,6 @@ body {
   transform: scale(0);
   opacity: 0.5;
   animation: pulse0112 calc(var(--uib-speed) * 1.111) ease-in-out infinite;
-  box-shadow: 0 0 16px rgba(39, 24, 126, 0.2);
 }
 
 .dot-spinner__dot:nth-child(2) {
@@ -512,7 +494,7 @@ body {
 }
 
 .item-entra {
-  animation: item-entra 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: item-entra 200ms var(--curva) both;
   animation-delay: calc(min(var(--i, 0), 10) * 25ms);
 }
 
@@ -529,7 +511,7 @@ input,
 select,
 textarea {
   transition-property: color, background-color, border-color, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-timing-function: var(--curva);
   transition-duration: 150ms;
 }
 

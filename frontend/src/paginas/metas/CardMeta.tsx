@@ -52,14 +52,14 @@ export function CardMeta({ meta, aoGuardar, aoResgatar, aoEditar }: Readonly<Pro
 
         {/* Cabeçalho superior do banner: preset tag e botão de editar */}
         <div className="relative z-10 flex items-center justify-between p-3">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--cor-sobre-principal)]/20 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--cor-sobre-principal)] backdrop-blur-md">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--cor-principal)] px-2.5 py-0.5 text-[11px] font-semibold text-[var(--cor-sobre-principal)]">
             {getIconePreset(meta.icone || preset.icone)}
             <span>{preset.nome}</span>
           </span>
 
           <div className="flex items-center gap-1.5">
             {meta.concluida && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-bold text-[var(--cor-sobre-principal)] shadow-sm backdrop-blur-sm">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-bold text-[var(--cor-sobre-principal)] shadow-sm">
                 <CheckCircle2 className="size-3" />
                 Concluída
               </span>

@@ -24,8 +24,8 @@ const ANTES_DO_CRIAR = 2
  * texto). O rótulo entra com fade e leve deslocamento (`.dock-rotulo`, desligado em `prefers-reduced-motion`). Só cor,
  * opacidade e transform animam.
  *
- * A folha é irmã do `<nav>`, não filha: o `backdrop-blur` do nav cria um bloco de contenção e quebraria o `fixed inset-0`
- * dela. Trocar de rota com a folha aberta (gesto de voltar do Android/TWA, que não tem Esc) fecha a folha.
+ * A folha é irmã do `<nav>`, não filha: o `<nav>` é `fixed` com z-30 e cria um contexto de empilhamento próprio, que
+ * limitaria o z-[35] da folha. Trocar de rota com a folha aberta (gesto de voltar do Android/TWA, que não tem Esc) fecha a folha.
  */
 export function DockInferior() {
   const { busca } = useMesSelecionado()
@@ -106,7 +106,7 @@ export function DockInferior() {
     <>
       <nav
         aria-label="Navegação principal"
-        className="fixed inset-x-2.5 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-md items-center justify-between gap-0.5 rounded-full border border-[var(--cor-linha)] bg-[color-mix(in_srgb,var(--cor-card)_88%,transparent)] p-1.5 shadow-[0_10px_24px_color-mix(in_srgb,var(--cor-principal)_18%,transparent)] backdrop-blur-[10px]"
+        className="fixed inset-x-2.5 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-md items-center justify-between gap-0.5 rounded-full border border-[var(--cor-linha)] bg-[var(--cor-card)] p-1.5 shadow-[0_10px_24px_color-mix(in_srgb,var(--cor-principal)_18%,transparent)]"
       >
         {[...itens.slice(0, ANTES_DO_CRIAR), botao, ...itens.slice(ANTES_DO_CRIAR)]}
       </nav>

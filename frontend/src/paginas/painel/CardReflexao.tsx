@@ -56,7 +56,7 @@ export function CardReflexao() {
       {/* Topo: Tag, Subtítulo e Ações */}
       <div className="relative mb-3.5 flex flex-wrap items-center justify-between gap-2 border-b border-[var(--cor-sobre-principal)]/15 pb-3">
         <div className="flex items-center gap-2.5">
-          <span className="flex h-6 items-center rounded-md bg-[var(--cor-sobre-principal)]/15 px-2 text-[11px] font-semibold tracking-wider text-[var(--cor-sobre-principal)] uppercase backdrop-blur-xs">
+          <span className="flex h-6 items-center rounded-md bg-[var(--cor-sobre-principal)]/15 px-2 text-[11px] font-semibold tracking-wider text-[var(--cor-sobre-principal)] uppercase">
             <h2 id="titulo-reflexao-dia" className="m-0 text-[11px] font-semibold tracking-wider uppercase">
               Reflexão do dia
             </h2>

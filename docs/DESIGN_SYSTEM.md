@@ -7,7 +7,8 @@ Fonte da verdade: `frontend/src/index.css` (tokens) e os componentes de `fronten
 - Produto: Aprumo, finanças pessoais e notas. Tom calmo e direto, textos curtos em português do Brasil.
 - Dois temas: claro (padrão, fundo creme `#f4ede0`, texto marinho e destaque coral) e escuro (fundo grafite `#141415` e destaque coral claro). O tema escuro liga com `data-tema='escuro'` no `<html>`.
 - Três presets de cor de destaque (ver Presets). O destaque muda, o resto da paleta não.
-- Superfícies translúcidas com leve desfoque (`backdrop-filter: blur(8px)`) sobre um fundo em degradê. O desfoque dos cards é decisão do dono e não se remove.
+- Superfícies sólidas com borda fina de 1 px. A profundidade vem de degraus de cor (`--cor-fundo`, `--cor-card`, `--cor-elevado`), não de desfoque, degradê entre matizes nem sombra colorida.
+- Assinatura "fio de prumo": linha vertical de 2 px em `--cor-principal`, só no item ativo da navegação lateral, no mês atual do gráfico e na conta mais próxima de hoje.
 - Só tokens `--cor-*`. Cor nunca é o único sinal: estado ativo, erro e pago também têm texto ou forma.
 
 ## Cores
@@ -16,8 +17,8 @@ Todos os tokens `--cor-*` de `:root`. A coluna "Claro" é o valor de `:root`; "E
 
 | Token | Claro | Escuro | Uso |
 |---|---|---|---|
-| `--cor-fundo` | `#f4ede0` | `#141415` | Fundo da página e base do degradê. |
-| `--cor-card` | `#fbf7f0` | `#19191b` | Fundo de cards, campos e modais; base da superfície translúcida. |
+| `--cor-fundo` | `#f4ede0` | `#141415` | Fundo da página, o degrau mais baixo. |
+| `--cor-card` | `#fbf7f0` | `#19191b` | Fundo de cards, campos e modais (`--superficie`). |
 | `--cor-elevado` | `#ece3d3` | `#232325` | Superfície acima do card, como campo dentro de card ou item em foco. |
 | `--cor-linha` | `#ded9d0` | `#2a2a2c` | Bordas, divisores e fundo dos esqueletos. |
 | `--cor-texto` | `#14213d` | `#ededed` | Texto principal. |
@@ -75,20 +76,22 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 - Fonte única: Inter Variable (`@fontsource-variable/inter`), declarada em `--font-sans` e no `html`, com `ui-sans-serif, system-ui, sans-serif` de reserva.
 - Valores de dinheiro usam a classe `.valor` (`font-variant-numeric: tabular-nums`) para alinhar em coluna.
 - Corpo no celular: campos de formulário com 16 px (menos que isso o iOS dá zoom ao focar); nenhum texto abaixo de 12 px em tela de auth. Rótulos e legendas pequenas usam 11 a 12 px com `--cor-mutado`.
-- Título de página: `text-[28px] font-bold tracking-tight`. Número de destaque: 26 a 30 px em negrito (`CardSobra`, `FaixaSaldo`). Título do card de auth: 30 px, peso 900.
+- Título de página: `text-[28px] font-bold tracking-tight`. Número de destaque: 26 a 30 px em negrito (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500.
 
 ## Raio, superfícies e sombras
 
 | Token | Valor | Uso |
 |---|---|---|
-| `--raio-card` | `22px` | Raio de `.card`, cards de nota e card da sobra. |
-| `--superficie` | `color-mix(in srgb, var(--cor-card) 75%, transparent)` | Fundo translúcido de `.superficie` e `.card`. |
-| `--superficie-borda` | `color-mix(in srgb, var(--cor-card) 90%, transparent)` no claro; `var(--cor-linha)` no escuro | Borda de `.superficie` e `.card`. |
-| `--sombra-flutuante` | `0 2px 8px` do principal a 10% no claro; `0 2px 8px rgb(0 0 0 / 35%)` no escuro | Sombra de `.superficie` e `.card`. |
-| `--fundo-degrade` | degradê de 160 graus entre o principal a 10%, o fundo e o principal a 12% | Fundo do shell. |
+| `--raio-card` | `14px` | Raio de `.card`, cards de nota e card da sobra. |
+| `--superficie` | `var(--cor-card)` | Fundo sólido de `.superficie` e `.card`. |
+| `--superficie-borda` | `var(--cor-linha)` | Borda de 1 px de `.superficie` e `.card`. |
+| `--sombra-flutuante` | `0 1px 2px rgb(20 33 61 / 6%)` no claro; `none` no escuro | Sombra mínima de `.superficie` e `.card`. |
+| `--sombra-elevada` | `0 8px 24px rgb(20 33 61 / 8%)` no claro; `inset 0 1px 0 rgb(255 255 255 / 6%)` no escuro | Só para o que flutua: dock, menu, modal e card de auth. |
+| `--curva` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva única de toda animação e transição. |
 
-- `.card`: superfície com `--raio-card`, `padding: 1rem` e `backdrop-filter: blur(8px)`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
-- Outros raios em uso: `rounded-2xl` (cards de meta, atalhos), `rounded-xl` (campos, botões de modal, mensagens de erro), `rounded-full` (chips, botões de ação, dock). O card de auth usa 40 px e seus campos 20 px.
+- `.card`: superfície sólida com `--raio-card`, `padding: 1rem`, sem `backdrop-filter`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
+- Escala de raio: tag 6 px, controle (campo e botão) 10 px, card 14 px, painel e folha de 16 a 20 px. Pílula (`rounded-full`) só em avatar, botão "Criar", ponto de status e interruptor de tema. O card de auth usa 18 px e seus campos e botão 10 px.
+- Código antigo ainda usa `rounded-2xl`, `rounded-3xl` e `rounded-full` em chips e botões; a migração para a escala acontece por tela e não por esta tabela.
 
 ## Espaçamento e primeira dobra no celular
 
@@ -157,7 +160,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Foco visível em todo controle (`foco` de `classesFoco.ts` ou o equivalente com contorno de 2 px em `--cor-principal`); alvos de 44 px.
 - Rótulo visível em campo (`CampoTexto`), `aria-label` em botão só de ícone, `role="alert"` em erro, `role="status"` em carregamento.
 - Cor nunca é o único sinal: o item ativo da dock é um bloco preenchido com texto, o status pago tem chip com texto.
-- Movimento: toda animação e transição respeita `prefers-reduced-motion`.
+- Movimento: uma só curva (`--curva`); toda animação e transição respeita `prefers-reduced-motion`.
 - Gráfico com tabela equivalente para leitor de tela (`GraficoResultado`); título de página único (`<h1>`), mesmo quando só leitor de tela o vê no celular.
 - Modais prendem o foco, fecham com Esc e devolvem o foco ao elemento de origem (`useDialogoModal`, `Moldura`).
 
@@ -175,6 +178,8 @@ Estas referências não substituem os tokens existentes. Em conflito, o design s
 
 Perguntar ao Lucas o que ele gosta em cada app antes de redesenhar uma tela.
 
+unslop, de Damir Sokolovsky (https://github.com/heydamir/unslop), CC BY 4.0
+
 ## O que NÃO fazer
 
 Nasce das armadilhas registradas no projeto e das regras de 360 px.
@@ -182,7 +187,12 @@ Nasce das armadilhas registradas no projeto e das regras de 360 px.
 - Não usar cor fixa (`bg-white`, `text-white`, `bg-[#...]`, `text-[#...]`): `estilos.test.ts` reprova. Use `--cor-*`.
 - Não usar a paleta do Tailwind (`red-600`, `emerald-500`, `amber-*`, `from-black/80`) em tela nova. Hoje há desvios em `metas` (`CardMeta`, `MetasPage`, `ModalMetaForm`, `ModalAporteMeta`, `CardConselheiroMetas`, `WidgetMetaInicio`), em `CardCartao` e em um ponto de `CardReflexao`. São dívida a corrigir com os tokens `--cor-negativo`, `--cor-positivo` e `--cor-sobre-*`, não padrão a copiar.
 - Não usar `--cor-positivo` e `--cor-negativo` em texto pequeno: use `--cor-positivo-texto` e `--cor-negativo-texto` (4,5:1).
-- Não remover o `backdrop-filter: blur` de `.card` nem de `.superficie` (pedido explícito do dono).
+- Não usar `backdrop-filter` nem `backdrop-blur`: `estilos.test.ts` reprova no `index.css` e em todo TSX de produção. Superfície que precisa esconder o que rola por baixo usa fundo sólido (`--cor-fundo` ou `--cor-card`).
+- Não usar degradê entre matizes, brilho nem sombra colorida (como `shadow-[0_8px_18px_color-mix(... --cor-principal ...)]`).
+- Não usar peso 700 a 900 em título ou rótulo novo; use 500 ou 600.
+- Não usar caixa-alta com tracking em rótulo (`uppercase tracking-wider`).
+- Não usar `--cor-principal-fundo` como texto nem como linha fina: ele é só preenchimento (2,4:1 sobre o creme). Texto e linha usam `--cor-principal`.
+- Valor negativo vai na cor do texto com o sinal "−"; vermelho (`--cor-negativo`, `--cor-negativo-texto`) só em status e alerta.
 - Não trocar paleta, fonte ou presets por sugestão de ferramenta (`ui-ux-pro-max`, 21st) sem o Lucas pedir. O resultado delas é referência; este documento vence.
 - Não instalar HeroUI, shadcn, framer-motion nem 21st como dependência. Código de referência do 21st é só inspiração de estrutura, reescrito com os tokens.
 - Não animar `width`, `height` nem `top`. Só cor, opacidade e transform, de 150 a 250 ms, e sempre com `prefers-reduced-motion`.

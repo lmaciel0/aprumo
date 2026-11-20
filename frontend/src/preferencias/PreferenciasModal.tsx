@@ -100,7 +100,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         data-testid="preferencias-backdrop"
         aria-hidden="true"
         onClick={aoFechar}
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-200"
+        className="fixed inset-0 bg-black/60 transition-opacity duration-200"
       />
 
       {/* Caixa do Diálogo */}

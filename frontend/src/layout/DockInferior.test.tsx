@@ -221,7 +221,7 @@ describe('DockInferior: botão Criar', () => {
     expect(links[2]).toHaveAttribute('href', '/lancamentos/novo?ano=2026&mes=3&tipo=RECEITA')
   })
 
-  it('o diálogo não é descendente do nav (o backdrop-blur do nav quebraria o fixed inset-0)', async () => {
+  it('o diálogo não é descendente do nav (o nav fixed cria um contexto de empilhamento que limitaria o z da folha)', async () => {
     renderizar()
     await userEvent.click(screen.getByRole('button', { name: 'Criar' }))
     const nav = screen.getByRole('navigation', { name: 'Navegação principal' })
