@@ -1,25 +1,13 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { MetaResponse } from '../../api/tipos'
+import { metaDaApi } from '../../api/adaptadorMetas'
+import { META_API_EM_ANDAMENTO, META_API_SEM_PRAZO } from '../../teste/fixturesMetas'
 import { ModalMetaForm } from './ModalMetaForm'
 
-const metaExemplo: MetaResponse = {
-  id: 1,
-  titulo: 'Reserva de Emergência',
-  valorAlvo: '10000.00',
-  valorGuardado: '4000.00',
-  prazo: '2027-12-31',
-  presetVisual: 'reserva',
-  icone: 'shield',
-  fotoUrl: null,
-  ordem: 0,
-  percentualConcluido: '0.4000',
-  valorRestante: '6000.00',
-  valorMensalSugerido: '428.57',
-  mesesRestantes: 14,
-  concluida: false,
-}
+// Props de UI vindas do JSON real da API (nome, mesAlvo, anoAlvo, imagemUrl).
+const metaExemplo = metaDaApi({ ...META_API_EM_ANDAMENTO, nome: 'Reserva de Emergência', presetVisual: 'reserva' })
+const metaSemPrazo = metaDaApi(META_API_SEM_PRAZO)
 
 describe('ModalMetaForm', () => {
   it('o botão fechar do cabeçalho tem alvo de 44 px e se chama "Fechar"', async () => {
@@ -79,7 +67,7 @@ describe('ModalMetaForm', () => {
     )
   })
 
-  it('permite escolher um preset visual e envia só preset e ícone, sem cores de degradê', async () => {
+  it('permite escolher um preset visual e envia só o preset, sem ícone nem cores de degradê', async () => {
     const user = userEvent.setup()
     const aoSalvar = vi.fn()
     const aoFechar = vi.fn()
@@ -109,10 +97,10 @@ describe('ModalMetaForm', () => {
         titulo: 'Paris 2027',
         valorAlvo: '12000.00',
         presetVisual: 'viagem',
-        icone: 'plane',
       }),
     )
     const enviado = aoSalvar.mock.calls[0]?.[0] as Record<string, unknown>
+    expect(enviado).not.toHaveProperty('icone')
     expect(Object.keys(enviado).filter((k) => k.startsWith('corGradiente'))).toEqual([])
   })
 
@@ -135,6 +123,40 @@ describe('ModalMetaForm', () => {
     const icone = viagem.querySelector('span')
     expect(icone?.getAttribute('style') ?? '').not.toMatch(/gradient|#/)
     expect(icone?.className).not.toMatch(/gradient|sobre-imagem/)
+  })
+
+  it('o prazo é um campo de mês e ano, com o rótulo "Prazo estimado (opcional)"', () => {
+    render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+
+    const prazo = screen.getByLabelText('Prazo estimado (opcional)')
+    expect(prazo).toHaveAttribute('type', 'month')
+    expect(prazo).toHaveValue('')
+  })
+
+  it('escolher o mês envia o prazo como AAAA-MM e sem mês envia nulo', async () => {
+    const user = userEvent.setup()
+    const aoSalvar = vi.fn()
+    render(<ModalMetaForm aberto={true} meta={null} aoSalvar={aoSalvar} aoFechar={vi.fn()} />)
+
+    await user.type(screen.getByLabelText(/título/i), 'Notebook')
+    await user.type(screen.getByLabelText(/valor alvo/i), '4500')
+    await user.click(screen.getByRole('button', { name: /salvar meta/i }))
+    expect(aoSalvar).toHaveBeenLastCalledWith(expect.objectContaining({ prazo: null }))
+
+    fireEvent.change(screen.getByLabelText(/prazo/i), { target: { value: '2028-03' } })
+    await user.click(screen.getByRole('button', { name: /salvar meta/i }))
+    expect(aoSalvar).toHaveBeenLastCalledWith(expect.objectContaining({ prazo: '2028-03' }))
+  })
+
+  it('na edição o campo de mês vem preenchido com o prazo da meta e vazio quando não há prazo', () => {
+    const { unmount } = render(
+      <ModalMetaForm aberto={true} meta={metaExemplo} aoSalvar={vi.fn()} aoFechar={vi.fn()} />,
+    )
+    expect(screen.getByLabelText(/prazo/i)).toHaveValue('2027-12')
+    unmount()
+
+    render(<ModalMetaForm aberto={true} meta={metaSemPrazo} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+    expect(screen.getByLabelText(/prazo/i)).toHaveValue('')
   })
 
   it('a folha usa rounded-t-[20px] no celular e rounded-2xl a partir de sm', () => {

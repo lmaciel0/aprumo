@@ -19,6 +19,12 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
     queryFn: () => endpoints.metas.conselheiro(ano, mes),
   })
 
+  // A sugestão da API não traz o preset: o ícone vem da meta correspondente na lista (mesma chave do widget do painel).
+  const { data: metas } = useQuery({
+    queryKey: ['metas'],
+    queryFn: () => endpoints.metas.listar(),
+  })
+
   if (isPending || isError || !data) {
     return null
   }
@@ -42,7 +48,8 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
 
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {sugestoes.map((sugestao) => {
-              const preset = obterPresetVisual(sugestao.presetVisual)
+              const meta = metas?.find((m) => m.id === sugestao.metaId)
+              const preset = obterPresetVisual(meta?.presetVisual ?? sugestao.presetVisual)
               return (
                 <div
                   key={sugestao.metaId}
@@ -50,7 +57,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span className="flex size-7 shrink-0 items-center justify-center text-[var(--cor-secundario)]">
-                      {getIconePreset(sugestao.icone || preset.icone)}
+                      {getIconePreset(meta?.icone || sugestao.icone || preset.icone)}
                     </span>
                   <div className="min-w-0">
                       <h3 className="m-0 truncate text-xs font-medium text-[var(--cor-texto)]">

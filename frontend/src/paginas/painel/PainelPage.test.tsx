@@ -3,7 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { Route, Routes } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { MetaResponse, PontoSerie, ResumoResponse } from '../../api/tipos'
+import type { MetaApi, PontoSerie, ResumoResponse } from '../../api/tipos'
+import { META_API_SEM_PRAZO } from '../../teste/fixturesMetas'
 import { AuthProvider } from '../../auth/AuthProvider'
 import { RotaProtegida } from '../../auth/RotaProtegida'
 import { comSessao, usuarioFicticio } from '../../teste/auth'
@@ -42,21 +43,15 @@ const resumo: ResumoResponse = {
 }
 
 // Valores fictícios.
-const metaFicticia: MetaResponse = {
+const metaFicticia: MetaApi = {
+  ...META_API_SEM_PRAZO,
   id: 1,
-  titulo: 'Viagem de fim de ano',
+  nome: 'Viagem de fim de ano',
   valorAlvo: '3000.00',
   valorGuardado: '750.00',
-  prazo: null,
   presetVisual: 'viagem',
-  icone: '',
-  fotoUrl: null,
-  ordem: 0,
-  percentualConcluido: '0.25',
+  percentualConcluido: '0.2500',
   valorRestante: '2250.00',
-  valorMensalSugerido: null,
-  mesesRestantes: null,
-  concluida: false,
 }
 
 function responderResumo() {
@@ -203,7 +198,7 @@ describe('PainelPage', () => {
     servidor.use(http.get('/api/metas', () => HttpResponse.json([metaFicticia])))
     comSessao()
     renderizar()
-    const widget = await screen.findByRole('region', { name: metaFicticia.titulo })
+    const widget = await screen.findByRole('region', { name: metaFicticia.nome })
     // Espera o resumo terminar: uma consulta pendente cairia no handler do teste seguinte.
     await screen.findByRole('region', { name: 'Sobra do mês' })
     expect(widget).toHaveClass('item-entra')

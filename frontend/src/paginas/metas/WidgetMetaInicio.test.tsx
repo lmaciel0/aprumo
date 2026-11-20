@@ -3,26 +3,24 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
-import type { MetaResponse } from '../../api/tipos'
+import type { MetaApi } from '../../api/tipos'
+import { META_API_EM_ANDAMENTO } from '../../teste/fixturesMetas'
 import { renderComApp } from '../../teste/render'
 import { servidor } from '../../teste/servidor'
 import { WidgetMetaInicio } from './WidgetMetaInicio'
 
-const metaExemplo: MetaResponse = {
-  id: 1,
-  titulo: 'Reserva de Emergência',
+// JSON como a API devolve.
+const metaExemplo: MetaApi = {
+  ...META_API_EM_ANDAMENTO,
+  nome: 'Reserva de Emergência',
   valorAlvo: '10000.00',
   valorGuardado: '4500.00',
-  prazo: '2027-12-31',
   presetVisual: 'reserva',
-  icone: 'shield',
-  fotoUrl: null,
-  ordem: 0,
+  imagemUrl: null,
   percentualConcluido: '0.4500',
   valorRestante: '5500.00',
   valorMensalSugerido: '392.86',
   mesesRestantes: 14,
-  concluida: false,
 }
 
 describe('WidgetMetaInicio', () => {

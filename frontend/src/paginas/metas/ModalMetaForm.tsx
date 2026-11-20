@@ -41,7 +41,7 @@ export function ModalMetaForm({
   const [valorGuardadoTexto, setValorGuardadoTexto] = useState(
     meta?.valorGuardado ? meta.valorGuardado.replace('.', ',') : '',
   )
-  const [prazo, setPrazo] = useState(meta?.prazo || '')
+  const [prazo, setPrazo] = useState(meta?.prazo?.slice(0, 7) || '')
   const [presetVisual, setPresetVisual] = useState(
     meta?.presetVisual || 'personalizado',
   )
@@ -85,7 +85,6 @@ export function ModalMetaForm({
       valorGuardado: guardadoNormalizado,
       prazo: prazo || null,
       presetVisual: presetAtual.id,
-      icone: presetAtual.icone,
       fotoUrl: fotoUrl.trim() || null,
     }
 
@@ -303,7 +302,7 @@ export function ModalMetaForm({
               </label>
               <input
                 id="campo-prazo-meta"
-                type="date"
+                type="month"
                 value={prazo}
                 onChange={(e) => setPrazo(e.target.value)}
                 className={classeCampo}
