@@ -93,7 +93,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
                 className={`flex w-full cursor-pointer items-center justify-between rounded-[10px] border p-3 text-left transition-[background-color,border-color,color] duration-150 motion-reduce:transition-none ${
                   selecionado
                     ? 'border-[var(--cor-texto)] bg-[var(--cor-elevado)] text-[var(--cor-texto)]'
-                    : 'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)]/60 hover:text-[var(--cor-texto)]'
+                    : 'border-[var(--cor-auth-campo-borda)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)]/60 hover:text-[var(--cor-texto)]'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -118,7 +118,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
                       {ordem}
                     </span>
                   ) : (
-                    <div className="size-5 rounded-full border-2 border-[var(--cor-linha)]" />
+                    <div className="size-5 rounded-full border-2 border-[var(--cor-auth-campo-borda)]" />
                   )}
                 </div>
               </button>

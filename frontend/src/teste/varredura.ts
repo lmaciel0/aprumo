@@ -2,11 +2,6 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
-/** Arquivos e pastas que ficam para as fases 3 e 4 (caminhos relativos a `src/`; pasta termina em `/`). */
-export const EXCECOES_FASE_3_4: string[] = [
-  'paginas/metas/',
-]
-
 /**
  * Arquivos em que `rounded-full` só aparece em forma que é pílula de verdade: avatar, ponto, amostra de cor,
  * trilho e barra de progresso, botão "Criar" da dock. Arquivo de uso misto só entra aqui depois de os elementos
@@ -23,6 +18,8 @@ export const PILULAS_PERMITIDAS: Array<{ arquivo: string; motivo: string }> = [
   { arquivo: 'paginas/mais/MaisPage.tsx', motivo: 'avatar da conta' },
   { arquivo: 'paginas/cartoes/CardCartao.tsx', motivo: 'trilho e barra de progresso do limite' },
   { arquivo: 'paginas/cartoes/CartoesPage.tsx', motivo: 'trilho do esqueleto de progresso do limite' },
+  { arquivo: 'paginas/metas/CardMeta.tsx', motivo: 'trilho e barra de progresso da meta' },
+  { arquivo: 'paginas/metas/WidgetMetaInicio.tsx', motivo: 'trilho e barra de progresso da meta' },
   { arquivo: 'paginas/inicio/OndeMaisGastou.tsx', motivo: 'trilho e barra de progresso' },
   { arquivo: 'paginas/inicio/ResumoCartoes.tsx', motivo: 'trilho e barra de progresso do limite' },
   { arquivo: 'paginas/lancamentos/ReceitasCard.tsx', motivo: 'trilho e barra de progresso do recebido' },
@@ -50,6 +47,8 @@ export const PAINEIS_2XL: Array<{ arquivo: string; motivo: string }> = [
   { arquivo: 'layout/PaletaNavegacao.tsx', motivo: 'janela da paleta' },
   { arquivo: 'paginas/categorias/CabecalhoCategorias.tsx', motivo: 'menu de criação' },
   { arquivo: 'paginas/lancamentos/Moldura.tsx', motivo: 'janela modal a partir de md' },
+  { arquivo: 'paginas/metas/ModalAporteMeta.tsx', motivo: 'modal centralizado a partir de sm' },
+  { arquivo: 'paginas/metas/ModalMetaForm.tsx', motivo: 'modal centralizado a partir de sm' },
   { arquivo: 'paginas/painel/ModalPersonalizarAtalhos.tsx', motivo: 'modal centralizado a partir de sm' },
   { arquivo: 'preferencias/PreferenciasModal.tsx', motivo: 'modal centralizado' },
 ]

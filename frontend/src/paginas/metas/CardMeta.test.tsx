@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import type { MetaResponse } from '../../api/tipos'
 import { CardMeta } from './CardMeta'
@@ -12,8 +14,6 @@ const metaExemplo: MetaResponse = {
   prazo: '2027-12-31',
   presetVisual: 'reserva',
   icone: 'shield',
-  corGradienteInicio: '#047857',
-  corGradienteFim: '#10b981',
   fotoUrl: null,
   ordem: 0,
   percentualConcluido: '0.4000',
@@ -53,12 +53,235 @@ describe('CardMeta', () => {
 
     const titulo = screen.getByRole('heading', { name: 'Reserva de Emergência' })
     expect(titulo.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(titulo.className).toContain('font-medium')
     expect(titulo.className).not.toContain('--cor-sobre-principal')
 
     const editar = screen.getByRole('button', { name: /editar reserva de emergência/i })
-    expect(editar.className).toContain('text-[var(--cor-sobre-imagem)]/80')
-    expect(editar.className).toContain('hover:text-[var(--cor-sobre-imagem)]')
+    expect(editar.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(editar.className).toContain('size-11')
+    expect(editar.className).toContain('rounded-[10px]')
     expect(editar.className).not.toContain('--cor-sobre-principal')
+    expect(editar.className).not.toContain('rounded-full')
+  })
+
+  it('o código não usa paleta crua, preto ou branco com opacidade nem degradê em classe', () => {
+    const arquivo = readFileSync(resolve(process.cwd(), 'src/paginas/metas/CardMeta.tsx'), 'utf8')
+
+    expect(arquivo).not.toMatch(/\b(emerald|sky|amber|red|blue)-\d/)
+    expect(arquivo).not.toMatch(/(black|white)\//)
+    expect(arquivo).not.toMatch(/gradient/)
+  })
+
+  it('a foto aparece inteira sob um véu neutro, sem tinta do preset', () => {
+    const { container } = render(
+      <CardMeta meta={{ ...metaExemplo, fotoUrl: '/minha-foto.jpg' }} aoEditar={vi.fn()} />,
+    )
+
+    const foto = container.querySelector('img')
+    expect(foto).toHaveAttribute('src', '/minha-foto.jpg')
+    expect(foto?.className).not.toContain('mix-blend')
+    expect(foto?.className).not.toContain('opacity-')
+    expect(container.querySelector('.veu-foto')).not.toBeNull()
+    expect(container.querySelector('[style*="gradient"]')).toBeNull()
+  })
+
+  it('meta personalizada sem foto mostra o hero em superfície elevada com o título legível', () => {
+    const { container } = render(
+      <CardMeta
+        meta={{ ...metaExemplo, presetVisual: 'personalizado', icone: 'target', fotoUrl: null }}
+        aoEditar={vi.fn()}
+      />,
+    )
+
+    expect(container.querySelector('img')).toBeNull()
+    const titulo = screen.getByRole('heading', { name: 'Reserva de Emergência' })
+    const hero = titulo.closest('div.relative')
+    expect(hero?.className).toContain('bg-[var(--cor-elevado)]')
+    expect(hero?.querySelector('.veu-foto')).not.toBeNull()
+    expect(titulo.className).toContain('text-[var(--cor-sobre-imagem)]')
+    expect(screen.getByRole('button', { name: /editar reserva de emergência/i })).toBeInTheDocument()
+  })
+
+  it('o selo da categoria é um chip neutro, sem coral', () => {
+    render(<CardMeta meta={metaExemplo} />)
+
+    const chip = screen.getByText('Reserva de Emergência', { selector: 'span' }).closest('span.inline-flex')
+    expect(chip?.className).toContain('rounded-md')
+    expect(chip?.className).toContain('bg-[var(--cor-card)]/90')
+    expect(chip?.className).toContain('text-[var(--cor-texto)]')
+    expect(chip?.className).not.toContain('--cor-principal')
+  })
+
+  it('a barra usa a cor de dinheiro guardado e o trilho elevado', () => {
+    render(<CardMeta meta={metaExemplo} />)
+
+    const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+    expect(barra.className).toContain('bg-[var(--cor-elevado)]')
+    const preenchimento = barra.firstElementChild as HTMLElement
+    expect(preenchimento.className).toContain('bg-[var(--cor-grafico-receitas)]')
+    expect(preenchimento.style.width).toBe('40%')
+    expect(preenchimento.style.background).not.toContain('gradient')
+  })
+
+  it('meta concluída usa a barra positiva', () => {
+    render(<CardMeta meta={metaConcluida} />)
+
+    const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+    expect((barra.firstElementChild as HTMLElement).className).toContain('bg-[var(--cor-positivo)]')
+  })
+
+  it('valor guardado acima do alvo limita barra, aria e texto a 100%', () => {
+    render(
+      <CardMeta
+        meta={{
+          ...metaConcluida,
+          valorGuardado: '7500.00',
+          percentualConcluido: '1.5000',
+        }}
+      />,
+    )
+
+    const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+    expect(barra).toHaveAttribute('aria-valuenow', '100')
+    expect((barra.firstElementChild as HTMLElement).style.width).toBe('100%')
+    expect(screen.getByText('100%')).toBeInTheDocument()
+    expect(screen.queryByText('150%')).toBeNull()
+  })
+
+  describe('meta não concluída com valor guardado acima do alvo', () => {
+    const metaAcima: MetaResponse = {
+      ...metaExemplo,
+      valorAlvo: '12000.00',
+      valorGuardado: '12500.00',
+      percentualConcluido: '1.0417',
+      valorRestante: '-500.00',
+      valorMensalSugerido: '35.71',
+      concluida: false,
+    }
+
+    it('nunca mostra valor que falta negativo e avisa o objetivo alcançado', () => {
+      const { container } = render(<CardMeta meta={metaAcima} />)
+
+      expect(screen.queryByText(/Faltam/)).toBeNull()
+      expect(container.textContent).not.toContain('−R$')
+      expect(screen.getByText('Objetivo alcançado')).toBeInTheDocument()
+      expect(container.textContent).not.toContain('!')
+    })
+
+    it('mostra quanto passou do alvo em tom secundário', () => {
+      render(<CardMeta meta={metaAcima} />)
+
+      const acima = screen.getByText(/R\$\s*500,00 acima do alvo/)
+      expect(acima.className).toContain('text-[var(--cor-secundario)]')
+    })
+
+    it('barra em 100% com a cor positiva, mesmo sem a flag concluída', () => {
+      render(<CardMeta meta={metaAcima} />)
+
+      const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+      expect(barra).toHaveAttribute('aria-valuenow', '100')
+      const preenchimento = barra.firstElementChild as HTMLElement
+      expect(preenchimento.style.width).toBe('100%')
+      expect(preenchimento.className).toContain('bg-[var(--cor-positivo)]')
+    })
+
+    it('esconde o valor mensal sugerido quando não falta nada', () => {
+      render(<CardMeta meta={metaAcima} />)
+
+      expect(screen.queryByText(/\/mês/)).toBeNull()
+    })
+  })
+
+  it('guardado exatamente igual ao alvo, sem a flag, mostra objetivo alcançado sem "acima do alvo"', () => {
+    render(
+      <CardMeta
+        meta={{
+          ...metaExemplo,
+          valorGuardado: '10000.00',
+          percentualConcluido: '1.0000',
+          valorRestante: '0.00',
+          concluida: false,
+        }}
+      />,
+    )
+
+    expect(screen.getByText('Objetivo alcançado')).toBeInTheDocument()
+    expect(screen.queryByText(/acima do alvo/)).toBeNull()
+    expect(screen.queryByText(/Faltam/)).toBeNull()
+  })
+
+  it('meta não atingida por pouco (995 de 1000) mostra 99%, nunca 100%', () => {
+    render(
+      <CardMeta
+        meta={{
+          ...metaExemplo,
+          valorAlvo: '1000.00',
+          valorGuardado: '995.00',
+          percentualConcluido: '0.9950',
+          valorRestante: '5.00',
+        }}
+      />,
+    )
+
+    const barra = screen.getByRole('progressbar', { name: /progresso da meta/i })
+    expect(barra).toHaveAttribute('aria-valuenow', '99')
+    expect((barra.firstElementChild as HTMLElement).style.width).toBe('99%')
+    expect(screen.getByText('99%')).toBeInTheDocument()
+    expect(screen.queryByText('100%')).toBeNull()
+  })
+
+  it('o percentual não atingido arredonda para baixo (29% fica 29%, 40,9% fica 40%)', () => {
+    const { rerender } = render(
+      <CardMeta meta={{ ...metaExemplo, percentualConcluido: '0.2900' }} />,
+    )
+    expect(screen.getByText('29%')).toBeInTheDocument()
+
+    rerender(<CardMeta meta={{ ...metaExemplo, percentualConcluido: '0.4090' }} />)
+    expect(screen.getByText('40%')).toBeInTheDocument()
+  })
+
+  it('esconde o valor mensal sugerido quando a API manda 0.00 (meta sem prazo)', () => {
+    render(
+      <CardMeta
+        meta={{ ...metaExemplo, prazo: null, valorMensalSugerido: '0.00', mesesRestantes: 0 }}
+      />,
+    )
+
+    expect(screen.queryByText(/\/mês/)).toBeNull()
+    expect(screen.getByText('Sem prazo fixo')).toBeInTheDocument()
+  })
+
+  it('Guardar é ação secundária e Resgatar é botão de texto, sem coral', () => {
+    render(<CardMeta meta={metaExemplo} />)
+
+    const guardar = screen.getByRole('button', { name: /guardar/i })
+    expect(guardar.className).not.toContain('--cor-principal-fundo')
+    expect(guardar.className).toContain('bg-[var(--cor-elevado)]')
+    expect(guardar.className).toContain('border-[var(--cor-linha)]')
+    expect(guardar.className).toContain('text-[var(--cor-texto)]')
+    expect(guardar.className).toContain('min-h-11')
+
+    const resgatar = screen.getByRole('button', { name: /resgatar/i })
+    expect(resgatar.className).toContain('text-[var(--cor-secundario)]')
+    expect(resgatar.className).toContain('hover:bg-[var(--cor-elevado)]')
+    expect(resgatar.className).toContain('min-h-11')
+  })
+
+  it('valor mensal sugerido e percentual usam o tom secundário', () => {
+    render(<CardMeta meta={metaExemplo} />)
+
+    const mensal = screen.getByText(/R\$\s*428,57\/mês/)
+    expect(mensal.className).toContain('text-[var(--cor-secundario)]')
+    expect(mensal.className).not.toContain('--cor-principal')
+    expect(screen.getByText('40%').className).toContain('text-[var(--cor-secundario)]')
+  })
+
+  it('números em peso 500, sem negrito', () => {
+    render(<CardMeta meta={metaExemplo} />)
+
+    const guardado = screen.getByText(/R\$\s*4\.000,00/)
+    expect(guardado.className).toContain('font-medium')
+    expect(guardado.className).not.toContain('font-bold')
   })
 
   it('exibe ritmo mensal sugerido quando houver prazo', () => {
@@ -67,11 +290,17 @@ describe('CardMeta', () => {
     expect(screen.getByText(/R\$\s*428,57\/mês/)).toBeInTheDocument()
   })
 
-  it('exibe badge de concluída quando a meta atingir 100%', () => {
-    render(<CardMeta meta={metaConcluida} />)
+  it('exibe selo de concluída como chip de status ok, sem exclamação', () => {
+    const { container } = render(<CardMeta meta={metaConcluida} />)
 
-    expect(screen.getByText(/Concluída/i)).toBeInTheDocument()
+    const selo = screen.getByText('Concluída').closest('span.inline-flex')
+    expect(selo?.className).toContain('bg-[var(--cor-ok-fundo)]')
+    expect(selo?.className).toContain('text-[var(--cor-positivo-texto)]')
+    expect(selo?.className).toContain('rounded-md')
+    expect(selo?.querySelector('svg')).toHaveClass('size-3')
     expect(screen.getByText('100%')).toBeInTheDocument()
+    expect(screen.getByText('Objetivo alcançado')).toBeInTheDocument()
+    expect(container.textContent).not.toContain('!')
   })
 
   it('aciona callbacks de guardar, resgatar e editar', async () => {

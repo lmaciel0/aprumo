@@ -44,6 +44,17 @@ describe('PreferenciasModal', () => {
     expect(fechar).not.toHaveClass('rounded-full')
   })
 
+  it('os presets de cor não selecionados têm contorno de 3:1', () => {
+    render(
+      <PreferenciasProvider>
+        <PreferenciasModal aberta={true} aoFechar={() => {}} />
+      </PreferenciasProvider>
+    )
+    const musgo = screen.getByRole('button', { name: /musgo/i })
+    expect(musgo).toHaveClass('border-[var(--cor-auth-campo-borda)]')
+    expect(musgo.className).not.toContain('border-[var(--cor-linha)]')
+  })
+
   it('chama aoFechar ao pressionar Escape', () => {
     const fechar = vi.fn()
     render(

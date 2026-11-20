@@ -1,11 +1,19 @@
 import { useState } from 'react'
-import { Sparkles, Trash2, X } from 'lucide-react'
+import { Target, Trash2, X } from 'lucide-react'
 import type { MetaRequest, MetaResponse } from '../../api/tipos'
 import { lerValor } from '../../formato/moeda'
 import { FundoDoDialogo } from '../../layout/FundoDoDialogo'
+import { foco } from '../../layout/classesFoco'
+import { estiloAreaVisivel, useAlturaVisivel } from '../../layout/useAlturaVisivel'
 import { useDialogoModal } from '../../layout/useDialogoModal'
 import { getIconePreset } from './iconesMeta'
 import { LISTA_PRESETS, obterPresetVisual } from './presetsVisuais'
+
+const classeRotulo = 'block text-sm font-medium text-[var(--cor-texto)]'
+const classeCampo = `min-h-11 w-full rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] px-3 text-base text-[var(--cor-texto)] placeholder:text-[var(--cor-mutado)] ${foco}`
+const classePrefixo =
+  'pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm text-[var(--cor-mutado)]'
+const classeBotaoSecundario = `inline-flex min-h-11 cursor-pointer items-center justify-center rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 text-sm font-medium text-[var(--cor-texto)] transition-colors duration-150 motion-reduce:transition-none disabled:opacity-60 ${foco}`
 
 interface Props {
   readonly aberto: boolean
@@ -23,6 +31,7 @@ export function ModalMetaForm({
   aoFechar,
 }: Readonly<Props>) {
   const { painel, prenderFoco } = useDialogoModal<HTMLDialogElement>(aberto, aoFechar)
+  const areaVisivel = useAlturaVisivel(aberto)
   const ehEdicao = Boolean(meta)
 
   const [titulo, setTitulo] = useState(meta?.titulo || '')
@@ -46,14 +55,6 @@ export function ModalMetaForm({
   }
 
   const presetAtual = obterPresetVisual(presetVisual)
-
-  const selecionarPreset = (id: string) => {
-    setPresetVisual(id)
-    const p = obterPresetVisual(id)
-    if (!fotoUrl && p.fotoPadrao) {
-      // foto sugerida
-    }
-  }
 
   const tratarEnvio = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -85,8 +86,6 @@ export function ModalMetaForm({
       prazo: prazo || null,
       presetVisual: presetAtual.id,
       icone: presetAtual.icone,
-      corGradienteInicio: presetAtual.corGradienteInicio,
-      corGradienteFim: presetAtual.corGradienteFim,
       fotoUrl: fotoUrl.trim() || null,
     }
 
@@ -128,19 +127,19 @@ export function ModalMetaForm({
     }
     if (confirmandoExclusao) {
       return (
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={tratarExcluir}
             disabled={salvando}
-            className="cursor-pointer rounded-xl bg-red-600 px-3 py-1.5 text-xs font-bold text-[var(--cor-sobre-negativo)] hover:bg-red-700"
+            className={`min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-negativo)] px-3 text-sm font-medium text-[var(--cor-sobre-negativo)] transition-[filter] duration-150 hover:brightness-95 motion-reduce:transition-none disabled:opacity-60 ${foco}`}
           >
             Confirmar exclusão
           </button>
           <button
             type="button"
             onClick={() => setConfirmandoExclusao(false)}
-            className="cursor-pointer rounded-xl border border-[var(--cor-linha)] px-2.5 py-1.5 text-xs font-medium text-[var(--cor-mutado)]"
+            className={`min-h-11 cursor-pointer rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-3 text-sm font-medium text-[var(--cor-texto)] ${foco}`}
           >
             Cancelar
           </button>
@@ -151,16 +150,19 @@ export function ModalMetaForm({
       <button
         type="button"
         onClick={() => setConfirmandoExclusao(true)}
-        className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-red-600 transition-colors hover:text-red-700 dark:text-red-400"
+        className={`inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] px-2 text-sm font-medium text-[var(--cor-negativo-texto)] transition-colors duration-150 hover:bg-[var(--cor-erro-fundo)] motion-reduce:transition-none ${foco}`}
       >
-        <Trash2 className="size-3.5" />
+        <Trash2 className="size-4" />
         <span>Excluir meta</span>
       </button>
     )
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
+    <div
+      style={estiloAreaVisivel(areaVisivel)}
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+    >
       <FundoDoDialogo testId="fundo-modal-meta-form" aoClicar={aoFechar} />
       <dialog
         open
@@ -168,20 +170,20 @@ export function ModalMetaForm({
         aria-modal="true"
         aria-labelledby="titulo-modal-meta-form"
         onKeyDown={prenderFoco}
-        className="superficie relative z-10 m-0 flex max-h-[92vh] w-full max-w-lg flex-col rounded-t-3xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-2xl backdrop:bg-transparent sm:rounded-3xl"
+        className="superficie relative z-10 m-0 flex max-h-[min(92vh,100%)] w-full max-w-lg flex-col overflow-hidden rounded-t-[20px] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-[var(--sombra-elevada)] backdrop:bg-transparent sm:rounded-2xl"
       >
         {/* Cabeçalho */}
-        <div className="flex items-center justify-between border-b border-[var(--cor-linha)] px-5 py-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-[var(--cor-principal)]/10 text-[var(--cor-principal)]">
-              <Sparkles className="size-4.5" />
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--cor-linha)] px-5 py-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--cor-elevado)] text-[var(--cor-texto)]">
+              <Target className="size-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h2
                 id="titulo-modal-meta-form"
-                className="m-0 text-base font-bold text-[var(--cor-texto)]"
+                className="m-0 text-base font-medium text-[var(--cor-texto)]"
               >
-                {ehEdicao ? 'Editar Meta' : 'Nova Meta ou Caixinha'}
+                {ehEdicao ? 'Editar meta' : 'Nova meta ou caixinha'}
               </h2>
               <p className="m-0 mt-0.5 text-xs text-[var(--cor-mutado)]">
                 {ehEdicao
@@ -194,188 +196,168 @@ export function ModalMetaForm({
           <button
             type="button"
             onClick={aoFechar}
-            aria-label="Fechar diálogo"
-            className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/50 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+            aria-label="Fechar"
+            className={`inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-[10px] text-[var(--cor-mutado)] transition-colors duration-150 hover:bg-[var(--cor-elevado)] hover:text-[var(--cor-texto)] motion-reduce:transition-none ${foco}`}
           >
             <X className="size-4" />
           </button>
         </div>
 
-        {/* Formulário com rolagem interna */}
-        <form
-          onSubmit={tratarEnvio}
-          className="flex flex-1 flex-col gap-4 overflow-y-auto p-5"
-        >
-          {/* Seletor de Presets Visuais */}
-          <div>
-            <span className="block text-xs font-semibold text-[var(--cor-texto)]">
-              Estilo e Categoria Visual
-            </span>
-            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {LISTA_PRESETS.map((p) => {
-                const selecionado = presetVisual === p.id
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => selecionarPreset(p.id)}
-                    className={`flex cursor-pointer items-center gap-2 rounded-xl border p-2.5 text-left transition-all ${
-                      selecionado
-                        ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)]/10 font-bold text-[var(--cor-principal)] shadow-xs'
-                        : 'border-[var(--cor-linha)] bg-[var(--cor-fundo)] font-medium text-[var(--cor-texto)] hover:border-[var(--cor-linha)]/80'
-                    }`}
-                  >
-                    <span
-                      className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[var(--cor-sobre-imagem)]"
-                      style={{
-                        background: `linear-gradient(135deg, ${p.corGradienteInicio}, ${p.corGradienteFim})`,
-                      }}
-                    >
-                      {getIconePreset(p.icone)}
-                    </span>
-                    <span className="truncate text-xs">{p.nome}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Título da Meta */}
-          <div>
-            <label
-              htmlFor="campo-titulo-meta"
-              className="block text-xs font-semibold text-[var(--cor-texto)]"
-            >
-              Título da Meta
-            </label>
-            <input
-              id="campo-titulo-meta"
-              type="text"
-              required
-              placeholder="Ex: IPVA 2027, Viagem para praia..."
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] px-3.5 py-2.5 text-sm font-medium text-[var(--cor-texto)] placeholder:font-normal placeholder:text-[var(--cor-mutado)] focus:border-[var(--cor-principal)] focus:outline-none focus:ring-2 focus:ring-[var(--cor-principal)]/20"
-            />
-          </div>
-
-          {/* Valor Alvo e Valor Inicial (se criação) */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {/* O corpo rola; erro e rodapé ficam fixos. O contêiner acompanha o visualViewport (useAlturaVisivel), então o rodapé fica acima do teclado. */}
+        <form onSubmit={tratarEnvio} className="flex min-h-0 flex-1 flex-col">
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
+            {/* Seletor de Presets Visuais */}
             <div>
-              <label
-                htmlFor="campo-alvo-meta"
-                className="block text-xs font-semibold text-[var(--cor-texto)]"
-              >
-                Valor Alvo (R$)
-              </label>
-              <div className="relative mt-1.5">
-                <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-semibold text-[var(--cor-mutado)]">
-                  R$
-                </span>
-                <input
-                  id="campo-alvo-meta"
-                  type="text"
-                  inputMode="decimal"
-                  required
-                  placeholder="0,00"
-                  value={valorAlvoTexto}
-                  onChange={(e) => setValorAlvoTexto(e.target.value)}
-                  className="w-full rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] py-2 pr-3 pl-9 text-sm font-bold text-[var(--cor-texto)] placeholder:font-normal placeholder:text-[var(--cor-mutado)] focus:border-[var(--cor-principal)] focus:outline-none focus:ring-2 focus:ring-[var(--cor-principal)]/20"
-                />
+              <span className={classeRotulo}>Estilo da meta</span>
+              <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {LISTA_PRESETS.map((p) => {
+                  const selecionado = presetVisual === p.id
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      aria-pressed={selecionado}
+                      onClick={() => setPresetVisual(p.id)}
+                      className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-[10px] border p-2 text-left text-sm font-medium transition-colors duration-150 motion-reduce:transition-none ${foco} ${
+                        selecionado
+                          ? 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
+                          : 'border-[var(--cor-auth-campo-borda)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:bg-[var(--cor-elevado)]'
+                      }`}
+                    >
+                      <span
+                        className={`flex size-7 shrink-0 items-center justify-center rounded-md text-[var(--cor-texto)] ${
+                          selecionado ? 'bg-[var(--cor-fundo)]' : 'bg-[var(--cor-elevado)]'
+                        }`}
+                      >
+                        {getIconePreset(p.icone)}
+                      </span>
+                      <span className="min-w-0 break-words leading-tight">{p.nome}</span>
+                    </button>
+                  )
+                })}
               </div>
             </div>
 
-            {!ehEdicao && (
-              <div>
-                <label
-                  htmlFor="campo-guardado-meta"
-                  className="block text-xs font-semibold text-[var(--cor-texto)]"
-                >
-                  Já guardado (opcional)
+            {/* Título da Meta */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="campo-titulo-meta" className={classeRotulo}>
+                Título da meta
+              </label>
+              <input
+                id="campo-titulo-meta"
+                type="text"
+                required
+                placeholder="Ex: IPVA 2027, viagem para a praia"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                className={classeCampo}
+              />
+            </div>
+
+            {/* Valor Alvo e Valor Inicial (se criação) */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="campo-alvo-meta" className={classeRotulo}>
+                  Valor alvo (R$)
                 </label>
-                <div className="relative mt-1.5">
-                  <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-semibold text-[var(--cor-mutado)]">
-                    R$
-                  </span>
+                <div className="relative">
+                  <span className={classePrefixo}>R$</span>
                   <input
-                    id="campo-guardado-meta"
+                    id="campo-alvo-meta"
                     type="text"
                     inputMode="decimal"
+                    required
                     placeholder="0,00"
-                    value={valorGuardadoTexto}
-                    onChange={(e) => setValorGuardadoTexto(e.target.value)}
-                    className="w-full rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] py-2 pr-3 pl-9 text-sm font-bold text-[var(--cor-texto)] placeholder:font-normal placeholder:text-[var(--cor-mutado)] focus:border-[var(--cor-principal)] focus:outline-none focus:ring-2 focus:ring-[var(--cor-principal)]/20"
+                    value={valorAlvoTexto}
+                    onChange={(e) => setValorAlvoTexto(e.target.value)}
+                    className={`${classeCampo} valor pl-10`}
                   />
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Prazo */}
-          <div>
-            <label
-              htmlFor="campo-prazo-meta"
-              className="block text-xs font-semibold text-[var(--cor-texto)]"
-            >
-              Prazo Estimado (opcional)
-            </label>
-            <input
-              id="campo-prazo-meta"
-              type="date"
-              value={prazo}
-              onChange={(e) => setPrazo(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] px-3 py-2 text-sm text-[var(--cor-texto)] focus:border-[var(--cor-principal)] focus:outline-none focus:ring-2 focus:ring-[var(--cor-principal)]/20"
-            />
-            <span className="mt-1 block text-[11px] text-[var(--cor-mutado)]">
-              Com o prazo definido, calculamos o ritmo mensal necessário para
-              você chegar lá.
-            </span>
-          </div>
+              {!ehEdicao && (
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="campo-guardado-meta" className={classeRotulo}>
+                    Já guardado (opcional)
+                  </label>
+                  <div className="relative">
+                    <span className={classePrefixo}>R$</span>
+                    <input
+                      id="campo-guardado-meta"
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="0,00"
+                      value={valorGuardadoTexto}
+                      onChange={(e) => setValorGuardadoTexto(e.target.value)}
+                      className={`${classeCampo} valor pl-10`}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
 
-          {/* Foto Personalizada (URL) */}
-          <div>
-            <label
-              htmlFor="campo-foto-meta"
-              className="block text-xs font-semibold text-[var(--cor-texto)]"
-            >
-              Foto ou Imagem de Fundo (URL opcional)
-            </label>
-            <input
-              id="campo-foto-meta"
-              type="url"
-              placeholder="https://exemplo.com/foto.jpg"
-              value={fotoUrl}
-              onChange={(e) => setFotoUrl(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] px-3 py-2 text-xs text-[var(--cor-texto)] placeholder:text-[var(--cor-mutado)] focus:border-[var(--cor-principal)] focus:outline-none focus:ring-2 focus:ring-[var(--cor-principal)]/20"
-            />
+            {/* Prazo */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="campo-prazo-meta" className={classeRotulo}>
+                Prazo estimado (opcional)
+              </label>
+              <input
+                id="campo-prazo-meta"
+                type="date"
+                value={prazo}
+                onChange={(e) => setPrazo(e.target.value)}
+                className={classeCampo}
+              />
+              <span className="text-xs text-[var(--cor-mutado)]">
+                Com o prazo definido, calculamos o ritmo mensal necessário para
+                você chegar lá.
+              </span>
+            </div>
+
+            {/* Foto Personalizada (URL) */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="campo-foto-meta" className={classeRotulo}>
+                Foto ou imagem de fundo (URL opcional)
+              </label>
+              <input
+                id="campo-foto-meta"
+                type="url"
+                placeholder="https://exemplo.com/foto.jpg"
+                value={fotoUrl}
+                onChange={(e) => setFotoUrl(e.target.value)}
+                className={classeCampo}
+              />
+            </div>
           </div>
 
           {erro && (
-            <div
-              role="alert"
-              className="rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs font-medium text-red-600 dark:text-red-400"
-            >
-              {erro}
+            <div className="shrink-0 px-5 pt-3">
+              <p
+                role="alert"
+                className="m-0 rounded-[10px] border border-[var(--cor-negativo)] bg-[var(--cor-erro-fundo)] px-3 py-2 text-sm text-[var(--cor-negativo-texto)]"
+              >
+                {erro}
+              </p>
             </div>
           )}
 
-          {/* Rodapé de Ações */}
-          <div className="mt-2 flex items-center justify-between border-t border-[var(--cor-linha)] pt-4">
+          {/* Rodapé de ações */}
+          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[var(--cor-linha)] px-5 py-3">
             {renderBotaoExclusao()}
 
-            <div className="flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-2">
               <button
                 type="button"
                 onClick={aoFechar}
                 disabled={salvando}
-                className="cursor-pointer rounded-xl border border-[var(--cor-linha)] px-4 py-2 text-xs font-semibold text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/30 hover:text-[var(--cor-texto)]"
+                className={classeBotaoSecundario}
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={salvando}
-                className="cursor-pointer rounded-xl bg-[var(--cor-principal)] px-5 py-2 text-xs font-bold text-[var(--cor-sobre-principal)] shadow-sm transition-all hover:opacity-90 disabled:opacity-50"
+                className={`min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 text-sm font-medium text-[var(--cor-sobre-principal-fundo)] transition-[filter] duration-150 hover:brightness-95 motion-reduce:transition-none disabled:opacity-60 ${foco}`}
               >
                 {salvando ? 'Salvando...' : 'Salvar meta'}
               </button>

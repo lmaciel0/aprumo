@@ -163,7 +163,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     className={`flex items-center gap-2.5 rounded-xl border px-3 py-2 text-left font-medium transition-colors ${
                       ativo
                         ? 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)] font-semibold'
-                        : 'border-[var(--cor-linha)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)]'
+                        : 'border-[var(--cor-auth-campo-borda)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)]'
                     } ${foco}`}
                   >
                     <span

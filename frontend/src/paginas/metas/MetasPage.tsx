@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react'
-import { Plus, Sparkles, Target, Trophy } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { PiggyBank, Plus } from 'lucide-react'
 import { endpoints } from '../../api/endpoints'
 import type { MetaRequest, MetaResponse } from '../../api/tipos'
 import { Carregando } from '../../componentes/Carregando'
 import { formatarMoeda } from '../../formato/moeda'
+import { foco } from '../../layout/classesFoco'
 import { CardMeta } from './CardMeta'
 import { ModalAporteMeta } from './ModalAporteMeta'
 import { ModalMetaForm } from './ModalMetaForm'
+
+const BOTAO_PRINCIPAL = `inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 text-sm font-medium text-[var(--cor-sobre-principal-fundo)] transition-colors hover:brightness-95 ${foco}`
 
 export function MetasPage() {
   const [metas, setMetas] = useState<MetaResponse[]>([])
@@ -71,6 +74,13 @@ export function MetasPage() {
     await carregarMetas()
   }
 
+  const fecharAporte = useCallback(() => setMetaAporte(null), [])
+
+  const fecharForm = useCallback(() => {
+    setModalFormAberto(false)
+    setMetaEdicao(null)
+  }, [])
+
   const confirmarAporte = async (valor: string) => {
     if (!metaAporte) return
     if (tipoAporte === 'GUARDAR') {
@@ -99,22 +109,20 @@ export function MetasPage() {
 
     if (metas.length === 0) {
       return (
-        /* Estado Vazio Amigável */
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-[var(--cor-linha)] bg-[var(--cor-card)]/50 p-8 text-center sm:p-12">
-          <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-            <Sparkles className="size-7" />
-          </div>
-          <h2 className="m-0 mt-4 text-lg font-bold text-[var(--cor-texto)]">
+        /* Estado vazio */
+        <div className="flex flex-col items-center justify-center rounded-[var(--raio-card)] border border-dashed border-[var(--cor-linha)] bg-[var(--cor-card)] p-8 text-center sm:p-12">
+          <PiggyBank aria-hidden="true" className="size-6 text-[var(--cor-mutado)]" />
+          <h2 className="m-0 mt-4 text-lg font-medium text-[var(--cor-texto)]">
             Nenhuma meta cadastrada
           </h2>
           <p className="m-0 mt-1.5 max-w-sm text-xs text-[var(--cor-mutado)] sm:text-sm">
             Crie sua primeira caixinha para organizar seus objetivos futuros.
-            Pode ser IPVA, reserva de emergência, férias ou reformas!
+            Pode ser IPVA, reserva de emergência, férias ou reformas.
           </p>
           <button
             type="button"
             onClick={abrirCriar}
-            className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[var(--cor-principal)] px-5 py-2.5 text-xs font-bold text-[var(--cor-sobre-principal)] shadow-sm transition-all hover:opacity-90 active:scale-98"
+            className={`mt-6 ${BOTAO_PRINCIPAL}`}
           >
             <Plus className="size-4" />
             <span>Criar primeira meta</span>
@@ -125,48 +133,33 @@ export function MetasPage() {
 
     return (
       <>
-        {/* Barra de Resumo Estatístico */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="flex items-center justify-between rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-4 shadow-xs">
-            <div>
-              <span className="text-xs font-medium text-[var(--cor-mutado)]">
-                Total guardado em metas
-              </span>
-              <p className="m-0 mt-0.5 text-lg font-bold text-[var(--cor-texto)]">
-                {formatarMoeda(totalGuardado)}
-              </p>
-            </div>
-            <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-              <Target className="size-5" />
-            </div>
+        {/* Totais */}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          <div className="card col-span-2 md:col-span-1">
+            <span className="text-xs font-medium text-[var(--cor-secundario)]">
+              Total guardado em metas
+            </span>
+            <p className="valor m-0 mt-0.5 text-lg font-medium text-[var(--cor-texto)]">
+              {formatarMoeda(totalGuardado)}
+            </p>
           </div>
 
-          <div className="flex items-center justify-between rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-4 shadow-xs">
-            <div>
-              <span className="text-xs font-medium text-[var(--cor-mutado)]">
-                Metas ativas
-              </span>
-              <p className="m-0 mt-0.5 text-lg font-bold text-[var(--cor-texto)]">
-                {ativasCount}
-              </p>
-            </div>
-            <div className="flex size-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
-              <Sparkles className="size-5" />
-            </div>
+          <div className="card !p-3.5">
+            <span className="text-xs font-medium text-[var(--cor-secundario)]">
+              Metas ativas
+            </span>
+            <p className="valor m-0 mt-0.5 text-lg font-medium text-[var(--cor-texto)]">
+              {ativasCount}
+            </p>
           </div>
 
-          <div className="flex items-center justify-between rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-4 shadow-xs">
-            <div>
-              <span className="text-xs font-medium text-[var(--cor-mutado)]">
-                Objetivos alcançados
-              </span>
-              <p className="m-0 mt-0.5 text-lg font-bold text-[var(--cor-texto)]">
-                {concluidasCount}
-              </p>
-            </div>
-            <div className="flex size-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
-              <Trophy className="size-5" />
-            </div>
+          <div className="card !p-3.5">
+            <span className="text-xs font-medium text-[var(--cor-secundario)]">
+              Objetivos alcançados
+            </span>
+            <p className="valor m-0 mt-0.5 text-lg font-medium text-[var(--cor-texto)]">
+              {concluidasCount}
+            </p>
           </div>
         </div>
 
@@ -187,38 +180,31 @@ export function MetasPage() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 sm:p-6">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
       {/* Cabeçalho da Página */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-              <Target className="size-5" />
-            </div>
-            <h1 className="m-0 text-xl font-bold tracking-tight text-[var(--cor-texto)] sm:text-2xl">
-              Metas e Caixinhas
-            </h1>
-          </div>
+          <h1 className="m-0 text-[28px] font-medium tracking-tight text-[var(--cor-texto)]">
+            Metas e Caixinhas
+          </h1>
           <p className="m-0 mt-1 text-xs text-[var(--cor-mutado)] sm:text-sm">
             Guarde dinheiro com propósito para IPVA, viagens, reformas ou reserva.
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={abrirCriar}
-          className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[var(--cor-principal)] px-4 py-2.5 text-xs font-bold text-[var(--cor-sobre-principal)] shadow-sm transition-all hover:opacity-90 active:scale-98 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
-        >
-          <Plus className="size-4" />
-          <span>Nova meta</span>
-        </button>
+        {metas.length > 0 && (
+          <button type="button" onClick={abrirCriar} className={BOTAO_PRINCIPAL}>
+            <Plus className="size-4" />
+            <span>Nova meta</span>
+          </button>
+        )}
       </header>
 
       {/* Alerta de Erro */}
       {erro && (
         <div
           role="alert"
-          className="flex items-center justify-between rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-xs font-medium text-red-600 dark:text-red-400"
+          className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--raio-card)] border border-[var(--cor-negativo)] bg-[var(--cor-erro-fundo)] p-4 text-xs font-medium text-[var(--cor-negativo-texto)]"
         >
           <span>{erro}</span>
           <button
@@ -226,7 +212,7 @@ export function MetasPage() {
             onClick={() => {
               void carregarMetas()
             }}
-            className="cursor-pointer font-bold underline"
+            className={`min-h-11 cursor-pointer rounded-[10px] px-2 font-medium underline ${foco}`}
           >
             Tentar novamente
           </button>
@@ -242,18 +228,17 @@ export function MetasPage() {
         meta={metaAporte}
         tipo={tipoAporte}
         aoConfirmar={confirmarAporte}
-        aoFechar={() => setMetaAporte(null)}
+        aoFechar={fecharAporte}
       />
 
+      {/* A chave recria o formulário a cada meta, já que ele lê a meta só ao montar. */}
       <ModalMetaForm
+        key={metaEdicao?.id ?? 'nova'}
         aberto={modalFormAberto}
         meta={metaEdicao}
         aoSalvar={salvarMeta}
         aoExcluir={excluirMeta}
-        aoFechar={() => {
-          setModalFormAberto(false)
-          setMetaEdicao(null)
-        }}
+        aoFechar={fecharForm}
       />
     </div>
   )

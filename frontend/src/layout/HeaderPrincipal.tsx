@@ -94,7 +94,7 @@ export function HeaderPrincipal({
       </button>
 
       {/* Pílula à direita: Notificações + Perfil do Usuário. Sem overflow para o menu não ser cortado. */}
-      <div className="superficie flex h-11 shrink-0 items-center rounded-[10px]">
+      <div className="superficie flex h-11 shrink-0 items-center gap-1 rounded-[10px] px-1.5">
         {/* Notificações */}
         <button
           type="button"

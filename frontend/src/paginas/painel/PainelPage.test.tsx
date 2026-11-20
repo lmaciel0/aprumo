@@ -50,8 +50,6 @@ const metaFicticia: MetaResponse = {
   prazo: null,
   presetVisual: 'viagem',
   icone: '',
-  corGradienteInicio: '',
-  corGradienteFim: '',
   fotoUrl: null,
   ordem: 0,
   percentualConcluido: '0.25',
