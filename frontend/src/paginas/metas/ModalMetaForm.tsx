@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Target, Trash2, X } from 'lucide-react'
+import { normalizarPrazo } from '../../api/adaptadorMetas'
 import type { MetaRequest, MetaResponse } from '../../api/tipos'
 import { lerValor } from '../../formato/moeda'
 import { FundoDoDialogo } from '../../layout/FundoDoDialogo'
@@ -41,7 +42,7 @@ export function ModalMetaForm({
   const [valorGuardadoTexto, setValorGuardadoTexto] = useState(
     meta?.valorGuardado ? meta.valorGuardado.replace('.', ',') : '',
   )
-  const [prazo, setPrazo] = useState(meta?.prazo || '')
+  const [prazo, setPrazo] = useState(meta?.prazo?.slice(0, 7) || '')
   const [presetVisual, setPresetVisual] = useState(
     meta?.presetVisual || 'personalizado',
   )
@@ -71,6 +72,12 @@ export function ModalMetaForm({
       return
     }
 
+    const prazoNormalizado = prazo.trim() ? normalizarPrazo(prazo) : null
+    if (prazo.trim() && !prazoNormalizado) {
+      setErro('Prazo inválido. Use o formato AAAA-MM (por exemplo, 2027-06) ou MM/AAAA.')
+      return
+    }
+
     let guardadoNormalizado: string | undefined
     if (!ehEdicao && valorGuardadoTexto.trim()) {
       const g = lerValor(valorGuardadoTexto)
@@ -83,9 +90,8 @@ export function ModalMetaForm({
       titulo: titulo.trim(),
       valorAlvo: alvoNormalizado,
       valorGuardado: guardadoNormalizado,
-      prazo: prazo || null,
+      prazo: prazoNormalizado,
       presetVisual: presetAtual.id,
-      icone: presetAtual.icone,
       fotoUrl: fotoUrl.trim() || null,
     }
 
@@ -303,7 +309,8 @@ export function ModalMetaForm({
               </label>
               <input
                 id="campo-prazo-meta"
-                type="date"
+                type="month"
+                placeholder="AAAA-MM"
                 value={prazo}
                 onChange={(e) => setPrazo(e.target.value)}
                 className={classeCampo}

@@ -312,6 +312,60 @@ export interface SugestaoAporteMeta {
 export interface ResumoConselheiroResponse {
   sobraPrevistaMes: string
   totalSugeridoAporte: string
+  /** Texto do backend para o mês; é o que o card mostra quando não há sobra. */
+  sugestaoTexto: string
   sugestoes: SugestaoAporteMeta[]
+}
+
+// Metas no formato do contrato HTTP (espelham os records Java de `metas/dto`). Só `adaptadorMetas.ts` e
+// `endpoints.ts` usam estes tipos; as telas usam os tipos de UI acima.
+/** `MetaResponse.java`. `percentualConcluido` é fração (0.4000 = 40%). */
+export interface MetaApi {
+  id: number
+  nome: string
+  valorAlvo: string
+  valorGuardado: string
+  mesAlvo: number | null
+  anoAlvo: number | null
+  presetVisual: string | null
+  imagemUrl: string | null
+  corGradiente: string | null
+  ordem: number
+  percentualConcluido: string
+  valorRestante: string
+  mesesRestantes: number | null
+  valorMensalSugerido: string
+  concluida: boolean
+}
+
+/** `MetaRequest.java`. No PUT, `valorGuardado`, `presetVisual` e `ordem` nulos mantêm o valor salvo. */
+export interface MetaRequestApi {
+  nome: string
+  valorAlvo: string
+  valorGuardado: string | null
+  mesAlvo: number | null
+  anoAlvo: number | null
+  presetVisual: string | null
+  imagemUrl: string | null
+  corGradiente: string | null
+  ordem: number | null
+}
+
+/** `SugestaoAporte.java`. */
+export interface SugestaoAporteApi {
+  metaId: number
+  nome: string
+  valorSugerido: string
+  mesesRestantes: number | null
+}
+
+/** `ResumoConselheiroResponse.java`. */
+export interface ResumoConselheiroApi {
+  sobraMes: string
+  totalMetas: number
+  totalGuardado: string
+  totalAlvo: string
+  sugestaoTexto: string
+  sugestoes: SugestaoAporteApi[]
 }
 

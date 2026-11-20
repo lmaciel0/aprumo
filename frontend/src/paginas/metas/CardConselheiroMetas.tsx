@@ -19,13 +19,23 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
     queryFn: () => endpoints.metas.conselheiro(ano, mes),
   })
 
+  // A sugestão da API não traz o preset: o ícone vem da meta correspondente na lista (mesma chave do widget do painel).
+  const { data: metas } = useQuery({
+    queryKey: ['metas'],
+    queryFn: () => endpoints.metas.listar(),
+  })
+
   if (isPending || isError || !data) {
     return null
   }
 
-  const { sobraPrevistaMes, totalSugeridoAporte, sugestoes } = data
+  const { sobraPrevistaMes, totalSugeridoAporte, sugestaoTexto, sugestoes } = data
   const sobraNum = Number.parseFloat(sobraPrevistaMes || '0')
-  const temSugestoes = sugestoes && sugestoes.length > 0
+  const temSobra = sobraNum > 0
+  // O backend monta as sugestões sem olhar a sobra do mês: sem sobra, elas não aparecem.
+  const temSugestoes = temSobra && sugestoes.length > 0
+  const totalAcimaDaSobra =
+    Math.round(Number.parseFloat(totalSugeridoAporte || '0') * 100) > Math.round(sobraNum * 100)
 
   const renderConteudo = () => {
     if (temSugestoes) {
@@ -39,10 +49,16 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
             </strong>{' '}
             para suas caixinhas:
           </p>
+          {totalAcimaDaSobra && (
+            <p className="m-0 text-xs text-[var(--cor-secundario)]">
+              Total sugerido acima da sobra prevista do mês.
+            </p>
+          )}
 
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {sugestoes.map((sugestao) => {
-              const preset = obterPresetVisual(sugestao.presetVisual)
+              const meta = metas?.find((m) => m.id === sugestao.metaId)
+              const preset = obterPresetVisual(meta?.presetVisual ?? sugestao.presetVisual)
               return (
                 <div
                   key={sugestao.metaId}
@@ -50,7 +66,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span className="flex size-7 shrink-0 items-center justify-center text-[var(--cor-secundario)]">
-                      {getIconePreset(sugestao.icone || preset.icone)}
+                      {getIconePreset(meta?.icone || sugestao.icone || preset.icone)}
                     </span>
                   <div className="min-w-0">
                       <h3 className="m-0 truncate text-xs font-medium text-[var(--cor-texto)]">
@@ -73,7 +89,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
       )
     }
 
-    if (sobraNum > 0) {
+    if (temSobra) {
       return (
         <div className="flex flex-col items-start gap-2 py-1">
           <p className="m-0 text-xs text-[var(--cor-texto)]">
@@ -94,8 +110,8 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
     return (
       <div className="rounded-[10px] bg-[var(--cor-aviso-fundo)] p-3 text-xs text-[var(--cor-aviso-texto)]">
         <p className="m-0">
-          Sem sobra prevista para novos aportes este mês. Priorize manter o
-          orçamento e as despesas em dia antes de realizar novos depósitos.
+          {sugestaoTexto ||
+            'Sem sobra prevista para novos aportes este mês. Priorize manter o orçamento e as despesas em dia antes de realizar novos depósitos.'}
         </p>
       </div>
     )

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import type { CartoesResponse, ResumoResponse } from '../api/tipos'
+import type { CartoesResponse, ResumoConselheiroApi, ResumoResponse } from '../api/tipos'
 
 const resumoVazio: ResumoResponse = {
   receitas: '0.00',
@@ -11,6 +11,15 @@ const resumoVazio: ResumoResponse = {
   categorias: [],
   proximas: [],
   serieAno: [],
+}
+
+const conselheiroVazio: ResumoConselheiroApi = {
+  sobraMes: '0.00',
+  totalMetas: 0,
+  totalGuardado: '0.00',
+  totalAlvo: '0.00',
+  sugestaoTexto: '',
+  sugestoes: [],
 }
 
 const cartoesVazios: CartoesResponse = { totalFaturas: '0.00', limiteTotal: '0.00', usoGeral: null, cartoes: [] }
@@ -29,7 +38,5 @@ export const servidor = setupServer(
   http.get('/api/notas/fixada', () => HttpResponse.json({ nota: null })),
   http.get('/api/categorias-nota', () => HttpResponse.json([])),
   http.get('/api/metas', () => HttpResponse.json([])),
-  http.get('/api/metas/conselheiro', () =>
-    HttpResponse.json({ sobraPrevistaMes: '0.00', totalSugeridoAporte: '0.00', sugestoes: [] }),
-  ),
+  http.get('/api/metas/conselheiro', () => HttpResponse.json(conselheiroVazio)),
 )
