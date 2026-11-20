@@ -37,6 +37,19 @@ function renderizar(rota = '/notas') {
 }
 
 describe('NotasPage', () => {
+  it('esqueletoDeCarregamentoAnunciaOCarregamentoSemPulsarFora', async () => {
+    api([resumo(1, { titulo: 'Compras' })])
+    const { container } = renderizar()
+
+    const ocupado = container.querySelector('[aria-busy="true"]')
+    expect(ocupado).not.toBeNull()
+    expect(ocupado).toHaveTextContent('Carregando as notas')
+    for (const pulsante of container.querySelectorAll('.animate-pulse, [class*="animate-pulse"]')) {
+      expect(ocupado).toContainElement(pulsante as HTMLElement)
+    }
+    await screen.findByRole('link', { name: /Compras/ })
+  })
+
   it('listaCartoesComTituloPreviaECategoria', async () => {
     api(
       [resumo(1, { titulo: 'Compras', previa: 'Leite e pão', categoriaId: 5, atualizadoEm: '2026-10-30T14:00:00' })],

@@ -49,7 +49,7 @@ export function SeletorIcone({ valor, aoMudar }: Props) {
               aria-checked={selecionado}
               aria-label={item.nome}
               onClick={() => aoMudar(item.id)}
-              className={`grid size-9 place-items-center rounded-[10px] border transition-all ${
+              className={`grid size-9 place-items-center rounded-[10px] border transition-[background-color,border-color,color] duration-150 motion-reduce:transition-none ${
                 selecionado
                   ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] shadow-sm'
                   : 'border-[var(--cor-linha)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]/50'
@@ -111,7 +111,7 @@ export function SeletorIcone({ valor, aoMudar }: Props) {
                     aoMudar(item.id)
                     setExpandido(false)
                   }}
-                  className={`flex flex-col items-center justify-center gap-1 rounded-lg border p-2 transition-all ${
+                  className={`flex flex-col items-center justify-center gap-1 rounded-lg border p-2 transition-[background-color,border-color,color] duration-150 motion-reduce:transition-none ${
                     selecionado
                       ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
                       : 'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:border-[var(--cor-principal)]/40 hover:bg-[var(--cor-linha)]/30'

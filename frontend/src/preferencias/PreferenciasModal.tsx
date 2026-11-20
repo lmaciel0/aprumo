@@ -109,7 +109,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         aria-modal="true"
         aria-labelledby="titulo-preferencias"
         onKeyDown={prenderFoco}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-6 shadow-2xl transition-all duration-200"
+        className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-6 shadow-2xl"
       >
         {/* Cabeçalho */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-[var(--cor-linha)]">
@@ -197,7 +197,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     key={m.id}
                     type="button"
                     onClick={() => setModoTema(m.id as ModoTema)}
-                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
+                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${
                       ativo
                         ? 'bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-xs ring-1 ring-[var(--cor-linha)]'
                         : 'text-[var(--cor-mutado)] hover:text-[var(--cor-texto)]'
@@ -228,7 +228,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     key={l.id}
                     type="button"
                     onClick={() => setLayoutLargura(l.id as LayoutLargura)}
-                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
+                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${
                       ativo
                         ? 'bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-xs ring-1 ring-[var(--cor-linha)]'
                         : 'text-[var(--cor-mutado)] hover:text-[var(--cor-texto)]'
@@ -257,7 +257,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     key={String(b.valor)}
                     type="button"
                     onClick={() => setBarraFixa(b.valor)}
-                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
+                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${
                       ativo
                         ? 'bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-xs ring-1 ring-[var(--cor-linha)]'
                         : 'text-[var(--cor-mutado)] hover:text-[var(--cor-texto)]'

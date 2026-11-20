@@ -391,6 +391,24 @@ describe('raios', () => {
   })
 })
 
+describe('movimento', () => {
+  it('nenhum TSX fora das fases 3 e 4 usa transition-all', () => {
+    expect(infratores(/transition-all\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 escala ou desloca no hover', () => {
+    expect(infratores(/hover:-?(scale|translate)/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('animate-pulse só em arquivo que marca o carregamento com role="status" ou aria-busy', () => {
+    const comPulso = infratores(/animate-pulse/, EXCECOES_FASE_3_4)
+    const semMarca = comPulso.filter(
+      (arquivo) => !/role="status"|aria-busy/.test(readFileSync(resolve(process.cwd(), 'src', arquivo), 'utf8')),
+    )
+    expect(semMarca).toEqual([])
+  })
+})
+
 function cssSemComentarios(): string {
   return css.replace(/\/\*[\s\S]*?\*\//g, '')
 }

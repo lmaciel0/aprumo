@@ -131,7 +131,7 @@ export function HeaderPrincipal({
             aria-expanded={menuAberto}
             aria-haspopup="menu"
             onClick={() => setMenuAberto((prev) => !prev)}
-            className={`group relative grid min-h-11 min-w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-all duration-200 hover:scale-105 active:scale-95 ${foco}`}
+            className={`group relative grid min-h-11 min-w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-transform duration-150 active:scale-[0.98] motion-reduce:transition-none ${foco}`}
           >
             {/* Informações acessíveis para leitores de tela e testes */}
             {nomeUsuario && <span className="sr-only">{nomeUsuario}</span>}
@@ -139,7 +139,7 @@ export function HeaderPrincipal({
 
             <span
               aria-hidden="true"
-              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-medium text-[var(--cor-sobre-principal)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-all duration-200 group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
+              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-medium text-[var(--cor-sobre-principal)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-shadow duration-150 motion-reduce:transition-none group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
             >
               {inicial}
             </span>

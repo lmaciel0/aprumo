@@ -13,11 +13,14 @@ const grade = 'm-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-c
 
 function Esqueleto() {
   return (
-    <ul aria-hidden="true" className={grade}>
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <li key={i} className="h-32 rounded-[var(--raio-card)] bg-[var(--cor-card)] motion-safe:animate-pulse" />
-      ))}
-    </ul>
+    <div aria-busy="true">
+      <span className="sr-only">Carregando as notas…</span>
+      <ul aria-hidden="true" className={grade}>
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <li key={i} className="h-32 rounded-[var(--raio-card)] bg-[var(--cor-card)] motion-safe:animate-pulse" />
+        ))}
+      </ul>
+    </div>
   )
 }
 

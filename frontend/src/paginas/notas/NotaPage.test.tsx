@@ -17,6 +17,18 @@ async function carregada() {
 }
 
 describe('NotaPage', () => {
+  it('esqueletoDeCarregamentoAnunciaOCarregamento', async () => {
+    montarNotaPage(notaCompleta(1))
+
+    const ocupado = document.querySelector('[aria-busy="true"]')
+    expect(ocupado).not.toBeNull()
+    expect(ocupado).toHaveTextContent('Carregando a nota')
+    for (const pulsante of document.querySelectorAll('[class*="animate-pulse"]')) {
+      expect(ocupado).toContainElement(pulsante as HTMLElement)
+    }
+    await carregada()
+  })
+
   it('carregaTituloConteudoECategoria', async () => {
     montarNotaPage(notaCompleta(1, { titulo: 'Reunião', categoriaId: 5 }), [categoriaNota(5, { nome: 'Trabalho' })])
 

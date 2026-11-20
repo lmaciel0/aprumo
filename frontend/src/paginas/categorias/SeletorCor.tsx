@@ -36,7 +36,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
               aria-checked={selecionado}
               aria-label={cor.nome}
               onClick={() => aoMudar(cor.hex)}
-              className="relative grid size-8 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+              className="relative grid size-8 place-items-center rounded-full transition-opacity duration-150 hover:opacity-80 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
               style={{ backgroundColor: cor.hex }}
             >
               {selecionado && <Check className="size-4 text-[var(--cor-sobre-principal)] drop-shadow-sm" aria-hidden="true" />}
@@ -67,7 +67,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
                   aria-checked={selecionado}
                   aria-label={cor.nome}
                   onClick={() => aoMudar(cor.hex)}
-                  className="relative grid size-7 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+                  className="relative grid size-7 place-items-center rounded-full transition-opacity duration-150 hover:opacity-80 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
                   style={{ backgroundColor: cor.hex }}
                 >
                   {selecionado && <Check className="size-3.5 text-[var(--cor-sobre-principal)] drop-shadow-sm" aria-hidden="true" />}

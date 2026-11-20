@@ -89,7 +89,7 @@ export function LinhaCategoria({
             title="Adicionar subcategoria"
             aria-label={`Adicionar subcategoria em ${categoria.nome}`}
             onClick={() => aoAdicionarSubcategoria(categoria)}
-            className={`grid size-7 place-items-center rounded-[10px] shadow-xs transition-transform hover:scale-110 hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-1 ${
+            className={`grid size-7 place-items-center rounded-[10px] shadow-xs transition-opacity duration-150 hover:opacity-90 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-1 ${
               eDespesa
                 ? 'bg-[var(--cor-negativo)] text-[var(--cor-sobre-negativo)] focus-visible:outline-[var(--cor-negativo)]'
                 : 'bg-[var(--cor-positivo)] text-[var(--cor-sobre-positivo)] focus-visible:outline-[var(--cor-positivo)]'

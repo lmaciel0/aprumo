@@ -35,7 +35,7 @@ export function DockLateral({
 
   return (
     <aside
-      className={`relative flex h-full flex-col transition-all duration-200 select-none ${
+      className={`relative flex h-full flex-col transition-[width,padding] duration-200 motion-reduce:transition-none select-none ${
         recolhida ? 'w-[72px] px-2 py-4' : 'w-60 px-3 py-4'
       }`}
     >
@@ -99,7 +99,7 @@ export function DockLateral({
                 title={recolhida ? item.rotulo : undefined}
                 className={({ isActive }) =>
                   recolhida
-                    ? `group relative grid size-11 place-items-center rounded-[10px] transition-all duration-150 ${foco} ` +
+                    ? `group relative grid size-11 place-items-center rounded-[10px] transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${foco} ` +
                       (isActive
                         ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
                         : 'text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)]')

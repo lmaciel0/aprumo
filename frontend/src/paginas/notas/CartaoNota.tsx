@@ -21,7 +21,7 @@ export function CartaoNota({ nota, categoria, aoFixar, indice = 0 }: Props) {
     <li className="nota-entra relative min-w-0" style={{ '--i': indice } as CSSProperties}>
       <Link
         to={`/notas/${nota.id}`}
-        className="flex h-full min-h-11 flex-col gap-2 rounded-[var(--raio-card)] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-4 pr-14 text-[var(--cor-texto)] no-underline transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[var(--cor-principal)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+        className="flex h-full min-h-11 flex-col gap-2 rounded-[var(--raio-card)] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-4 pr-14 text-[var(--cor-texto)] no-underline transition-colors duration-150 hover:border-[var(--cor-principal)] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
       >
         <span className="break-words text-base font-semibold">{nota.titulo}</span>
         {nota.previa !== '' && (

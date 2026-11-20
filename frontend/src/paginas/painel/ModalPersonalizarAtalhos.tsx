@@ -90,7 +90,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
                 key={atalho.id}
                 type="button"
                 onClick={() => toggleAtalho(atalho.id)}
-                className={`flex w-full cursor-pointer items-center justify-between rounded-[10px] border p-3 text-left transition-all duration-150 ${
+                className={`flex w-full cursor-pointer items-center justify-between rounded-[10px] border p-3 text-left transition-[background-color,border-color,color] duration-150 motion-reduce:transition-none ${
                   selecionado
                     ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)]/10 text-[var(--cor-texto)] shadow-xs'
                     : 'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)]/60 hover:text-[var(--cor-texto)]'
