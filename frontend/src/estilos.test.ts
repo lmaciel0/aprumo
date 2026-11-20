@@ -1,7 +1,8 @@
 /// <reference types="node" />
-import { readdirSync, readFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { EXCECOES_FASE_3_4, infratores, tsxDeProducao } from './teste/varredura'
 
 // O Vitest roda com `css: false`, que esvazia `import '...css?raw'`; por isso o arquivo é lido direto.
 const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf8')
@@ -162,16 +163,6 @@ describe('tokens de cor', () => {
     }
   })
 })
-
-/** Todos os `.tsx` de produção sob `src/` (caminhos relativos a `src/`, sem testes). */
-function tsxDeProducao(pasta = ''): string[] {
-  const base = resolve(process.cwd(), 'src', pasta)
-  return readdirSync(base, { withFileTypes: true }).flatMap((entrada) => {
-    const caminho = join(pasta, entrada.name)
-    if (entrada.isDirectory()) return tsxDeProducao(caminho)
-    return caminho.endsWith('.tsx') && !caminho.endsWith('.test.tsx') ? [caminho] : []
-  })
-}
 
 describe('cores fixas', () => {
   it('nenhum TSX de produção usa bg-white, hex fixo em bg/text nem text-white', () => {
@@ -352,3 +343,25 @@ describe('superfícies sólidas, sombras e curva', () => {
     expect(bloco).toMatch(/padding:\s*1rem/)
   })
 })
+
+describe('tipografia', () => {
+  it('nenhum TSX fora das fases 3 e 4 usa font-bold, font-extrabold nem font-black', () => {
+    expect(infratores(/font-(bold|extrabold|black)\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa uppercase', () => {
+    expect(infratores(/\buppercase\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa tracking-wide, -wider nem -widest', () => {
+    expect(infratores(/tracking-(wide|wider|widest)\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('o index.css não declara font-weight 700 a 900 nem bold', () => {
+    expect(cssSemComentarios()).not.toMatch(/font-weight:\s*(700|800|900|bold)/)
+  })
+})
+
+function cssSemComentarios(): string {
+  return css.replace(/\/\*[\s\S]*?\*\//g, '')
+}

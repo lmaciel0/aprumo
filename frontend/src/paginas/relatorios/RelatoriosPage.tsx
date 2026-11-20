@@ -109,7 +109,7 @@ export function RelatoriosPage() {
     <>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3 md:mb-5">
         <div className="sr-only md:not-sr-only">
-          <h1 className="m-0 text-[28px] font-bold tracking-tight">Relatórios</h1>
+          <h1 className="m-0 text-[28px] font-medium tracking-tight">Relatórios</h1>
           <p className="m-0 mt-1 text-[13px] text-[var(--cor-mutado)]">O ano inteiro, item por item, mês a mês.</p>
         </div>
         <SeletorAno ano={ano} irParaAno={(novoAno) => irPara(novoAno, mes)} />

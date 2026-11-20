@@ -25,7 +25,7 @@ const divisor = 'divide-y divide-[var(--cor-linha)]'
 function Grupo({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
     <section aria-label={titulo} className="flex flex-col gap-2">
-      <h2 className="m-0 px-1 text-xs font-bold tracking-wide text-[var(--cor-mutado)] uppercase">{titulo}</h2>
+      <h2 className="m-0 px-1 text-xs font-medium text-[var(--cor-mutado)]">{titulo}</h2>
       <div className={`${cartao} ${divisor}`}>{children}</div>
     </section>
   )
@@ -49,12 +49,12 @@ export function MaisPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
-      <h1 className="m-0 text-[28px] font-bold tracking-tight">Mais</h1>
+      <h1 className="m-0 text-[28px] font-medium tracking-tight">Mais</h1>
 
       <div className={`${cartao} flex items-center gap-3 p-4`}>
         <span
           aria-hidden="true"
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-bold text-[var(--cor-sobre-principal)]"
+          className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-medium text-[var(--cor-sobre-principal)]"
         >
           {inicial}
         </span>

@@ -47,7 +47,7 @@ export function DockLateral({
           {recolhida ? (
             <div
               title="Aprumo"
-              className="grid size-10 place-items-center rounded-2xl bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] font-black text-lg shadow-sm"
+              className="grid size-10 place-items-center rounded-2xl bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] font-semibold text-lg shadow-sm"
             >
               A
             </div>
@@ -86,7 +86,7 @@ export function DockLateral({
         {GRUPOS_MENU.map((grupo) => (
           <div key={grupo.titulo ?? 'principal'} className="flex flex-col gap-1">
             {!recolhida && grupo.titulo && (
-              <p className="m-0 px-3 pt-1 pb-1 text-xs font-semibold tracking-wide text-[var(--cor-mutado)] uppercase">
+              <p className="m-0 px-3 pt-1 pb-1 text-xs font-medium text-[var(--cor-mutado)]">
                 {grupo.titulo}
               </p>
             )}
@@ -134,7 +134,7 @@ export function DockLateral({
           <div className="flex items-center gap-3 px-3 py-1 mb-0.5">
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-bold text-[var(--cor-sobre-principal)]"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-medium text-[var(--cor-sobre-principal)]"
             >
               {inicial}
             </span>
@@ -150,7 +150,7 @@ export function DockLateral({
           >
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-bold text-[var(--cor-sobre-principal)]"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-medium text-[var(--cor-sobre-principal)]"
             >
               {inicial}
             </span>

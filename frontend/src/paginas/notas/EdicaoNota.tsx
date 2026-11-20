@@ -74,7 +74,7 @@ export function EdicaoNota({ nota, categorias, aoExcluir, excluindo }: Props) {
         placeholder="Sem título"
         autoComplete="off"
         onChange={(e) => setValor((v) => ({ ...v, titulo: e.target.value }))}
-        className={`min-h-11 w-full rounded-xl border border-transparent bg-transparent px-1 text-2xl font-bold tracking-tight text-[var(--cor-texto)] transition-colors duration-200 placeholder:text-[var(--cor-mutado)] hover:border-[var(--cor-linha)] motion-reduce:transition-none ${foco}`}
+        className={`min-h-11 w-full rounded-xl border border-transparent bg-transparent px-1 text-2xl font-medium text-[var(--cor-texto)] transition-colors duration-200 placeholder:text-[var(--cor-mutado)] hover:border-[var(--cor-linha)] motion-reduce:transition-none ${foco}`}
       />
       <div className="flex flex-wrap items-center gap-2">
         <label htmlFor="categoria-nota" className="text-sm font-medium">

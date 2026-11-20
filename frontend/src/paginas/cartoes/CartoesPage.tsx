@@ -27,7 +27,7 @@ function CardResumo({ titulo, valor }: CardResumoProps) {
       <h2 id={idTitulo} className="m-0 text-xs font-normal text-[var(--cor-mutado)]">
         {titulo}
       </h2>
-      <p className="valor m-0 mt-1 text-lg font-bold tracking-tight md:text-[26px]">{valor}</p>
+      <p className="valor m-0 mt-1 text-lg font-medium md:text-[26px]">{valor}</p>
     </section>
   )
 }
@@ -169,7 +169,7 @@ function ListaCartoes({
           <Plus className="size-6 stroke-[2.5]" />
         </div>
         <div className="text-center">
-          <span className="block text-sm font-bold text-[var(--cor-texto)]">Novo cartão</span>
+          <span className="block text-sm font-medium text-[var(--cor-texto)]">Novo cartão</span>
           <span className="block mt-0.5 text-xs text-[var(--cor-mutado)]">Adicionar cartão de crédito</span>
         </div>
       </button>

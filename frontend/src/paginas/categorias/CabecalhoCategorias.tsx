@@ -53,7 +53,7 @@ export function CabecalhoCategorias({
           aria-haspopup="true"
           aria-expanded={menuAberto}
           onClick={() => setMenuAberto((prev) => !prev)}
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
+          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
             eDespesa
               ? 'bg-[var(--cor-negativo)] text-[var(--cor-sobre-negativo)] hover:opacity-90 focus-visible:outline-[var(--cor-negativo)]'
               : 'bg-[var(--cor-positivo)] text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-[var(--cor-positivo)]'

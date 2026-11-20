@@ -25,7 +25,7 @@ export function CabecalhoPagina({ titulo, aoLancar, acaoExtra, tituloVisivelNoCe
   return (
     <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 md:mb-5">
       <div className={tituloVisivelNoCelular ? 'min-w-0' : 'min-w-0 sr-only md:not-sr-only'}>
-        <h1 className="m-0 text-[28px] font-bold tracking-tight">{titulo}</h1>
+        <h1 className="m-0 text-[28px] font-medium tracking-tight">{titulo}</h1>
       </div>
       <div
         data-testid="acoes-do-cabecalho"

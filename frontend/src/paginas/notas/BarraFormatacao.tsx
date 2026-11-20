@@ -18,7 +18,7 @@ const ACOES: Acao[] = [
   { rotulo: 'Caixinhas de marcar', texto: '☐', ativo: (e) => e.isActive('taskList'), executar: (e) => e.chain().focus().toggleTaskList().run() },
 ]
 
-const ESTILO_TEXTO: Record<string, string> = { Negrito: 'font-bold', Itálico: 'italic', Riscado: 'line-through' }
+const ESTILO_TEXTO: Record<string, string> = { Negrito: 'font-semibold', Itálico: 'italic', Riscado: 'line-through' }
 
 const BASE =
   'inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg border px-3 text-base ' +

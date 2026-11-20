@@ -114,7 +114,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         {/* Cabeçalho */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-[var(--cor-linha)]">
           <div>
-            <h2 id="titulo-preferencias" className="text-xl font-bold tracking-tight text-[var(--cor-texto)]">
+            <h2 id="titulo-preferencias" className="text-xl font-medium text-[var(--cor-texto)]">
               Preferências
             </h2>
             <p className="mt-1 text-sm text-[var(--cor-mutado)]">
@@ -149,7 +149,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         <div className="mt-5 flex flex-col gap-5 text-sm">
           {/* Preset de tema */}
           <div>
-            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
+            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
               Preset de cor
             </label>
             <div className="mt-2 grid grid-cols-3 gap-2">
@@ -180,7 +180,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
 
           {/* Modo do tema (Light, Dark, System) */}
           <div>
-            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
+            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
               Modo do tema
             </label>
             <div className="mt-2 flex rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] p-1">
@@ -212,7 +212,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
 
           {/* Layout da página (Centralizado / Largura total) */}
           <div>
-            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
+            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
               Layout da página
             </label>
             <div className="mt-2 flex rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] p-1">
@@ -243,7 +243,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
 
           {/* Comportamento da barra de navegação (Fixa / Rolar) */}
           <div>
-            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
+            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
               Comportamento da barra
             </label>
             <div className="mt-2 flex rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] p-1">

@@ -38,7 +38,7 @@ function CelulaDeItem({ celula }: { celula: CelulaRelatorio | null }) {
 function LinhaDaCategoria({ categoria }: { categoria: CategoriaRelatorio }) {
   return (
     <tbody>
-      <tr className="font-bold">
+      <tr className="font-medium">
         <th scope="rowgroup" className={`${PRIMEIRA} ${FUNDO_DESTAQUE}`}>
           {categoria.nome}
         </th>
@@ -85,7 +85,7 @@ function LinhaTotal({ rotulo, porMes, ano, vermelhoSeNegativo = false, fundo }: 
     )
   }
   return (
-    <tr className="font-bold">
+    <tr className="font-medium">
       <th scope="row" className={`${PRIMEIRA} ${fundo}`}>
         {rotulo}
       </th>
@@ -113,7 +113,7 @@ export function TabelaAnual({ relatorio }: { relatorio: RelatorioAnualResponse }
       <table className="w-max min-w-full border-separate border-spacing-0 text-xs md:text-[13px]">
         <caption className="sr-only">Valor de cada item por mês em {ano}, em reais</caption>
         <thead>
-          <tr className="text-[11px] font-semibold text-[var(--cor-mutado)] uppercase">
+          <tr className="text-xs font-medium text-[var(--cor-mutado)]">
             <th scope="col" className={`${PRIMEIRA} bg-[var(--cor-card)]`}>
               Item
             </th>
@@ -124,7 +124,7 @@ export function TabelaAnual({ relatorio }: { relatorio: RelatorioAnualResponse }
                 title={nomeMes(mes)}
                 className="min-w-20 border-b border-[var(--cor-linha)] px-2.5 py-2 text-right"
               >
-                {nomeMes(mes).slice(0, 3).toUpperCase()}
+                {nomeMes(mes).slice(0, 3)}
               </th>
             ))}
             <th scope="col" className="min-w-24 border-b border-[var(--cor-linha)] px-2.5 py-2 text-right">

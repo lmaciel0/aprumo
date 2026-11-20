@@ -29,7 +29,7 @@ export function FinancasDoMes() {
   return (
     <section aria-labelledby="titulo-financas">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 id="titulo-financas" className="m-0 text-[15px] font-bold">
+        <h2 id="titulo-financas" className="m-0 text-[15px] font-medium">
           Finanças do mês
         </h2>
         <Link

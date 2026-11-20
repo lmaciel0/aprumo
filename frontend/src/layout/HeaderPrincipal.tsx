@@ -87,7 +87,7 @@ export function HeaderPrincipal({
         </span>
         <kbd
           aria-hidden="true"
-          className="hidden sm:inline-flex items-center gap-1 rounded-md border border-[var(--cor-linha)] bg-[var(--cor-card)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-[var(--cor-mutado)] shadow-2xs transition-colors group-hover:border-[var(--cor-principal-clara)]/60 group-hover:text-[var(--cor-principal)]"
+          className="hidden sm:inline-flex items-center gap-1 rounded-md border border-[var(--cor-linha)] bg-[var(--cor-card)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--cor-mutado)] shadow-2xs transition-colors group-hover:border-[var(--cor-principal-clara)]/60 group-hover:text-[var(--cor-principal)]"
         >
           Ctrl K
         </kbd>
@@ -139,7 +139,7 @@ export function HeaderPrincipal({
 
             <span
               aria-hidden="true"
-              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-bold text-[var(--cor-sobre-principal)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-all duration-200 group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
+              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-medium text-[var(--cor-sobre-principal)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-all duration-200 group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
             >
               {inicial}
             </span>
@@ -156,7 +156,7 @@ export function HeaderPrincipal({
               <div className="flex items-center gap-3 border-b border-[var(--cor-linha)] p-2.5 pb-3 mb-1">
                 <span
                   aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-bold text-[var(--cor-sobre-principal)] ring-2 ring-[var(--cor-linha)]"
+                  className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-medium text-[var(--cor-sobre-principal)] ring-2 ring-[var(--cor-linha)]"
                 >
                   {inicial}
                 </span>

@@ -108,7 +108,7 @@ export function NotasPage() {
   return (
     <div className="flex min-w-0 flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="m-0 text-[28px] font-bold tracking-tight">Notas</h1>
+        <h1 className="m-0 text-[28px] font-medium tracking-tight">Notas</h1>
         <button
           type="button"
           disabled={criar.isPending}

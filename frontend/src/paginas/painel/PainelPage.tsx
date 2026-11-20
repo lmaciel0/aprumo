@@ -15,7 +15,7 @@ export function PainelPage() {
   return (
     <div className="flex flex-col gap-5">
       <header>
-        <h1 className="m-0 text-[28px] leading-tight font-extrabold tracking-tight md:text-[34px]">
+        <h1 className="m-0 text-[28px] leading-tight font-medium tracking-tight md:text-[34px]">
           {saudacao(agora)}
           {nome !== null && (
             <>

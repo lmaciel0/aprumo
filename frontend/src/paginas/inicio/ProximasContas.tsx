@@ -13,7 +13,7 @@ interface Props {
 export function ProximasContas({ contas, className = 'md:col-span-15' }: Props) {
   return (
     <section aria-labelledby="titulo-proximas" className={`card ${className}`.trim()}>
-      <h2 id="titulo-proximas" className="m-0 text-[15px] font-bold">
+      <h2 id="titulo-proximas" className="m-0 text-[15px] font-medium">
         Próximas contas
       </h2>
       {contas.length === 0 ? (

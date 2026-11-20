@@ -64,7 +64,7 @@ function CardTotal({ id, titulo, atual, ...chip }: CardProps) {
       <h2 id={id} className="m-0 text-xs font-normal text-[var(--cor-mutado)]">
         {titulo}
       </h2>
-      <p className="valor m-0 text-base font-bold tracking-tight md:text-[22px]">{formatarMoeda(atual)}</p>
+      <p className="valor m-0 text-base font-medium md:text-[22px]">{formatarMoeda(atual)}</p>
       <Chip atual={atual} {...chip} />
     </section>
   )

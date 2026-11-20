@@ -26,8 +26,8 @@ export function GrupoCategoria({ nome, lancamentos, busca, idMudandoStatus, aoMu
   return (
     <section aria-label={nome} className="card">
       <div className="flex items-baseline justify-between gap-3">
-        <h2 className="m-0 text-[15px] font-bold">{nome}</h2>
-        <span data-total className="valor text-[15px] font-bold">
+        <h2 className="m-0 text-[15px] font-medium">{nome}</h2>
+        <span data-total className="valor text-[15px] font-medium">
           {formatarMoeda(totalDoGrupo(lancamentos))}
         </span>
       </div>

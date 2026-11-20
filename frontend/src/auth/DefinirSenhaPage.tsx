@@ -71,7 +71,7 @@ export function DefinirSenhaPage() {
 
   return (
     <section className="card mx-auto w-full max-w-md p-6">
-      <h1 className="m-0 mb-1 text-xl font-bold">{temSenha ? 'Alterar senha' : 'Definir senha'}</h1>
+      <h1 className="m-0 mb-1 text-xl font-medium">{temSenha ? 'Alterar senha' : 'Definir senha'}</h1>
       <p className="m-0 mb-5 text-sm">
         {temSenha
           ? 'Ao trocar a senha, os outros aparelhos precisam entrar de novo.'

@@ -72,7 +72,7 @@ export function Moldura({ titulo, aoFechar, children, larguraMaxima }: Props) {
         className={`h-full overflow-y-auto px-4 pt-4 pb-8 outline-none md:h-auto md:max-h-full md:w-full ${larguraMaxima ?? 'md:max-w-lg'} md:rounded-3xl md:bg-[var(--cor-fundo)] md:p-6 md:shadow-2xl`}
       >
         <div className="mb-4 flex items-center justify-between gap-3">
-          <h2 id={idTitulo} className="m-0 text-xl font-bold">
+          <h2 id={idTitulo} className="m-0 text-xl font-medium">
             {titulo}
           </h2>
           <button

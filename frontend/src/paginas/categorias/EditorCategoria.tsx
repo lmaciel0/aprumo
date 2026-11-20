@@ -119,7 +119,7 @@ export function EditorCategoria({ tipo, existente, aoFechar }: Props) {
               type="button"
               disabled={ocupado}
               onClick={handleSalvarECriarNova}
-              className="min-h-11 rounded-full px-4 text-xs font-bold uppercase tracking-wider text-[var(--cor-mutado)] hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+              className="min-h-11 rounded-full px-4 text-sm font-medium text-[var(--cor-mutado)] hover:text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
             >
               {salvarECriarNova.isPending ? 'Salvando…' : 'Salvar e criar nova'}
             </button>
@@ -128,7 +128,7 @@ export function EditorCategoria({ tipo, existente, aoFechar }: Props) {
           <button
             type="submit"
             disabled={ocupado}
-            className={`${classeBotaoPrimario} rounded-full px-7 text-xs font-bold uppercase tracking-wider`}
+            className={`${classeBotaoPrimario} rounded-full px-7 text-sm font-medium`}
           >
             {salvar.isPending ? 'Salvando…' : 'Salvar'}
           </button>

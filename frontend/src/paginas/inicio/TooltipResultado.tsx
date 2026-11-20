@@ -38,7 +38,7 @@ export function TooltipResultado({ ponto }: { ponto: PontoDoResultado | null }) 
   }
   return (
     <div className="flex min-w-[190px] flex-col gap-1.5 rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-card)] px-3 py-2 text-xs text-[var(--cor-texto)] shadow-[var(--sombra-flutuante)]">
-      <p className="m-0 text-[13px] font-bold">{nomeMes(ponto.mes)}</p>
+      <p className="m-0 text-[13px] font-medium">{nomeMes(ponto.mes)}</p>
       <LinhaDeTotal
         nome="Receitas"
         total={ponto.receitas}
@@ -55,7 +55,7 @@ export function TooltipResultado({ ponto }: { ponto: PontoDoResultado | null }) 
         <span>Resultado</span>
         <span
           data-testid="tooltip-resultado-valor"
-          className={`inline-flex items-center gap-1 font-bold tabular-nums ${COR_DO_SENTIDO[ponto.sentido]}`}
+          className={`inline-flex items-center gap-1 font-medium tabular-nums ${COR_DO_SENTIDO[ponto.sentido]}`}
         >
           {ponto.sentido === 'sobrou' && <ArrowUp size={12} aria-hidden="true" />}
           {ponto.sentido === 'faltou' && <ArrowDown size={12} aria-hidden="true" />}

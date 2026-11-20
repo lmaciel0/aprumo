@@ -62,7 +62,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
         {/* Cabeçalho */}
         <div className="flex items-center justify-between border-b border-[var(--cor-linha)] px-5 py-4">
           <div>
-            <h2 id="titulo-personalizar-atalhos" className="m-0 text-base font-bold text-[var(--cor-texto)]">
+            <h2 id="titulo-personalizar-atalhos" className="m-0 text-base font-medium text-[var(--cor-texto)]">
               Personalizar Atalhos
             </h2>
             <p className="m-0 mt-0.5 text-xs text-[var(--cor-mutado)]">
@@ -114,7 +114,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
 
                 <div className="ml-3 flex shrink-0 items-center">
                   {selecionado ? (
-                    <span className="flex size-6 items-center justify-center rounded-full bg-[var(--cor-principal)] text-xs font-bold text-[var(--cor-sobre-principal)]">
+                    <span className="flex size-6 items-center justify-center rounded-full bg-[var(--cor-principal)] text-xs font-medium text-[var(--cor-sobre-principal)]">
                       {ordem}
                     </span>
                   ) : (
@@ -149,7 +149,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
               type="button"
               onClick={salvar}
               disabled={!podeSalvar}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[var(--cor-principal)] px-4 py-2 text-xs font-bold text-[var(--cor-sobre-principal)] shadow-xs transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[var(--cor-principal)] px-4 py-2 text-xs font-medium text-[var(--cor-sobre-principal)] shadow-xs transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Check className="size-3.5" />
               Salvar 4 atalhos

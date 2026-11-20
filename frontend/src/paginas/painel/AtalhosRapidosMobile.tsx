@@ -34,7 +34,7 @@ export function AtalhosRapidosMobile() {
   return (
     <section aria-label="Acesso rápido" className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-0.5">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--cor-mutado)]">
+        <span className="text-xs font-medium text-[var(--cor-mutado)]">
           Acesso rápido
         </span>
         <button

@@ -78,7 +78,10 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 - Fonte única: Inter Variable (`@fontsource-variable/inter`), declarada em `--font-sans` e no `html`, com `ui-sans-serif, system-ui, sans-serif` de reserva.
 - Valores de dinheiro usam a classe `.valor` (`font-variant-numeric: tabular-nums`) para alinhar em coluna.
 - Corpo no celular: campos de formulário com 16 px (menos que isso o iOS dá zoom ao focar); nenhum texto abaixo de 12 px em tela de auth. Rótulos e legendas pequenas usam 11 a 12 px com `--cor-mutado`.
-- Título de página: `text-[28px] font-bold tracking-tight`. Número de destaque: 26 a 30 px em negrito (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500.
+- Pesos: 400 e 500. `font-semibold` (600) só para ênfase rara, como a marca do logo ou um item da linha que precisa se destacar. Nada de `font-bold`, `font-extrabold`, `font-black` nem `font-weight` de 700 a 900; `estilos.test.ts` reprova em todo TSX de produção (com a exceção temporária das telas das fases 3 e 4 do visual).
+- Título de página: `text-[28px] font-medium tracking-tight`. Título de seção, de card e de modal: `font-medium`. Número de destaque, de 28 a 32 px: `font-medium` (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500. Item de navegação e botão: `font-medium`.
+- Rótulo de seção ou de campo: sentence case, `text-xs font-medium text-[var(--cor-mutado)]` ("Financeiro", "Preset de cor", "Modo do tema"). Sem `uppercase` e sem `tracking-wide`, `tracking-wider` nem `tracking-widest`; se o texto-fonte estiver em caixa-alta, reescrever a string em vez de só tirar a classe.
+- `tracking-tight` só em texto de 28 px ou mais; abaixo disso o espaçamento entre letras é o padrão.
 
 ## Raio, superfícies e sombras
 

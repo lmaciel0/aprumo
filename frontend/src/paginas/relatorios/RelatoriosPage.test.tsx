@@ -9,7 +9,7 @@ import { renderComApp } from '../../teste/render'
 import { servidor } from '../../teste/servidor'
 import { RelatoriosPage } from './RelatoriosPage'
 
-const MESES = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+const MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
 const paga = (valor: string): CelulaRelatorio => ({ valor, status: 'PAGO' })
 const prevista = (valor: string): CelulaRelatorio => ({ valor, status: 'PREVISTO' })
