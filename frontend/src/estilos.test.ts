@@ -357,6 +357,12 @@ describe('tipografia', () => {
     expect(infratores(/tracking-(wide|wider|widest)\b/, EXCECOES_FASE_3_4)).toEqual([])
   })
 
+  it('nenhum TSX fora das fases 3 e 4 usa fontWeight 700 a 900 nem bold em prop JSX/SVG ou style inline', () => {
+    // Cobre `fontWeight={700}`, `fontWeight="bold"` e ternário como `fontWeight={sel ? 700 : 400}`.
+    expect(infratores(/fontWeight=(\{[^}]*)?['"]?\b(700|800|900|bold)\b/, EXCECOES_FASE_3_4)).toEqual([])
+    expect(infratores(/fontWeight:\s*['"]?(700|800|900|bold)/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
   it('o index.css não declara font-weight 700 a 900 nem bold', () => {
     expect(cssSemComentarios()).not.toMatch(/font-weight:\s*(700|800|900|bold)/)
   })

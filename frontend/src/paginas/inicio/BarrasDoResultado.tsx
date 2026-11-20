@@ -2,7 +2,7 @@ import { useId } from 'react'
 import { Bar, BarChart, ReferenceArea, ReferenceLine, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { COR_DESPESAS, COR_RECEITAS, FUNDO_DESPESAS_PREVISTAS, FUNDO_RECEITAS_PREVISTAS } from './cores'
 import { TooltipResultado } from './TooltipResultado'
-import { resultadoCurto, type PontoDoResultado } from './valores'
+import { partesResultadoCurto, type PontoDoResultado } from './valores'
 
 // Sobra e déficit ficam na cor do texto: o sinal (+ ou −) do rótulo diz o sentido; verde e vermelho só em status.
 const COR_DO_SENTIDO: Record<PontoDoResultado['sentido'], string> = {
@@ -41,27 +41,41 @@ interface MesNoEixoProps {
   compacto: boolean
 }
 
-/** Rótulo do eixo em duas linhas: o mês e, abaixo, o resultado dele com sinal. */
-function MesNoEixo({ x = 0, y = 0, payload, dados, mesSelecionado, compacto }: MesNoEixoProps) {
+/**
+ * Rótulo do eixo: o mês e, abaixo, o resultado dele com sinal. No celular as colunas têm cerca de 25 px, então o
+ * milhar quebra em duas linhas (`−1,2` e, embaixo, `mil`) para não encostar no rótulo do mês vizinho.
+ */
+export function MesNoEixo({ x = 0, y = 0, payload, dados, mesSelecionado, compacto }: MesNoEixoProps) {
   const ponto = dados.find((candidato) => candidato.rotulo === payload?.value)
   if (!ponto) {
     return null
   }
   const selecionado = ponto.mes === mesSelecionado
+  const { numero, sufixo } = partesResultadoCurto(ponto.resultado)
+  const quebra = compacto && sufixo !== ''
   return (
     <g transform={`translate(${x},${Number(y)})`}>
       <text
         y={14}
         textAnchor="middle"
         fontSize={10}
-        fontWeight={selecionado ? 700 : 400}
+        fontWeight={selecionado ? 500 : 400}
         fill={selecionado ? 'var(--cor-texto)' : 'var(--cor-mutado)'}
         data-selecionado={selecionado ? 'true' : undefined}
       >
         {ponto.rotulo}
       </text>
       <text y={28} textAnchor="middle" fontSize={compacto ? 9 : 10} fontWeight={600} fill={corDoRotulo(ponto)}>
-        {resultadoCurto(ponto.resultado, compacto)}
+        {quebra ? (
+          <>
+            <tspan x={0}>{numero}</tspan>
+            <tspan x={0} dy="1.1em">
+              {sufixo}
+            </tspan>
+          </>
+        ) : (
+          sufixo === '' ? numero : `${numero} ${sufixo}`
+        )}
       </text>
     </g>
   )
@@ -102,7 +116,7 @@ export default function BarrasDoResultado({ dados, mesSelecionado, compacto }: P
         )}
         <XAxis
           dataKey="rotulo"
-          height={36}
+          height={compacto ? 48 : 36}
           tickLine={false}
           axisLine={false}
           interval={0}

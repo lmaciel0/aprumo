@@ -9,6 +9,8 @@ describe('tituloDoMes', () => {
 
   it('usa o mês de São Paulo, não o de UTC', () => {
     expect(tituloDoMes(new Date('2026-12-01T01:30:00Z'))).toBe('Novembro de 2026')
+    expect(tituloDoMes(new Date('2026-12-01T02:00:00Z'))).toBe('Novembro de 2026')
+    expect(tituloDoMes(new Date('2026-12-01T03:00:00Z'))).toBe('Dezembro de 2026')
     expect(tituloDoMes(new Date('2026-03-15T12:00:00Z'))).toBe('Março de 2026')
   })
 })

@@ -16,8 +16,8 @@ const minusculo = (texto: string) => texto.toLocaleLowerCase('pt-BR')
  * despesas e próximas contas. Divide a chave de cache `['resumo', ano, mes]` com a visão geral. O carregamento e o erro
  * ficam só dentro do bloco, para a saudação aparecer na hora mesmo com a API acordando.
  */
-export function FinancasDoMes() {
-  const { ano, mes } = mesAtual()
+export function FinancasDoMes({ agora }: { agora: Date }) {
+  const { ano, mes } = mesAtual(agora)
   const consulta = useQuery({
     queryKey: ['resumo', ano, mes],
     queryFn: () => endpoints.resumo(ano, mes),

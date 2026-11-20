@@ -37,18 +37,19 @@ function Chip({ atual, anterior, nomeMesAnterior, subirEBom }: ChipProps) {
   }
   const tom: Tom =
     mudanca.direcao === 'igual' ? 'neutro' : (mudanca.direcao === 'subiu') === subirEBom ? 'bom' : 'ruim'
-  // Abaixo de 1% vai s\u00f3 `<1%`, sem sinal: a seta j\u00e1 d\u00e1 a dire\u00e7\u00e3o e o sinal colado no `<` confunde.
+  // Abaixo de 1% vai só `<1%`, sem sinal: a seta já dá a direção e o sinal colado no `<` confunde.
   const abaixoDeUm = mudanca.direcao !== 'igual' && mudanca.percentual === 0
-  const sinal = abaixoDeUm ? '' : mudanca.direcao === 'subiu' ? '+' : mudanca.direcao === 'caiu' ? '\u2212' : ''
+  const sinal = abaixoDeUm ? '' : mudanca.direcao === 'subiu' ? '+' : mudanca.direcao === 'caiu' ? '−' : ''
   const percentual = abaixoDeUm ? '<1%' : `${mudanca.percentual}%`
 
   return (
     <p
       data-tom={tom}
-      className={`m-0 inline-flex w-fit items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold ${CORES_DO_CHIP[tom]}`}
+      className={`relative m-0 inline-flex w-fit items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-semibold ${CORES_DO_CHIP[tom]}`}
     >
       {mudanca.direcao === 'subiu' && <ArrowUp size={12} aria-hidden="true" />}
       {mudanca.direcao === 'caiu' && <ArrowDown size={12} aria-hidden="true" />}
+      {mudanca.direcao !== 'igual' && <span className="sr-only">{mudanca.direcao} </span>}
       {sinal}
       {percentual} vs {nomeMesAnterior}
     </p>

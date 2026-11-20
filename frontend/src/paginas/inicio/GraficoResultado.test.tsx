@@ -85,7 +85,9 @@ describe('GraficoResultado', () => {
     serie[1] = { mes: 2, receitas: '900.00', receitasPrevistas: '0.00', despesas: '100.00', despesasPrevistas: '0.00' }
     const grafico = await renderizar(serie)
 
-    const deficit = within(grafico).getByText('−2,5 mil')
+    // No celular (o jsdom é "não desktop") o milhar quebra em duas linhas: `−2,5` e `mil`.
+    const deficit = within(grafico).getByText('−2,5').closest('text')!
+    expect(deficit).toHaveTextContent('−2,5mil')
     const sobra = within(grafico).getByText('+800')
     for (const rotulo of [deficit, sobra]) {
       expect(rotulo.getAttribute('fill')).not.toMatch(/cor-negativo|cor-positivo/)

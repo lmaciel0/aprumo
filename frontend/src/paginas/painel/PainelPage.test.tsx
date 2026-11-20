@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { Route, Routes } from 'react-router'
@@ -233,5 +233,29 @@ describe('PainelPage', () => {
     await waitFor(() => expect(consultas).toHaveLength(1))
     expect(new URLSearchParams(consultas[0])).toEqual(new URLSearchParams({ ano: '2026', mes: '11' }))
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+})
+
+describe('PainelPage na virada do mês', () => {
+  it('título e finanças mostram o mesmo mês depois da meia-noite de 30/11 para 01/12 (São Paulo)', async () => {
+    // 23:59 de 30/11 em São Paulo = 02:59Z de 01/12.
+    relogioEm('2026-12-01T02:59:00Z')
+    comSessao()
+    const consultas = responderResumo()
+    renderizar()
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Novembro de 2026' })).toBeInTheDocument()
+    await waitFor(() => expect(consultas).toHaveLength(1))
+    expect(new URLSearchParams(consultas[0])).toEqual(new URLSearchParams({ ano: '2026', mes: '11' }))
+
+    // 00:01 de 01/12 em São Paulo.
+    vi.setSystemTime(new Date('2026-12-01T03:01:00Z'))
+    act(() => {
+      document.dispatchEvent(new Event('visibilitychange'))
+    })
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Dezembro de 2026' })).toBeInTheDocument()
+    await waitFor(() => expect(consultas).toHaveLength(2))
+    expect(new URLSearchParams(consultas[1])).toEqual(new URLSearchParams({ ano: '2026', mes: '12' }))
   })
 })

@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import { CardReflexao } from './CardReflexao'
 import { FinancasDoMes } from './FinancasDoMes'
 import { WidgetMetaInicio } from '../metas/WidgetMetaInicio'
 import { dataPorExtenso, tituloDoMes } from './saudacao'
+import { useAgora } from './useAgora'
 
 /** Tela inicial (`/`): o mês e o ano como título, a data por extenso, a reflexão do dia e as finanças do mês atual. */
 export function PainelPage() {
-  // Fixa a data da primeira renderização: o título não muda sozinho no meio do uso.
-  const [agora] = useState(() => new Date())
+  // Uma só fonte de tempo para o título e para as finanças: na virada do mês os dois mudam juntos.
+  const agora = useAgora()
 
   return (
     <div className="flex flex-col gap-5">
@@ -22,7 +22,7 @@ export function PainelPage() {
       </div>
       <WidgetMetaInicio className="item-entra" style={{ '--i': 2 } as React.CSSProperties} />
       <div className="item-entra" style={{ '--i': 3 } as React.CSSProperties}>
-        <FinancasDoMes />
+        <FinancasDoMes agora={agora} />
       </div>
     </div>
   )
