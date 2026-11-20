@@ -55,7 +55,7 @@ export function Sidebar({ nomeUsuario, aoSair, aoNavegar }: Props) {
         <div className="flex items-center gap-3 px-3 py-1">
           <span
             aria-hidden="true"
-            className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-medium text-[var(--cor-sobre-principal)]"
+            className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-sm font-medium text-[var(--cor-texto)]"
           >
             {inicial}
           </span>

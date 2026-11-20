@@ -77,4 +77,17 @@ describe('LimiteDeErro', () => {
     expect(erro.message).toBe('estourou')
     expect(typeof pilha).toBe('string')
   })
+
+  it('o_botao_recarregar_e_a_acao_principal_em_coral_vivo', () => {
+    render(
+      <LimiteDeErro>
+        <Quebra />
+      </LimiteDeErro>,
+    )
+
+    expect(screen.getByRole('button', { name: 'Recarregar' })).toHaveClass(
+      'bg-[var(--cor-principal-fundo)]',
+      'text-[var(--cor-sobre-principal-fundo)]',
+    )
+  })
 })

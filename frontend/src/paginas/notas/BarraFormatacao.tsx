@@ -26,7 +26,7 @@ const BASE =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
 const INATIVO =
   'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:bg-[var(--cor-principal-clara)]'
-const ATIVO = 'border-[var(--cor-principal)] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
+const ATIVO = 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
 
 export function BarraFormatacao({ editor }: { editor: Editor }) {
   // Reavalia o estado ativo a cada transação (seleção ou conteúdo) para manter `aria-pressed` correto.

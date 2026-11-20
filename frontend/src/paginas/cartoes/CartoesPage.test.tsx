@@ -382,4 +382,47 @@ describe('CartoesPage', () => {
     await userEvent.click(botaoMariana)
     expect(screen.getByLabelText('Titular do cartão')).toHaveValue('Mariana')
   })
+
+  it('com_titulares_o_chip_selecionado_e_texto_sobre_fundo_e_so_o_lancar_e_coral', async () => {
+    responderCartoes(
+      resposta({
+        cartoes: [
+          cartao({ itemId: 1, nome: 'Cartão Família', titular: 'Mariana' }),
+          cartao({ itemId: 2, nome: 'Cartão Casa', titular: 'João' }),
+        ],
+      }),
+    )
+    renderizar()
+
+    const todos = await screen.findByRole('button', { name: /^Todos \(2\)/ })
+    expect(todos).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
+    expect(todos.className).not.toContain('bg-[var(--cor-principal)]')
+    expect(screen.getByRole('button', { name: 'Mariana (1)' }).className).not.toContain('bg-[var(--cor-texto)]')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Mariana (1)' }))
+    expect(screen.getByRole('button', { name: 'Mariana (1)' })).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
+
+    expect(screen.getByRole('link', { name: '+ Lançar' })).toHaveClass('bg-[var(--cor-principal-fundo)]')
+    const novo = screen.getByRole('button', { name: '+ Novo cartão' })
+    expect(novo).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]', 'border', 'border-[var(--cor-linha)]')
+    expect(novo.className).not.toContain('bg-[var(--cor-principal')
+  })
+
+  it('o_estado_vazio_e_o_erro_nao_competem_com_o_lancar_do_cabecalho', async () => {
+    responderCartoes(resposta({ cartoes: [], totalFaturas: '0.00', limiteTotal: '0.00', usoGeral: '0.0000' }))
+    renderizar()
+
+    const primeiro = await screen.findByRole('button', { name: '+ Cadastrar primeiro cartão' })
+    expect(primeiro).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
+    expect(primeiro.className).not.toContain('bg-[var(--cor-principal')
+  })
+
+  it('o_erro_de_carregamento_tem_tentar_de_novo_secundario', async () => {
+    servidor.use(http.get('/api/cartoes', () => HttpResponse.json({ mensagem: 'falhou' }, { status: 500 })))
+    renderizar()
+
+    const tentar = await screen.findByRole('button', { name: 'Tentar de novo' })
+    expect(tentar).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
+    expect(tentar.className).not.toContain('bg-[var(--cor-principal')
+  })
 })

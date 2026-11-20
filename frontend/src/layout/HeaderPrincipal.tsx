@@ -139,7 +139,7 @@ export function HeaderPrincipal({
 
             <span
               aria-hidden="true"
-              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-medium text-[var(--cor-sobre-principal)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-shadow duration-150 motion-reduce:transition-none group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
+              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-elevado)] text-sm font-medium text-[var(--cor-texto)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-shadow duration-150 motion-reduce:transition-none group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
             >
               {inicial}
             </span>
@@ -156,7 +156,7 @@ export function HeaderPrincipal({
               <div className="flex items-center gap-3 border-b border-[var(--cor-linha)] p-2.5 pb-3 mb-1">
                 <span
                   aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-medium text-[var(--cor-sobre-principal)] ring-2 ring-[var(--cor-linha)]"
+                  className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-base font-medium text-[var(--cor-texto)] ring-2 ring-[var(--cor-linha)]"
                 >
                   {inicial}
                 </span>

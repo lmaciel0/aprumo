@@ -171,4 +171,12 @@ describe('MaisPage', () => {
     ).toThrow('useContextoShell precisa estar dentro do AppShell.')
     erro.mockRestore()
   })
+
+  it('o_avatar_usa_o_degrau_elevado_e_nao_o_acento', () => {
+    renderizar()
+
+    const avatar = screen.getByText('A')
+    expect(avatar).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
+    expect(avatar.className).not.toContain('bg-[var(--cor-principal)]')
+  })
 })

@@ -142,6 +142,7 @@ describe('PainelPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: /^(Bom dia|Boa tarde|Boa noite), Ana$/ })).toBeInTheDocument()
 
     falhar = false
+    expect(within(alerta).getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
     await userEvent.click(within(alerta).getByRole('button', { name: 'Tentar de novo' }))
 
     expect(await screen.findByRole('region', { name: 'Sobra do mês' })).toBeInTheDocument()

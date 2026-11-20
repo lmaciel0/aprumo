@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { EXCECOES_FASE_3_4, infratores, PAINEIS_2XL, PILULAS_PERMITIDAS, tsxDeProducao } from './teste/varredura'
+import { ACENTO_ESCURO_PERMITIDO, EXCECOES_FASE_3_4, infratores, PAINEIS_2XL, PILULAS_PERMITIDAS, tsxDeProducao } from './teste/varredura'
 
 // O Vitest roda com `css: false`, que esvazia `import '...css?raw'`; por isso o arquivo é lido direto.
 const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf8')
@@ -406,6 +406,27 @@ describe('movimento', () => {
       (arquivo) => !/role="status"|aria-busy/.test(readFileSync(resolve(process.cwd(), 'src', arquivo), 'utf8')),
     )
     expect(semMarca).toEqual([])
+  })
+})
+
+describe('acento', () => {
+  const ACENTO_ESCURO = /bg-\[var\(--cor-principal\)\]/
+
+  it('bg-[var(--cor-principal)] só aparece nos arquivos de ACENTO_ESCURO_PERMITIDO', () => {
+    const permitidos = ACENTO_ESCURO_PERMITIDO.map((p) => p.arquivo)
+    expect(infratores(ACENTO_ESCURO, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+  })
+
+  it('ACENTO_ESCURO_PERMITIDO só lista arquivos que existem, usam a classe e dizem o motivo', () => {
+    const comAcento = infratores(ACENTO_ESCURO)
+    for (const { arquivo, motivo } of ACENTO_ESCURO_PERMITIDO) {
+      expect(motivo, arquivo).not.toBe('')
+      expect(comAcento, `${arquivo} não usa mais bg-[var(--cor-principal)]`).toContain(arquivo)
+    }
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa o coral vivo como texto ou como linha', () => {
+    expect(infratores(/(text|border|outline|ring|divide)-\[var\(--cor-principal-fundo\)\]/, EXCECOES_FASE_3_4)).toEqual([])
   })
 })
 

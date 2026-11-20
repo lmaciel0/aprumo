@@ -136,4 +136,23 @@ describe('FaixaCategorias', () => {
     await user.click(screen.getByRole('button', { name: 'Todas' }))
     expect(aoSelecionar).toHaveBeenCalledWith('todas')
   })
+
+  it('o_chip_selecionado_e_texto_sobre_fundo_e_nao_o_acento', () => {
+    renderizar(undefined, 'todas')
+
+    const todas = screen.getByRole('button', { name: 'Todas' })
+    expect(todas).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
+    expect(todas.className).not.toContain('bg-[var(--cor-principal)]')
+    expect(screen.getByRole('button', { name: 'Sem categoria' }).className).not.toContain('bg-[var(--cor-texto)]')
+  })
+
+  it('o_chip_da_categoria_e_o_seu_lapis_selecionados_andam_juntos_em_texto_sobre_fundo', () => {
+    renderizar(undefined, 1)
+
+    expect(screen.getByRole('button', { name: 'Trabalho' })).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
+    expect(screen.getByRole('button', { name: 'Editar categoria Trabalho' })).toHaveClass(
+      'bg-[var(--cor-texto)]',
+      'text-[var(--cor-fundo)]',
+    )
+  })
 })

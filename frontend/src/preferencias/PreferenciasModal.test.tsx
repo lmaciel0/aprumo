@@ -95,4 +95,16 @@ describe('PreferenciasModal', () => {
       expect(screen.queryByRole('button', { name: antigo })).toBeNull()
     }
   })
+
+  it('o_preset_selecionado_e_texto_sobre_fundo_e_nao_o_acento', () => {
+    render(
+      <PreferenciasProvider>
+        <PreferenciasModal aberta={true} aoFechar={() => {}} />
+      </PreferenciasProvider>
+    )
+    const coral = screen.getByRole('button', { name: 'Coral' })
+    expect(coral).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
+    expect(coral.className).not.toContain('bg-[var(--cor-principal)]')
+    expect(screen.getByRole('button', { name: 'Musgo' }).className).not.toContain('bg-[var(--cor-texto)]')
+  })
 })

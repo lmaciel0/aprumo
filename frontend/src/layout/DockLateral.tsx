@@ -47,7 +47,7 @@ export function DockLateral({
           {recolhida ? (
             <div
               title="Aprumo"
-              className="grid size-10 place-items-center rounded-[10px] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] font-semibold text-lg shadow-sm"
+              className="grid size-10 place-items-center rounded-[10px] bg-[var(--cor-principal-fundo)] text-[var(--cor-sobre-principal-fundo)] font-semibold text-lg shadow-sm"
             >
               A
             </div>
@@ -134,7 +134,7 @@ export function DockLateral({
           <div className="flex items-center gap-3 px-3 py-1 mb-0.5">
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-medium text-[var(--cor-sobre-principal)]"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-xs font-medium text-[var(--cor-texto)]"
             >
               {inicial}
             </span>
@@ -150,7 +150,7 @@ export function DockLateral({
           >
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-medium text-[var(--cor-sobre-principal)]"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-xs font-medium text-[var(--cor-texto)]"
             >
               {inicial}
             </span>

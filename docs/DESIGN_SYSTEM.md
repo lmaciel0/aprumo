@@ -61,6 +61,22 @@ Regras de uso:
 - O par de contraste mínimo é 4,5:1 para texto e 3:1 para contornos de campo e componentes. `frontend/src/estilos.test.ts` confere contraste AA do texto nos temas claro e escuro, 3:1 em bordas de campo e no botão de tema, proíbe cor fixa em TSX e exige `prefers-reduced-motion`.
 - Fundos de chip e aviso usam os tokens `*-fundo`, nunca cor fixa.
 
+### Acento: onde o coral entra
+
+O acento tem dois tons e cada um tem um papel. Espalhar coral em seleção, avatar e botão secundário é o que dá cara de template.
+
+| Caso | Classes | Observação |
+|---|---|---|
+| Ação principal da tela (no máximo uma por tela: "+ Lançar", "Salvar", "Nova nota", "Recarregar", "Voltar para o início") | `bg-[var(--cor-principal-fundo)] text-[var(--cor-sobre-principal-fundo)]`, hover com `hover:brightness-95` | Sem brilho nem sombra colorida. No painel e na visão geral não há botão coral além do "Criar" da dock. |
+| Ação secundária ("+ Novo cartão", "Tentar de novo", "+ Cadastrar primeiro cartão") | `border border-[var(--cor-linha)] bg-[var(--cor-elevado)] text-[var(--cor-texto)]` | Em tela com duas ações candidatas, a segunda é secundária (Cartões: "+ Lançar" é a principal). |
+| Chip, segmentado, ícone ou preset selecionado; alfinete de nota fixada; botão de formatação ativo | `bg-[var(--cor-texto)] text-[var(--cor-fundo)]` (com `border-[var(--cor-texto)]` quando há borda) | Linha de lista com descrição selecionada usa `border-[var(--cor-texto)] bg-[var(--cor-elevado)]`; o texto não inverte. Opção ativa da paleta usa `bg-[var(--cor-elevado)]`. |
+| Avatar com inicial | `bg-[var(--cor-elevado)] text-[var(--cor-texto)]` | |
+| Marca do logo | `bg-[var(--cor-principal-fundo)] text-[var(--cor-sobre-principal-fundo)]`, `font-semibold` | É a única marca em coral fora da ação principal. |
+| Texto, ícone, link, borda de foco e fio de prumo | `--cor-principal` | O tom escuro é o seguro como texto. |
+| Marca de dado (barra de progresso) | `bg-[var(--cor-principal)]` | Só nos arquivos de `ACENTO_ESCURO_PERMITIDO` em `frontend/src/teste/varredura.ts`, com o motivo. |
+
+`estilos.test.ts` (describe `acento`) reprova `bg-[var(--cor-principal)]` em todo TSX de produção fora das telas das fases 3 e 4 e fora de `ACENTO_ESCURO_PERMITIDO`, e reprova `--cor-principal-fundo` como texto, borda ou contorno. Banner de aviso do servidor usa `--cor-elevado` com texto `--cor-texto`, não o acento.
+
 ## Presets
 
 Três presets de cor de destaque, escolhidos pelo usuário e aplicados com `data-preset` no `<html>`: `coral`, `musgo` e `ceu`. `coral` é o padrão e não tem bloco próprio: valem os tokens da tabela de Cores. `musgo` e `ceu` trocam só `--cor-principal`, `--cor-sobre-principal` e `--cor-principal-fundo`, em cada tema.
@@ -134,7 +150,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 
 ### Layout e navegação (`frontend/src/layout`)
 
-- `AppShell`, `HeaderPrincipal`, `Sidebar` e `DockLateral` (desktop), `DockInferior` (celular, menos de 768 px).
+- `AppShell`, `HeaderPrincipal`, `Sidebar` e `DockLateral` (desktop), `DockInferior` (celular, menos de 768 px). Avatares com inicial em `--cor-elevado`.
 - `DockInferior`: barra flutuante sólida (`rounded-2xl`, `--cor-card`, `--sombra-elevada`) com Início, Notas, Orçamento e Mais; o botão "Criar" é o único círculo, fica elevado no centro, usa `--cor-principal-fundo` e abre `FolhaAcaoRapida` (`AcaoRapida.tsx`). Só o item ativo mostra o rótulo (`.dock-rotulo`) e leva fundo `--cor-elevado`, sem fio de prumo.
 - Item ativo de `Sidebar` e `DockLateral`: degrau `--cor-elevado` com texto `--cor-texto` em peso 500 e o fio de prumo (`shadow-[inset_2px_0_0_var(--cor-principal)]`), nunca bloco preenchido no acento.
 - `CabecalhoPagina`: título (só para leitor de tela no celular), `SeletorMes` e atalho "+ Lançar" nas telas do mês.
@@ -209,6 +225,7 @@ Nasce das armadilhas registradas no projeto e das regras de 360 px.
 - Não usar degradê entre matizes, brilho nem sombra colorida (como `shadow-[0_8px_18px_color-mix(... --cor-principal ...)]`).
 - Não usar peso 700 a 900 em título ou rótulo novo; use 500 ou 600.
 - Não usar caixa-alta com tracking em rótulo (`uppercase tracking-wider`).
+- Não usar o coral vivo (`--cor-principal-fundo`) em seleção, avatar nem botão secundário, nem mais de uma ação principal por tela (ver "Acento: onde o coral entra").
 - Não usar `--cor-principal-fundo` como texto nem como linha fina: ele é só preenchimento (2,4:1 sobre o creme). Texto e linha usam `--cor-principal`.
 - Valor negativo vai na cor do texto com o sinal "−"; vermelho (`--cor-negativo`, `--cor-negativo-texto`) só em status e alerta.
 - Não trocar paleta, fonte ou presets por sugestão de ferramenta (`ui-ux-pro-max`, 21st) sem o Lucas pedir. O resultado delas é referência; este documento vence.

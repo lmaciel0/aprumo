@@ -338,6 +338,7 @@ describe('InicioPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Falha ao montar o resumo.')
 
     servidor.use(http.get('/api/resumo', () => HttpResponse.json(resumo())))
+    expect(screen.getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
     await userEvent.click(screen.getByRole('button', { name: 'Tentar de novo' }))
 
     expect(await bloco('Sobra do mês')).toBeInTheDocument()

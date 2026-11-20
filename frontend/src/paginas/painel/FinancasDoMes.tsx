@@ -77,7 +77,7 @@ export function FinancasDoMes() {
           <button
             type="button"
             onClick={() => void consulta.refetch()}
-            className="min-h-11 rounded-[10px] bg-[var(--cor-principal)] px-4 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+            className="min-h-11 rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 text-sm font-semibold text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
           >
             Tentar de novo
           </button>

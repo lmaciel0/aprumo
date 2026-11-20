@@ -116,7 +116,7 @@ export function NotasPage() {
           type="button"
           disabled={criar.isPending}
           onClick={novaNota}
-          className={`min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-principal)] px-5 text-sm font-semibold text-[var(--cor-sobre-principal)] transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none ${foco}`}
+          className={`min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 text-sm font-semibold text-[var(--cor-sobre-principal-fundo)] transition-opacity duration-200 hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none ${foco}`}
         >
           Nova nota
         </button>

@@ -74,4 +74,20 @@ describe('AtalhosRapidosMobile', () => {
     expect(screen.getByRole('link', { name: 'Orçamento' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: '+ Nota' })).not.toBeInTheDocument()
   })
+
+  it('o_modal_de_personalizar_tem_salvar_em_coral_vivo_e_selecao_sem_acento_escuro', async () => {
+    const user = userEvent.setup()
+    renderizar()
+
+    await user.click(screen.getByRole('button', { name: 'Personalizar atalhos' }))
+    const modal = screen.getByRole('dialog', { name: /Personalizar/i })
+
+    const salvar = within(modal).getByRole('button', { name: /Salvar 4 atalhos/i })
+    expect(salvar).toHaveClass('bg-[var(--cor-principal-fundo)]', 'text-[var(--cor-sobre-principal-fundo)]')
+
+    const linha = within(modal).getByRole('button', { name: /\+ Despesa/ })
+    expect(linha.className).toContain('border-[var(--cor-texto)]')
+    expect(linha.className).not.toContain('bg-[var(--cor-principal)]')
+    expect(modal.innerHTML).not.toContain('bg-[var(--cor-principal)]')
+  })
 })

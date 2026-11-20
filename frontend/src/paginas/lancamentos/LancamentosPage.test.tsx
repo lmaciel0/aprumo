@@ -201,6 +201,7 @@ describe('LancamentosPage', () => {
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Falhou.')
     expect(screen.getByRole('button', { name: 'Tentar de novo' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
   })
 
   it('mostra_a_faixa_do_saldo_acima_dos_cards_e_atualiza_ao_marcar_recebido', async () => {

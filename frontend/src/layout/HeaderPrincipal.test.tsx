@@ -137,4 +137,17 @@ describe('HeaderPrincipal', () => {
 
     expect(screen.queryByRole('button', { name: 'Alternar painel de produtividade' })).not.toBeInTheDocument()
   })
+
+  it('os_avatares_usam_o_degrau_elevado_e_nao_o_acento', async () => {
+    const user = userEvent.setup()
+    renderComApp(<HeaderPrincipal nomeUsuario="Lucas Maciel" />)
+
+    const avatar = screen.getByText('L', { selector: 'span[aria-hidden="true"]' })
+    expect(avatar).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
+    expect(avatar.className).not.toContain('bg-[var(--cor-principal)]')
+
+    await user.click(screen.getByRole('button', { name: 'Perfil do usuário' }))
+    const dentroDoMenu = screen.getAllByText('L', { selector: 'span[aria-hidden="true"]' })
+    for (const el of dentroDoMenu) expect(el).toHaveClass('bg-[var(--cor-elevado)]')
+  })
 })

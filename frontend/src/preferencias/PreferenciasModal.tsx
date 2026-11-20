@@ -162,7 +162,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     onClick={() => setPresetCor(p.id)}
                     className={`flex items-center gap-2.5 rounded-xl border px-3 py-2 text-left font-medium transition-colors ${
                       ativo
-                        ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)]/10 text-[var(--cor-texto)] font-semibold shadow-xs'
+                        ? 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)] font-semibold'
                         : 'border-[var(--cor-linha)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)]'
                     } ${foco}`}
                   >

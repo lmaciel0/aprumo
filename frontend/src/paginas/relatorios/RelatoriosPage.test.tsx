@@ -363,6 +363,7 @@ describe('RelatoriosPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Algo deu errado no servidor.')
 
     falhar = false
+    expect(screen.getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
     await userEvent.click(screen.getByRole('button', { name: 'Tentar de novo' }))
     expect(await screen.findByRole('table', { name: /2026/ })).toBeInTheDocument()
   })

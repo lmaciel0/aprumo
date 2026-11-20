@@ -16,7 +16,7 @@ const foco = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visib
 const transicao = 'transition-[background-color,color,border-color,transform] duration-200 motion-reduce:transition-none'
 /** O chip troca de cor no mesmo instante do clique (sem esperar a rede) e afunda um pouco ao toque. */
 const chip = `inline-flex min-h-11 cursor-pointer items-center gap-2 border px-3.5 text-sm font-medium active:scale-[0.97] motion-reduce:active:scale-100 ${transicao} ${foco}`
-const ativo = 'border-[var(--cor-principal)] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
+const ativo = 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
 const inativo = 'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:border-[var(--cor-principal)]'
 
 type Editando = { existente?: CategoriaNotaResponse } | null

@@ -33,7 +33,7 @@ export function MensagemDeErro({ texto }: { texto: string | null }) {
 }
 
 export const classeBotaoPrimario =
-  'min-h-11 rounded-[10px] bg-[var(--cor-principal)] px-5 text-base font-semibold text-[var(--cor-sobre-principal)] ' +
+  'min-h-11 rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 text-base font-semibold text-[var(--cor-sobre-principal-fundo)] ' +
   'disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
 
 /** Botão de ação secundária (ex.: "Reenviar"), sem preenchimento. Use com `type="button"`. */

@@ -9,7 +9,7 @@ export function Logo() {
     >
       <span
         aria-hidden="true"
-        className="grid size-8 place-items-center rounded-full bg-[var(--cor-principal)] font-semibold text-[var(--cor-sobre-principal)]"
+        className="grid size-8 place-items-center rounded-full bg-[var(--cor-principal-fundo)] font-semibold text-[var(--cor-sobre-principal-fundo)]"
       >
         A
       </span>

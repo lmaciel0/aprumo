@@ -98,7 +98,7 @@ export function EdicaoNota({ nota, categorias, aoExcluir, excluindo }: Props) {
           aria-label={fixada ? 'Tirar da tela inicial' : 'Fixar na tela inicial'}
           aria-pressed={fixada}
           onClick={() => fixar.mutate({ id: nota.id, fixada: !nota.fixada })}
-          className={`${botao} ${fixada ? 'border-transparent bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]' : 'text-[var(--cor-principal)] hover:bg-[var(--cor-card)]'}`}
+          className={`${botao} ${fixada ? 'border-transparent bg-[var(--cor-texto)] text-[var(--cor-fundo)]' : 'text-[var(--cor-principal)] hover:bg-[var(--cor-card)]'}`}
         >
           <IconeAlfinete cheio={fixada} />
           {fixada ? 'Fixada' : 'Fixar'}

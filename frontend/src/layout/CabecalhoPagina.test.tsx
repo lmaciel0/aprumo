@@ -128,4 +128,12 @@ describe('CabecalhoPagina', () => {
     expect(seletor).not.toHaveClass('shadow-sm')
     expect(seletor?.className).not.toContain('bg-[var(--cor-card)]')
   })
+
+  it('o_lancar_e_a_acao_principal_em_coral_vivo', () => {
+    renderizar(<CabecalhoPagina titulo="Orçamento" />)
+
+    const lancar = screen.getByRole('link', { name: '+ Lançar' })
+    expect(lancar).toHaveClass('bg-[var(--cor-principal-fundo)]', 'text-[var(--cor-sobre-principal-fundo)]')
+    expect(lancar.className).not.toContain('bg-[var(--cor-principal)]')
+  })
 })

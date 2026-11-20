@@ -57,6 +57,15 @@ export const PAINEIS_2XL: Array<{ arquivo: string; motivo: string }> = [
   { arquivo: 'preferencias/PreferenciasModal.tsx', motivo: 'modal centralizado' },
 ]
 
+/**
+ * Arquivos que ficam com `bg-[var(--cor-principal)]` (o tom escuro do acento) de propósito: marca de dado ou
+ * detalhe decorativo que é "o único acento" do bloco. Ação principal usa `--cor-principal-fundo`; seleção, avatar e
+ * botão secundário não usam o acento (ver "Acento" em `docs/DESIGN_SYSTEM.md`).
+ */
+export const ACENTO_ESCURO_PERMITIDO: Array<{ arquivo: string; motivo: string }> = [
+  { arquivo: 'paginas/inicio/OndeMaisGastou.tsx', motivo: 'barra de progresso é marca de dado, o único acento do bloco' },
+]
+
 const normalizar =(caminho: string): string => caminho.replaceAll('\\', '/')
 
 /** Todos os `.tsx` de produção sob `src/` (caminhos relativos a `src/`, sem testes). */

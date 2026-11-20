@@ -54,7 +54,7 @@ export function MaisPage() {
       <div className={`${cartao} flex items-center gap-3 p-4`}>
         <span
           aria-hidden="true"
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-medium text-[var(--cor-sobre-principal)]"
+          className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-base font-medium text-[var(--cor-texto)]"
         >
           {inicial}
         </span>

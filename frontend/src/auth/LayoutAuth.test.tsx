@@ -237,4 +237,13 @@ describe('LayoutAuth: links legais', () => {
     expect(await screen.findByRole('heading', { name: 'Confirmar' })).toBeInTheDocument()
     expect(screen.queryByTestId('aviso-google')).not.toBeInTheDocument()
   })
+
+  it('a_marca_do_logo_e_coral_vivo_com_peso_600', async () => {
+    semSessao()
+    renderizar('/login')
+
+    const marca = (await screen.findAllByText('A', { selector: 'span[aria-hidden="true"]' }))[0]!
+    expect(marca).toHaveClass('bg-[var(--cor-principal-fundo)]', 'text-[var(--cor-sobre-principal-fundo)]', 'font-semibold')
+    expect(marca.className).not.toContain('bg-[var(--cor-principal)]')
+  })
 })
