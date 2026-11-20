@@ -50,7 +50,7 @@ export function Segmentado<T extends string>({
 }: PropsSegmentado<T>): ReactNode {
   return (
     <fieldset
-      className="m-0 grid gap-1 rounded-2xl border-0 bg-[var(--cor-card)] p-1"
+      className="m-0 grid gap-1 rounded-[var(--raio-card)] border-0 bg-[var(--cor-card)] p-1"
       style={{ gridTemplateColumns: `repeat(${opcoes.length}, minmax(0, 1fr))` }}
     >
       <legend className="sr-only">{legenda}</legend>
@@ -65,7 +65,7 @@ export function Segmentado<T extends string>({
             onChange={() => aoMudar(opcao.valor)}
             className="peer sr-only"
           />
-          <span className="block min-h-11 cursor-pointer rounded-xl px-3 py-2.5 text-center text-sm font-medium peer-checked:bg-[var(--cor-principal)] peer-checked:font-semibold peer-checked:text-[var(--cor-sobre-principal)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1 peer-focus-visible:outline-[var(--cor-principal)] peer-disabled:cursor-not-allowed peer-disabled:opacity-60">
+          <span className="block min-h-11 cursor-pointer rounded-xl px-3 py-2.5 text-center text-sm font-medium peer-checked:bg-[var(--cor-texto)] peer-checked:font-semibold peer-checked:text-[var(--cor-fundo)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-1 peer-focus-visible:outline-[var(--cor-principal)] peer-disabled:cursor-not-allowed peer-disabled:opacity-60">
             {opcao.rotulo}
           </span>
         </label>

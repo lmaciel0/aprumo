@@ -30,6 +30,20 @@ describe('PreferenciasModal', () => {
     expect(screen.getByRole('button', { name: /restaurar padrões/i })).toBeInTheDocument()
   })
 
+  it('o modal tem 16 px de raio e o botão fechar usa raio de controle', () => {
+    render(
+      <PreferenciasProvider>
+        <PreferenciasModal aberta={true} aoFechar={() => {}} />
+      </PreferenciasProvider>
+    )
+    const dialogo = screen.getByRole('dialog', { name: /preferências/i })
+    expect(dialogo).toHaveClass('rounded-2xl')
+    expect(dialogo.innerHTML).not.toContain('rounded-3xl')
+    const fechar = screen.getAllByRole('button', { name: /fechar/i })[0]
+    expect(fechar).toHaveClass('rounded-[10px]')
+    expect(fechar).not.toHaveClass('rounded-full')
+  })
+
   it('chama aoFechar ao pressionar Escape', () => {
     const fechar = vi.fn()
     render(
@@ -80,5 +94,17 @@ describe('PreferenciasModal', () => {
     for (const antigo of [/azul/i, /lima/i, /esmeralda/i, /índigo/i]) {
       expect(screen.queryByRole('button', { name: antigo })).toBeNull()
     }
+  })
+
+  it('o_preset_selecionado_e_texto_sobre_fundo_e_nao_o_acento', () => {
+    render(
+      <PreferenciasProvider>
+        <PreferenciasModal aberta={true} aoFechar={() => {}} />
+      </PreferenciasProvider>
+    )
+    const coral = screen.getByRole('button', { name: 'Coral' })
+    expect(coral).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
+    expect(coral.className).not.toContain('bg-[var(--cor-principal)]')
+    expect(screen.getByRole('button', { name: 'Musgo' }).className).not.toContain('bg-[var(--cor-texto)]')
   })
 })

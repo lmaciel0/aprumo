@@ -57,12 +57,12 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
         aria-modal="true"
         aria-labelledby="titulo-personalizar-atalhos"
         onKeyDown={prenderFoco}
-        className="superficie relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col rounded-t-3xl border border-[var(--cor-linha)] bg-[var(--cor-card)] shadow-2xl sm:rounded-3xl"
+        className="superficie relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col rounded-t-[20px] border border-[var(--cor-linha)] bg-[var(--cor-card)] shadow-2xl sm:rounded-2xl"
       >
         {/* Cabeçalho */}
         <div className="flex items-center justify-between border-b border-[var(--cor-linha)] px-5 py-4">
           <div>
-            <h2 id="titulo-personalizar-atalhos" className="m-0 text-base font-bold text-[var(--cor-texto)]">
+            <h2 id="titulo-personalizar-atalhos" className="m-0 text-base font-medium text-[var(--cor-texto)]">
               Personalizar Atalhos
             </h2>
             <p className="m-0 mt-0.5 text-xs text-[var(--cor-mutado)]">
@@ -73,7 +73,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
             type="button"
             onClick={aoFechar}
             aria-label="Fechar"
-            className="flex size-8 cursor-pointer items-center justify-center rounded-full text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)]"
+            className="flex size-8 cursor-pointer items-center justify-center rounded-[10px] text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)]"
           >
             <X className="size-4" />
           </button>
@@ -90,9 +90,9 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
                 key={atalho.id}
                 type="button"
                 onClick={() => toggleAtalho(atalho.id)}
-                className={`flex w-full cursor-pointer items-center justify-between rounded-2xl border p-3 text-left transition-all duration-150 ${
+                className={`flex w-full cursor-pointer items-center justify-between rounded-[10px] border p-3 text-left transition-[background-color,border-color,color] duration-150 motion-reduce:transition-none ${
                   selecionado
-                    ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)]/10 text-[var(--cor-texto)] shadow-xs'
+                    ? 'border-[var(--cor-texto)] bg-[var(--cor-elevado)] text-[var(--cor-texto)]'
                     : 'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)]/60 hover:text-[var(--cor-texto)]'
                 }`}
               >
@@ -100,7 +100,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
                   <div
                     className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${
                       selecionado
-                        ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
+                        ? 'bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
                         : 'bg-[var(--cor-fundo)] text-[var(--cor-mutado)]'
                     }`}
                   >
@@ -114,7 +114,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
 
                 <div className="ml-3 flex shrink-0 items-center">
                   {selecionado ? (
-                    <span className="flex size-6 items-center justify-center rounded-full bg-[var(--cor-principal)] text-xs font-bold text-[var(--cor-sobre-principal)]">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-[var(--cor-texto)] text-xs font-medium text-[var(--cor-fundo)]">
                       {ordem}
                     </span>
                   ) : (
@@ -149,7 +149,7 @@ export function ModalPersonalizarAtalhos({ aberto, aoFechar }: Props) {
               type="button"
               onClick={salvar}
               disabled={!podeSalvar}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[var(--cor-principal)] px-4 py-2 text-xs font-bold text-[var(--cor-sobre-principal)] shadow-xs transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[var(--cor-principal-fundo)] px-4 py-2 text-xs font-medium text-[var(--cor-sobre-principal-fundo)] shadow-xs transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Check className="size-3.5" />
               Salvar 4 atalhos

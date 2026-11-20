@@ -13,7 +13,7 @@ interface Props {
 export function ProximasContas({ contas, className = 'md:col-span-15' }: Props) {
   return (
     <section aria-labelledby="titulo-proximas" className={`card ${className}`.trim()}>
-      <h2 id="titulo-proximas" className="m-0 text-[15px] font-bold">
+      <h2 id="titulo-proximas" className="m-0 text-[15px] font-medium">
         Próximas contas
       </h2>
       {contas.length === 0 ? (
@@ -35,7 +35,7 @@ export function ProximasContas({ contas, className = 'md:col-span-15' }: Props) 
               <span className="flex flex-col items-end gap-0.5">
                 <span className="valor font-medium">{formatarMoeda(conta.valor)}</span>
                 {conta.atrasada && (
-                  <span className="rounded-full bg-[var(--cor-erro-fundo)] px-2 py-0.5 text-[11px] font-semibold text-[var(--cor-negativo-texto)]">
+                  <span className="rounded-md bg-[var(--cor-erro-fundo)] px-2 py-0.5 text-[11px] font-semibold text-[var(--cor-negativo-texto)]">
                     atrasada
                   </span>
                 )}

@@ -61,6 +61,22 @@ Regras de uso:
 - O par de contraste mínimo é 4,5:1 para texto e 3:1 para contornos de campo e componentes. `frontend/src/estilos.test.ts` confere contraste AA do texto nos temas claro e escuro, 3:1 em bordas de campo e no botão de tema, proíbe cor fixa em TSX e exige `prefers-reduced-motion`.
 - Fundos de chip e aviso usam os tokens `*-fundo`, nunca cor fixa.
 
+### Acento: onde o coral entra
+
+O acento tem dois tons e cada um tem um papel. Espalhar coral em seleção, avatar e botão secundário é o que dá cara de template.
+
+| Caso | Classes | Observação |
+|---|---|---|
+| Ação principal da tela (no máximo uma por tela: "+ Lançar", "Salvar", "Nova nota", "Recarregar", "Voltar para o início") | `bg-[var(--cor-principal-fundo)] text-[var(--cor-sobre-principal-fundo)]`, hover com `hover:brightness-95` | Sem brilho nem sombra colorida. No painel e na visão geral não há botão coral além do "Criar" da dock. |
+| Ação secundária ("+ Novo cartão", "Tentar de novo", "+ Cadastrar primeiro cartão") | `border border-[var(--cor-linha)] bg-[var(--cor-elevado)] text-[var(--cor-texto)]` | Em tela com duas ações candidatas, a segunda é secundária (Cartões: "+ Lançar" é a principal). |
+| Chip, segmentado, ícone ou preset selecionado; alfinete de nota fixada; botão de formatação ativo | `bg-[var(--cor-texto)] text-[var(--cor-fundo)]` (com `border-[var(--cor-texto)]` quando há borda) | Linha de lista com descrição selecionada usa `border-[var(--cor-texto)] bg-[var(--cor-elevado)]`; o texto não inverte. Opção ativa da paleta usa `bg-[var(--cor-elevado)]`. |
+| Avatar com inicial | `bg-[var(--cor-elevado)] text-[var(--cor-texto)]` | |
+| Marca do logo | `bg-[var(--cor-principal-fundo)] text-[var(--cor-sobre-principal-fundo)]`, `font-semibold` | É a única marca em coral fora da ação principal. |
+| Texto, ícone, link, borda de foco e fio de prumo | `--cor-principal` | O tom escuro é o seguro como texto. |
+| Marca de dado (barra de progresso) | `bg-[var(--cor-principal)]` | Só nos arquivos de `ACENTO_ESCURO_PERMITIDO` em `frontend/src/teste/varredura.ts`, com o motivo. |
+
+`estilos.test.ts` (describe `acento`) reprova `bg-[var(--cor-principal)]` em todo TSX de produção fora das telas das fases 3 e 4 e fora de `ACENTO_ESCURO_PERMITIDO`, e reprova `--cor-principal-fundo` como texto, borda ou contorno. Banner de aviso do servidor usa `--cor-elevado` com texto `--cor-texto`, não o acento.
+
 ## Presets
 
 Três presets de cor de destaque, escolhidos pelo usuário e aplicados com `data-preset` no `<html>`: `coral`, `musgo` e `ceu`. `coral` é o padrão e não tem bloco próprio: valem os tokens da tabela de Cores. `musgo` e `ceu` trocam só `--cor-principal`, `--cor-sobre-principal` e `--cor-principal-fundo`, em cada tema.
@@ -78,7 +94,10 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 - Fonte única: Inter Variable (`@fontsource-variable/inter`), declarada em `--font-sans` e no `html`, com `ui-sans-serif, system-ui, sans-serif` de reserva.
 - Valores de dinheiro usam a classe `.valor` (`font-variant-numeric: tabular-nums`) para alinhar em coluna.
 - Corpo no celular: campos de formulário com 16 px (menos que isso o iOS dá zoom ao focar); nenhum texto abaixo de 12 px em tela de auth. Rótulos e legendas pequenas usam 11 a 12 px com `--cor-mutado`.
-- Título de página: `text-[28px] font-bold tracking-tight`. Número de destaque: 26 a 30 px em negrito (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500.
+- Pesos: 400 e 500. `font-semibold` (600) só para ênfase rara, como a marca do logo ou um item da linha que precisa se destacar. Nada de `font-bold`, `font-extrabold`, `font-black` nem `font-weight` de 700 a 900; `estilos.test.ts` reprova em todo TSX de produção (com a exceção temporária das telas das fases 3 e 4 do visual).
+- Título de página: `text-[28px] font-medium tracking-tight`. Título de seção, de card e de modal: `font-medium`. Número de destaque, de 28 a 32 px: `font-medium` (`CardSobra`, `FaixaSaldo`). Título do card de auth: 28 px, peso 500. Item de navegação e botão: `font-medium`.
+- Rótulo de seção ou de campo: sentence case, `text-xs font-medium text-[var(--cor-mutado)]` ("Financeiro", "Preset de cor", "Modo do tema"). Sem `uppercase` e sem `tracking-wide`, `tracking-wider` nem `tracking-widest`; se o texto-fonte estiver em caixa-alta, reescrever a string em vez de só tirar a classe.
+- `tracking-tight` só em texto de 28 px ou mais; abaixo disso o espaçamento entre letras é o padrão.
 
 ## Raio, superfícies e sombras
 
@@ -92,8 +111,20 @@ Todo componente novo precisa ficar legível nos três presets nos dois temas, o 
 | `--curva` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva única de toda animação e transição. |
 
 - `.card`: superfície sólida com `--raio-card`, `padding: 1rem`, sem `backdrop-filter`. Cards compactos dentro de grades sobrescrevem o padding (`!p-3.5`).
-- Escala de raio: tag 6 px, controle (campo e botão) 10 px, card 14 px, painel e folha de 16 a 20 px. Pílula (`rounded-full`) só em avatar, botão "Criar", ponto de status e interruptor de tema. O card de auth usa 18 px e seus campos e botão 10 px.
-- Código antigo ainda usa `rounded-2xl`, `rounded-3xl` e `rounded-full` em chips e botões; a migração para a escala acontece por tela e não por esta tabela.
+- Escala de raio por tamanho do elemento:
+
+| Elemento | Classe | Raio |
+|---|---|---|
+| Tag e chip (inclui chip de filtro e chip de status) | `rounded-md` | 6 px |
+| Botão, campo, linha tocável, botão só de ícone e busca do cabeçalho | `rounded-[10px]` | 10 px |
+| Card e sub-painel dentro de formulário | `rounded-[var(--raio-card)]` | 14 px |
+| Painel flutuante, menu e modal centralizado | `rounded-2xl` | 16 px |
+| Folha que sobe de baixo no celular | `rounded-t-[20px]` | 20 px |
+
+- Raio interno = raio externo menos o padding, no mínimo 4 px; o botão de 10 px dentro de um painel de 16 px com 8 px de padding cabe sem sair do canto. Botão só de ícone com menos de 28 px de lado usa `rounded-md`.
+- Pílula (`rounded-full`) só em avatar (e a marca do logo, que é um avatar da marca), ponto de status ou de cor e amostra de cor, trilho e barra de progresso, botão "Criar" da dock, interruptor de tema e spinner. Nunca em botão com texto, campo, chip, tag, busca ou botão só de ícone. Par de botões unidos (chip da categoria e seu lápis de editar) usa `rounded-l-md` e `rounded-r-md`.
+- `estilos.test.ts` (describe `raios`) reprova `rounded-3xl`, `rounded-full` fora de `PILULAS_PERMITIDAS` e `rounded-2xl` fora de `PAINEIS_2XL` (listas em `frontend/src/teste/varredura.ts`, com o motivo de cada arquivo), em todo TSX de produção fora das telas das fases 3 e 4.
+- O card de auth usa 18 px e seus campos e botão 10 px.
 
 ## Espaçamento e primeira dobra no celular
 
@@ -119,7 +150,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 
 ### Layout e navegação (`frontend/src/layout`)
 
-- `AppShell`, `HeaderPrincipal`, `Sidebar` e `DockLateral` (desktop), `DockInferior` (celular, menos de 768 px).
+- `AppShell`, `HeaderPrincipal`, `Sidebar` e `DockLateral` (desktop), `DockInferior` (celular, menos de 768 px). Avatares com inicial em `--cor-elevado`.
 - `DockInferior`: barra flutuante sólida (`rounded-2xl`, `--cor-card`, `--sombra-elevada`) com Início, Notas, Orçamento e Mais; o botão "Criar" é o único círculo, fica elevado no centro, usa `--cor-principal-fundo` e abre `FolhaAcaoRapida` (`AcaoRapida.tsx`). Só o item ativo mostra o rótulo (`.dock-rotulo`) e leva fundo `--cor-elevado`, sem fio de prumo.
 - Item ativo de `Sidebar` e `DockLateral`: degrau `--cor-elevado` com texto `--cor-texto` em peso 500 e o fio de prumo (`shadow-[inset_2px_0_0_var(--cor-principal)]`), nunca bloco preenchido no acento.
 - `CabecalhoPagina`: título (só para leitor de tela no celular), `SeletorMes` e atalho "+ Lançar" nas telas do mês.
@@ -154,7 +185,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 - Barras de ação e cabeçalhos usam `flex-wrap` para quebrar em vez de cortar em 320 px.
 - Largura útil conta: sem card dentro de card, sem padding duplicado, sem wrapper vazio com `gap`.
 - O conteúdo principal precisa ficar acima da dock flutuante; elemento fixo embaixo sobe `6.5rem + env(safe-area-inset-bottom)` (o botão "Criar" elevado chega a 5 rem do fundo).
-- Modal no celular é folha que sobe de baixo (`rounded-t-3xl`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada.
+- Modal no celular é folha que sobe de baixo (`rounded-t-[20px]`, `max-h-[92vh]`) ou tela cheia (`Moldura`); a partir de `sm` ou `md` vira janela centralizada (`rounded-2xl`). Os modais de Metas ficam em `rounded-t-3xl` até a fase 3.
 - Texto de campo em 16 px, para não dar zoom no iOS.
 
 ## Acessibilidade
@@ -194,6 +225,7 @@ Nasce das armadilhas registradas no projeto e das regras de 360 px.
 - Não usar degradê entre matizes, brilho nem sombra colorida (como `shadow-[0_8px_18px_color-mix(... --cor-principal ...)]`).
 - Não usar peso 700 a 900 em título ou rótulo novo; use 500 ou 600.
 - Não usar caixa-alta com tracking em rótulo (`uppercase tracking-wider`).
+- Não usar o coral vivo (`--cor-principal-fundo`) em seleção, avatar nem botão secundário, nem mais de uma ação principal por tela (ver "Acento: onde o coral entra").
 - Não usar `--cor-principal-fundo` como texto nem como linha fina: ele é só preenchimento (2,4:1 sobre o creme). Texto e linha usam `--cor-principal`.
 - Valor negativo vai na cor do texto com o sinal "−"; vermelho (`--cor-negativo`, `--cor-negativo-texto`) só em status e alerta.
 - Não trocar paleta, fonte ou presets por sugestão de ferramenta (`ui-ux-pro-max`, 21st) sem o Lucas pedir. O resultado delas é referência; este documento vence.

@@ -4,11 +4,11 @@ import { Link } from 'react-router'
 export function NaoEncontradaPage() {
   return (
     <section className="card mx-auto mt-6 flex max-w-md flex-col items-center gap-3 p-6 text-center sm:p-8">
-      <h1 className="m-0 text-xl font-bold">Página não encontrada</h1>
+      <h1 className="m-0 text-xl font-medium">Página não encontrada</h1>
       <p className="m-0 text-sm text-[var(--cor-mutado)]">O endereço que você abriu não existe ou foi movido.</p>
       <Link
         to="/"
-        className="mt-2 rounded-full bg-[var(--cor-principal)] px-5 py-2.5 text-sm font-semibold text-[var(--cor-sobre-principal)] no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+        className="mt-2 rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 py-2.5 text-sm font-semibold text-[var(--cor-sobre-principal-fundo)] no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
       >
         Voltar para o início
       </Link>

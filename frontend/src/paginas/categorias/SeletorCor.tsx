@@ -36,7 +36,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
               aria-checked={selecionado}
               aria-label={cor.nome}
               onClick={() => aoMudar(cor.hex)}
-              className="relative grid size-8 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+              className="relative grid size-8 place-items-center rounded-full transition-opacity duration-150 hover:opacity-80 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
               style={{ backgroundColor: cor.hex }}
             >
               {selecionado && <Check className="size-4 text-[var(--cor-sobre-principal)] drop-shadow-sm" aria-hidden="true" />}
@@ -47,7 +47,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
         <button
           type="button"
           onClick={() => setExpandido((prev) => !prev)}
-          className="rounded-full bg-[var(--cor-linha)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-[10px] bg-[var(--cor-linha)] px-3 py-1.5 text-xs font-medium text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
         >
           Outros
         </button>
@@ -67,7 +67,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
                   aria-checked={selecionado}
                   aria-label={cor.nome}
                   onClick={() => aoMudar(cor.hex)}
-                  className="relative grid size-7 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+                  className="relative grid size-7 place-items-center rounded-full transition-opacity duration-150 hover:opacity-80 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
                   style={{ backgroundColor: cor.hex }}
                 >
                   {selecionado && <Check className="size-3.5 text-[var(--cor-sobre-principal)] drop-shadow-sm" aria-hidden="true" />}
@@ -87,7 +87,7 @@ export function SeletorCor({ valor, aoMudar }: Props) {
               onChange={(e) => aoMudar(e.target.value)}
               className="size-8 cursor-pointer rounded border border-[var(--cor-linha)] bg-transparent p-0"
             />
-            <span className="font-mono text-xs uppercase text-[var(--cor-mutado)]">{corAtual}</span>
+            <span className="font-mono text-xs text-[var(--cor-mutado)]">{corAtual}</span>
           </div>
         </div>
       )}

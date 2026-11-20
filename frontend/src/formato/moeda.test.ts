@@ -12,8 +12,21 @@ describe('formatarMoeda', () => {
     expect(semNbsp(formatarMoeda(10))).toBe('R$ 10,00')
   })
 
-  it('formata negativo com o sinal antes do R$', () => {
-    expect(semNbsp(formatarMoeda('-6.20'))).toBe('-R$ 6,20')
+  it('formata negativo com o sinal − (U+2212) colado no R$, nunca com hífen', () => {
+    expect(semNbsp(formatarMoeda('-6.20'))).toBe('−R$ 6,20')
+    expect(semNbsp(formatarMoeda(-636.59))).toBe('−R$ 636,59')
+    expect(formatarMoeda(-636.59)).not.toContain('-')
+  })
+
+  it('zero nunca leva sinal e 1 centavo negativo leva', () => {
+    expect(semNbsp(formatarMoeda(0))).toBe('R$ 0,00')
+    expect(semNbsp(formatarMoeda(-0))).toBe('R$ 0,00')
+    expect(semNbsp(formatarMoeda('-0.00'))).toBe('R$ 0,00')
+    expect(semNbsp(formatarMoeda('-0.01'))).toBe('−R$ 0,01')
+  })
+
+  it('positivo não leva sinal', () => {
+    expect(semNbsp(formatarMoeda(1234.56))).toBe('R$ 1.234,56')
   })
 })
 

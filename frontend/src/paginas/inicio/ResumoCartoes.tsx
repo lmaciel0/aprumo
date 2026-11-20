@@ -19,7 +19,7 @@ export function ResumoCartoes({ cartoes, busca, className = '' }: Props) {
   return (
     <section aria-labelledby="titulo-cartoes" className={`card ${className}`.trim()}>
       <div className="flex items-baseline justify-between gap-2">
-        <h2 id="titulo-cartoes" className="m-0 text-[15px] font-bold">
+        <h2 id="titulo-cartoes" className="m-0 text-[15px] font-medium">
           Cartões
         </h2>
         <Link
@@ -61,7 +61,7 @@ export function ResumoCartoes({ cartoes, busca, className = '' }: Props) {
                   </div>
                   <div className="mt-1 flex items-center justify-between gap-2 text-[11px] text-[var(--cor-mutado)]">
                     <span className="valor">de {formatarMoeda(limite)}</span>
-                    <span className={`rounded-full px-2 py-0.5 font-bold ${CLASSE_DO_CHIP[faixa]}`}>
+                    <span className={`rounded-md px-2 py-0.5 font-medium ${CLASSE_DO_CHIP[faixa]}`}>
                       {formatarPercentual(uso)}
                     </span>
                   </div>

@@ -1,7 +1,8 @@
 /// <reference types="node" />
-import { readdirSync, readFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { ACENTO_ESCURO_PERMITIDO, EXCECOES_FASE_3_4, infratores, PAINEIS_2XL, PILULAS_PERMITIDAS, tsxDeProducao } from './teste/varredura'
 
 // O Vitest roda com `css: false`, que esvazia `import '...css?raw'`; por isso o arquivo é lido direto.
 const css = readFileSync(resolve(process.cwd(), 'src/index.css'), 'utf8')
@@ -101,7 +102,7 @@ describe('tokens de cor', () => {
 
   it('celula_paga_e_diferenca_negativa_usam_os_tons_de_texto', () => {
     expect(css).toMatch(/\.celula-paga\s*\{\s*color:\s*var\(--cor-positivo-texto\);?\s*\}/)
-    expect(css).toMatch(/\.diferenca-negativa\s*\{\s*color:\s*var\(--cor-negativo-texto\);?\s*\}/)
+    expect(css).toMatch(/\.diferenca-negativa\s*\{\s*color:\s*var\(--cor-texto\);?\s*\}/)
   })
 
   it('declara só os presets musgo e ceu, sem lima, esmeralda nem indigo', () => {
@@ -162,16 +163,6 @@ describe('tokens de cor', () => {
     }
   })
 })
-
-/** Todos os `.tsx` de produção sob `src/` (caminhos relativos a `src/`, sem testes). */
-function tsxDeProducao(pasta = ''): string[] {
-  const base = resolve(process.cwd(), 'src', pasta)
-  return readdirSync(base, { withFileTypes: true }).flatMap((entrada) => {
-    const caminho = join(pasta, entrada.name)
-    if (entrada.isDirectory()) return tsxDeProducao(caminho)
-    return caminho.endsWith('.tsx') && !caminho.endsWith('.test.tsx') ? [caminho] : []
-  })
-}
 
 describe('cores fixas', () => {
   it('nenhum TSX de produção usa bg-white, hex fixo em bg/text nem text-white', () => {
@@ -352,3 +343,99 @@ describe('superfícies sólidas, sombras e curva', () => {
     expect(bloco).toMatch(/padding:\s*1rem/)
   })
 })
+
+describe('tipografia', () => {
+  it('nenhum TSX fora das fases 3 e 4 usa font-bold, font-extrabold nem font-black', () => {
+    expect(infratores(/font-(bold|extrabold|black)\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa uppercase', () => {
+    expect(infratores(/\buppercase\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa tracking-wide, -wider nem -widest', () => {
+    expect(infratores(/tracking-(wide|wider|widest)\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa fontWeight 700 a 900 nem bold em prop JSX/SVG ou style inline', () => {
+    // Cobre `fontWeight={700}`, `fontWeight="bold"` e ternário como `fontWeight={sel ? 700 : 400}`.
+    expect(infratores(/fontWeight=(\{[^}]*)?['"]?\b(700|800|900|bold)\b/, EXCECOES_FASE_3_4)).toEqual([])
+    expect(infratores(/fontWeight:\s*['"]?(700|800|900|bold)/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('o index.css não declara font-weight 700 a 900 nem bold', () => {
+    expect(cssSemComentarios()).not.toMatch(/font-weight:\s*(700|800|900|bold)/)
+  })
+})
+
+describe('raios', () => {
+  it('nenhum TSX fora das fases 3 e 4 usa rounded-3xl nem rounded-t-3xl', () => {
+    expect(infratores(/rounded(-[a-z]{1,2})?-3xl\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('rounded-full só aparece nos arquivos de PILULAS_PERMITIDAS', () => {
+    const permitidos = PILULAS_PERMITIDAS.map((p) => p.arquivo)
+    expect(infratores(/rounded(-[a-z]{1,2})?-full\b/, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+  })
+
+  it('PILULAS_PERMITIDAS e PAINEIS_2XL só listam arquivos que existem e usam a classe', () => {
+    const comPilula = infratores(/rounded(-[a-z]{1,2})?-full\b/)
+    for (const { arquivo, motivo } of PILULAS_PERMITIDAS) {
+      expect(motivo, arquivo).not.toBe('')
+      expect(comPilula, `${arquivo} não usa mais rounded-full`).toContain(arquivo)
+    }
+    const com2xl = infratores(/rounded(-[a-z]{1,2})?-2xl\b/)
+    for (const { arquivo, motivo } of PAINEIS_2XL) {
+      expect(motivo, arquivo).not.toBe('')
+      expect(com2xl, `${arquivo} não usa mais rounded-2xl`).toContain(arquivo)
+    }
+  })
+
+  it('rounded-2xl só aparece em painel flutuante ou modal (PAINEIS_2XL)', () => {
+    const permitidos = PAINEIS_2XL.map((p) => p.arquivo)
+    expect(infratores(/rounded(-[a-z]{1,2})?-2xl\b/, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+  })
+})
+
+describe('movimento', () => {
+  it('nenhum TSX fora das fases 3 e 4 usa transition-all', () => {
+    expect(infratores(/transition-all\b/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 escala ou desloca no hover', () => {
+    expect(infratores(/hover:-?(scale|translate)/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+
+  it('animate-pulse só em arquivo que marca o carregamento com role="status" ou aria-busy', () => {
+    const comPulso = infratores(/animate-pulse/, EXCECOES_FASE_3_4)
+    const semMarca = comPulso.filter(
+      (arquivo) => !/role="status"|aria-busy/.test(readFileSync(resolve(process.cwd(), 'src', arquivo), 'utf8')),
+    )
+    expect(semMarca).toEqual([])
+  })
+})
+
+describe('acento', () => {
+  const ACENTO_ESCURO = /bg-\[var\(--cor-principal\)\]/
+
+  it('bg-[var(--cor-principal)] só aparece nos arquivos de ACENTO_ESCURO_PERMITIDO', () => {
+    const permitidos = ACENTO_ESCURO_PERMITIDO.map((p) => p.arquivo)
+    expect(infratores(ACENTO_ESCURO, [...EXCECOES_FASE_3_4, ...permitidos])).toEqual([])
+  })
+
+  it('ACENTO_ESCURO_PERMITIDO só lista arquivos que existem, usam a classe e dizem o motivo', () => {
+    const comAcento = infratores(ACENTO_ESCURO)
+    for (const { arquivo, motivo } of ACENTO_ESCURO_PERMITIDO) {
+      expect(motivo, arquivo).not.toBe('')
+      expect(comAcento, `${arquivo} não usa mais bg-[var(--cor-principal)]`).toContain(arquivo)
+    }
+  })
+
+  it('nenhum TSX fora das fases 3 e 4 usa o coral vivo como texto ou como linha', () => {
+    expect(infratores(/(text|border|outline|ring|divide)-\[var\(--cor-principal-fundo\)\]/, EXCECOES_FASE_3_4)).toEqual([])
+  })
+})
+
+function cssSemComentarios(): string {
+  return css.replace(/\/\*[\s\S]*?\*\//g, '')
+}

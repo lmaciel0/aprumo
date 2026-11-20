@@ -16,8 +16,8 @@ const minusculo = (texto: string) => texto.toLocaleLowerCase('pt-BR')
  * despesas e próximas contas. Divide a chave de cache `['resumo', ano, mes]` com a visão geral. O carregamento e o erro
  * ficam só dentro do bloco, para a saudação aparecer na hora mesmo com a API acordando.
  */
-export function FinancasDoMes() {
-  const { ano, mes } = mesAtual()
+export function FinancasDoMes({ agora }: { agora: Date }) {
+  const { ano, mes } = mesAtual(agora)
   const consulta = useQuery({
     queryKey: ['resumo', ano, mes],
     queryFn: () => endpoints.resumo(ano, mes),
@@ -29,7 +29,7 @@ export function FinancasDoMes() {
   return (
     <section aria-labelledby="titulo-financas">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 id="titulo-financas" className="m-0 text-[15px] font-bold">
+        <h2 id="titulo-financas" className="m-0 text-[15px] font-medium">
           Finanças do mês
         </h2>
         <Link
@@ -77,7 +77,7 @@ export function FinancasDoMes() {
           <button
             type="button"
             onClick={() => void consulta.refetch()}
-            className="min-h-11 rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+            className="min-h-11 rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 text-sm font-semibold text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
           >
             Tentar de novo
           </button>

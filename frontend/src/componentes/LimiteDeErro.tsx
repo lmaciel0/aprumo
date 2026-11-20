@@ -40,7 +40,7 @@ export class LimiteDeErro extends Component<Props, Estado> {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="min-h-11 cursor-pointer rounded-lg bg-[var(--cor-principal)] px-4 font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+            className="min-h-11 cursor-pointer rounded-lg bg-[var(--cor-principal-fundo)] px-4 font-semibold text-[var(--cor-sobre-principal-fundo)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
           >
             Recarregar
           </button>

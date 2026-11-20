@@ -79,13 +79,30 @@ describe('GraficoResultado', () => {
     expect(within(grafico).getByText('Jan')).not.toHaveAttribute('data-selecionado', 'true')
   })
 
+  it('mes_com_deficit_leva_sinal_menos_sem_cor_de_alerta_e_sobra_idem', async () => {
+    const serie = zeroSerie()
+    serie[0] = { mes: 1, receitas: '500.00', receitasPrevistas: '0.00', despesas: '3000.00', despesasPrevistas: '0.00' }
+    serie[1] = { mes: 2, receitas: '900.00', receitasPrevistas: '0.00', despesas: '100.00', despesasPrevistas: '0.00' }
+    const grafico = await renderizar(serie)
+
+    // No celular (o jsdom é "não desktop") o milhar quebra em duas linhas: `−2,5` e `mil`.
+    const deficit = within(grafico).getByText('−2,5').closest('text')!
+    expect(deficit).toHaveTextContent('−2,5mil')
+    const sobra = within(grafico).getByText('+800')
+    for (const rotulo of [deficit, sobra]) {
+      expect(rotulo.getAttribute('fill')).not.toMatch(/cor-negativo|cor-positivo/)
+    }
+    const acumulado = screen.getByText(/^Acumulado até outubro/).querySelector('strong')
+    expect(acumulado?.className).not.toMatch(/cor-negativo|cor-positivo/)
+  })
+
   it('mostra_o_acumulado_do_ano_ate_o_mes_selecionado', async () => {
     const serie = zeroSerie()
     serie[0] = { mes: 1, receitas: '500.00', receitasPrevistas: '0.00', despesas: '800.00', despesasPrevistas: '0.00' }
     await renderizar(serie)
 
     const esperado = formatarComSinal(resultadoAcumulado(serie, 10))
-    expect(semNbsp(esperado)).toBe('− R$ 300,00')
+    expect(semNbsp(esperado)).toBe('−R$ 300,00')
     expect(semNbsp(screen.getByText(/^Acumulado até outubro/).textContent)).toContain(semNbsp(esperado))
   })
 

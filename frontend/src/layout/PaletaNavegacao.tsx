@@ -182,7 +182,7 @@ export function PaletaNavegacao({ aberta, aoFechar }: Props) {
                   className={
                     'flex min-h-11 cursor-pointer items-center rounded-xl px-3 text-sm transition-colors duration-150 ease-out ' +
                     (indice === indiceAtivo
-                      ? 'bg-[var(--cor-principal)] font-semibold text-[var(--cor-sobre-principal)]'
+                      ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)]'
                       : 'text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]')
                   }
                 >

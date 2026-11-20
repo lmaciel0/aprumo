@@ -209,4 +209,12 @@ describe('DockLateral', () => {
     fireEvent.click(botaoSair)
     expect(aoSair).toHaveBeenCalledTimes(1)
   })
+
+  it('o_avatar_usa_o_degrau_elevado_e_o_recolhido_mostra_a_marca_em_coral_vivo', () => {
+    renderizar({ nomeUsuario: 'Damir' })
+
+    const avatar = screen.getByText('D', { selector: 'span[aria-hidden="true"]' })
+    expect(avatar).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
+    expect(avatar.className).not.toContain('bg-[var(--cor-principal)]')
+  })
 })

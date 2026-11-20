@@ -25,7 +25,7 @@ export function CabecalhoPagina({ titulo, aoLancar, acaoExtra, tituloVisivelNoCe
   return (
     <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 md:mb-5">
       <div className={tituloVisivelNoCelular ? 'min-w-0' : 'min-w-0 sr-only md:not-sr-only'}>
-        <h1 className="m-0 text-[28px] font-bold tracking-tight">{titulo}</h1>
+        <h1 className="m-0 text-[28px] font-medium tracking-tight">{titulo}</h1>
       </div>
       <div
         data-testid="acoes-do-cabecalho"
@@ -42,7 +42,7 @@ export function CabecalhoPagina({ titulo, aoLancar, acaoExtra, tituloVisivelNoCe
                 aoLancar()
               }
             }}
-            className="inline-flex min-h-11 shrink-0 cursor-pointer items-center rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold whitespace-nowrap text-[var(--cor-sobre-principal)] no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+            className="inline-flex min-h-11 shrink-0 cursor-pointer items-center rounded-[10px] bg-[var(--cor-principal-fundo)] px-4 text-sm font-medium whitespace-nowrap text-[var(--cor-sobre-principal-fundo)] no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
           >
             + Lançar
           </Link>

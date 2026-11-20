@@ -21,7 +21,7 @@ interface Valor {
 
 const TITULO_PADRAO = 'Sem título'
 const foco = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
-const botao = `inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-[var(--cor-linha)] px-4 text-sm font-semibold transition-colors duration-200 motion-reduce:transition-none ${foco}`
+const botao = `inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-[10px] border border-[var(--cor-linha)] px-4 text-sm font-semibold transition-colors duration-200 motion-reduce:transition-none ${foco}`
 
 /** Título, categoria, alfinete, editor e indicador de salvamento. O estado inicial vem da nota; depois o editor manda. */
 export function EdicaoNota({ nota, categorias, aoExcluir, excluindo }: Props) {
@@ -74,7 +74,7 @@ export function EdicaoNota({ nota, categorias, aoExcluir, excluindo }: Props) {
         placeholder="Sem título"
         autoComplete="off"
         onChange={(e) => setValor((v) => ({ ...v, titulo: e.target.value }))}
-        className={`min-h-11 w-full rounded-xl border border-transparent bg-transparent px-1 text-2xl font-bold tracking-tight text-[var(--cor-texto)] transition-colors duration-200 placeholder:text-[var(--cor-mutado)] hover:border-[var(--cor-linha)] motion-reduce:transition-none ${foco}`}
+        className={`min-h-11 w-full rounded-xl border border-transparent bg-transparent px-1 text-2xl font-medium text-[var(--cor-texto)] transition-colors duration-200 placeholder:text-[var(--cor-mutado)] hover:border-[var(--cor-linha)] motion-reduce:transition-none ${foco}`}
       />
       <div className="flex flex-wrap items-center gap-2">
         <label htmlFor="categoria-nota" className="text-sm font-medium">
@@ -98,7 +98,7 @@ export function EdicaoNota({ nota, categorias, aoExcluir, excluindo }: Props) {
           aria-label={fixada ? 'Tirar da tela inicial' : 'Fixar na tela inicial'}
           aria-pressed={fixada}
           onClick={() => fixar.mutate({ id: nota.id, fixada: !nota.fixada })}
-          className={`${botao} ${fixada ? 'border-transparent bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]' : 'text-[var(--cor-principal)] hover:bg-[var(--cor-card)]'}`}
+          className={`${botao} ${fixada ? 'border-transparent bg-[var(--cor-texto)] text-[var(--cor-fundo)]' : 'text-[var(--cor-principal)] hover:bg-[var(--cor-card)]'}`}
         >
           <IconeAlfinete cheio={fixada} />
           {fixada ? 'Fixada' : 'Fixar'}

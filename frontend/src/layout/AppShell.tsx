@@ -158,7 +158,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
   )
 
   const dockDesktop = (
-    <div className="superficie row-span-2 row-start-1 col-start-1 sticky top-3 flex h-[calc(100dvh-1.5rem)] flex-col overflow-hidden rounded-3xl">
+    <div className="superficie row-span-2 row-start-1 col-start-1 sticky top-3 flex h-[calc(100dvh-1.5rem)] flex-col overflow-hidden rounded-2xl">
       <DockLateral
         nomeUsuario={nomeUsuario}
         aoSair={aoSair}
@@ -231,7 +231,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
               aria-modal="true"
               aria-label="Menu"
               onKeyDown={prenderFoco}
-              className="menu-painel superficie absolute inset-y-3 left-3 flex w-[min(20rem,calc(100vw-1.5rem))] flex-col gap-3 overflow-y-auto rounded-3xl p-3"
+              className="menu-painel superficie absolute inset-y-3 left-3 flex w-[min(20rem,calc(100vw-1.5rem))] flex-col gap-3 overflow-y-auto rounded-2xl p-3"
             >
               <div className="flex items-center justify-between gap-2 px-1 pb-2 border-b border-[var(--cor-linha)]">
                 <Logo />

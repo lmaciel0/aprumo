@@ -49,4 +49,17 @@ describe('ErroDeCarregamento', () => {
 
     expect(screen.getByRole('button', { name: 'Recarregar' }).className).toContain('focus-visible:outline-2')
   })
+
+  it('o_botao_recarregar_e_a_acao_principal_em_coral_vivo', () => {
+    render(
+      <ErroDeCarregamento>
+        <Quebra />
+      </ErroDeCarregamento>,
+    )
+
+    expect(screen.getByRole('button', { name: 'Recarregar' })).toHaveClass(
+      'bg-[var(--cor-principal-fundo)]',
+      'text-[var(--cor-sobre-principal-fundo)]',
+    )
+  })
 })

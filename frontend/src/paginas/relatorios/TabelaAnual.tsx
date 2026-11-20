@@ -5,7 +5,11 @@ const MESES = Array.from({ length: 12 }, (_, i) => i + 1)
 
 // Dentro das células o valor sai sem o "R$" (`1.234,56`) para caber 13 colunas; a legenda da página avisa que é em reais.
 const formatadorNumero = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-const formatarNumero = (valor: string) => formatadorNumero.format(Number(valor))
+// Negativo com o sinal − (U+2212), igual a `formatarMoeda`; zero nunca leva sinal.
+const formatarNumero = (valor: string) => {
+  const texto = formatadorNumero.format(Math.abs(Number(valor)))
+  return Number(valor) < 0 && texto !== '0,00' ? `\u2212${texto}` : texto
+}
 
 // A primeira coluna fica colada à esquerda quando a tabela rola de lado. Precisa de fundo opaco (cada linha passa o seu)
 // para os meses não aparecerem por baixo. `border-separate` mantém a borda junto da célula fixa.
@@ -34,7 +38,7 @@ function CelulaDeItem({ celula }: { celula: CelulaRelatorio | null }) {
 function LinhaDaCategoria({ categoria }: { categoria: CategoriaRelatorio }) {
   return (
     <tbody>
-      <tr className="font-bold">
+      <tr className="font-medium">
         <th scope="rowgroup" className={`${PRIMEIRA} ${FUNDO_DESTAQUE}`}>
           {categoria.nome}
         </th>
@@ -65,7 +69,7 @@ interface LinhaTotalProps {
   /** Os 12 valores, de janeiro a dezembro. */
   porMes: string[]
   ano: string
-  /** Pinta de vermelho o valor menor que zero (diferença de caixa). */
+  /** Marca o valor menor que zero (diferença de caixa); o sinal − já o distingue. */
   vermelhoSeNegativo?: boolean
   /** Fundo da linha, repetido na primeira coluna fixa. */
   fundo: string
@@ -81,7 +85,7 @@ function LinhaTotal({ rotulo, porMes, ano, vermelhoSeNegativo = false, fundo }: 
     )
   }
   return (
-    <tr className="font-bold">
+    <tr className="font-medium">
       <th scope="row" className={`${PRIMEIRA} ${fundo}`}>
         {rotulo}
       </th>
@@ -109,7 +113,7 @@ export function TabelaAnual({ relatorio }: { relatorio: RelatorioAnualResponse }
       <table className="w-max min-w-full border-separate border-spacing-0 text-xs md:text-[13px]">
         <caption className="sr-only">Valor de cada item por mês em {ano}, em reais</caption>
         <thead>
-          <tr className="text-[11px] font-semibold text-[var(--cor-mutado)] uppercase">
+          <tr className="text-xs font-medium text-[var(--cor-mutado)]">
             <th scope="col" className={`${PRIMEIRA} bg-[var(--cor-card)]`}>
               Item
             </th>
@@ -120,7 +124,7 @@ export function TabelaAnual({ relatorio }: { relatorio: RelatorioAnualResponse }
                 title={nomeMes(mes)}
                 className="min-w-20 border-b border-[var(--cor-linha)] px-2.5 py-2 text-right"
               >
-                {nomeMes(mes).slice(0, 3).toUpperCase()}
+                {nomeMes(mes).slice(0, 3)}
               </th>
             ))}
             <th scope="col" className="min-w-24 border-b border-[var(--cor-linha)] px-2.5 py-2 text-right">

@@ -25,7 +25,8 @@ describe('Esqueleto', () => {
   it('renderiza variante card', () => {
     render(<Esqueleto variante="card" className="h-32 w-full" />)
     const el = screen.getByRole('status')
-    expect(el).toHaveClass('rounded-2xl')
+    expect(el).toHaveClass('rounded-[var(--raio-card)]')
+    expect(el).not.toHaveClass('rounded-2xl')
   })
 
   it('renderiza múltiplas linhas de texto quando especificado', () => {

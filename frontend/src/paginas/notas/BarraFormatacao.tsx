@@ -18,7 +18,7 @@ const ACOES: Acao[] = [
   { rotulo: 'Caixinhas de marcar', texto: '☐', ativo: (e) => e.isActive('taskList'), executar: (e) => e.chain().focus().toggleTaskList().run() },
 ]
 
-const ESTILO_TEXTO: Record<string, string> = { Negrito: 'font-bold', Itálico: 'italic', Riscado: 'line-through' }
+const ESTILO_TEXTO: Record<string, string> = { Negrito: 'font-semibold', Itálico: 'italic', Riscado: 'line-through' }
 
 const BASE =
   'inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg border px-3 text-base ' +
@@ -26,7 +26,7 @@ const BASE =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
 const INATIVO =
   'border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] hover:bg-[var(--cor-principal-clara)]'
-const ATIVO = 'border-[var(--cor-principal)] bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
+const ATIVO = 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
 
 export function BarraFormatacao({ editor }: { editor: Editor }) {
   // Reavalia o estado ativo a cada transação (seleção ou conteúdo) para manter `aria-pressed` correto.

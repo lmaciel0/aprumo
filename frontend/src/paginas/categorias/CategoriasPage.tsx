@@ -84,7 +84,7 @@ export function CategoriasPage() {
         <button
           type="button"
           onClick={() => void consulta.refetch()}
-          className="rounded-full bg-[var(--cor-principal)] px-4 py-2 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 py-2 text-sm font-semibold text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           Tentar de novo
         </button>
@@ -186,7 +186,7 @@ export function CategoriasPage() {
   return (
     <>
       <div className="mb-3 sr-only md:not-sr-only md:mb-5">
-        <h1 className="m-0 text-[28px] font-bold tracking-tight">Categorias</h1>
+        <h1 className="m-0 text-[28px] font-medium tracking-tight">Categorias</h1>
         <p className="m-0 mt-1 text-[13px] text-[var(--cor-mutado)]">
           Organize categorias e subcategorias, e personalize ícones, cores e vínculos financeiros.
         </p>

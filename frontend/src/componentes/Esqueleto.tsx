@@ -43,7 +43,7 @@ export function Esqueleto({
         role="status"
         aria-label={rotuloAcessivel}
         aria-busy="true"
-        className={`${baseClasses} rounded-2xl ${className}`}
+        className={`${baseClasses} rounded-[var(--raio-card)] ${className}`}
         {...resto}
       />
     )

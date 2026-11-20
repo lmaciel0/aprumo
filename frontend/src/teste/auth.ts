@@ -2,8 +2,8 @@ import { http, HttpResponse } from 'msw'
 import type { UsuarioResponse } from '../api/tipos'
 import { servidor } from './servidor'
 
-/** Título (h1) da tela inicial `/`: a saudação muda com a hora, então os testes só conferem o começo. */
-export const saudacaoDaTelaInicial = /^(Bom dia|Boa tarde|Boa noite)/
+/** Título (h1) da tela inicial `/`: o mês e o ano mudam com o relógio, então os testes conferem só o formato `Mês de 2026`. */
+export const saudacaoDaTelaInicial = /^\p{Lu}\p{L}+ de \d{4}$/u
 
 export const usuarioFicticio: UsuarioResponse = { id: 1, nome: 'Ana', email: 'ana@exemplo.com', temSenha: true }
 

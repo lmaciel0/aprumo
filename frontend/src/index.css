@@ -169,12 +169,12 @@ body {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Relatório anual: lançamento já pago (verde) e diferença de caixa negativa (vermelho), em tons de texto. */
+  /* Relatório anual: lançamento já pago (verde, é status) e diferença de caixa negativa (cor do texto; o sinal − a distingue). */
   .celula-paga {
     color: var(--cor-positivo-texto);
   }
   .diferenca-negativa {
-    color: var(--cor-negativo-texto);
+    color: var(--cor-texto);
   }
 }
 

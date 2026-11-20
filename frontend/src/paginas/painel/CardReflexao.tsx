@@ -70,7 +70,7 @@ export function CardReflexao() {
             type="button"
             onClick={copiar}
             aria-label="Copiar reflexão"
-            title={copiado ? 'Copiado!' : 'Copiar citação'}
+            title={copiado ? 'Copiado' : 'Copiar citação'}
             className="flex min-h-9 min-w-9 cursor-pointer items-center justify-center rounded-lg bg-[var(--cor-sobre-principal)]/10 text-[var(--cor-sobre-principal)] transition-colors hover:bg-[var(--cor-sobre-principal)]/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-sobre-principal)]"
           >
             {copiado ? (

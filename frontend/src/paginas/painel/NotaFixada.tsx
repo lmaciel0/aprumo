@@ -96,7 +96,7 @@ export function NotaFixada({ atrasoGravacaoMs = ATRASO_GRAVACAO_MS }: { atrasoGr
   return (
     <section aria-labelledby="titulo-nota-fixada" className="card">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-        <h2 id="titulo-nota-fixada" className="m-0 text-[15px] font-bold">
+        <h2 id="titulo-nota-fixada" className="m-0 text-[15px] font-medium">
           Nota fixada
         </h2>
         <Link to="/notas" className={classeLink}>
@@ -122,7 +122,7 @@ export function NotaFixada({ atrasoGravacaoMs = ATRASO_GRAVACAO_MS }: { atrasoGr
           <button
             type="button"
             onClick={() => void consulta.refetch()}
-            className="min-h-11 cursor-pointer rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+            className="min-h-11 cursor-pointer rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 text-sm font-semibold text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
           >
             Tentar de novo
           </button>

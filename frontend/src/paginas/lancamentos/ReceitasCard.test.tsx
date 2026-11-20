@@ -33,6 +33,18 @@ describe('ReceitasCard', () => {
     expect(within(regiao).getByRole('button', { name: /Camila.*Recebido/ })).toBeInTheDocument()
   })
 
+  it('selo_recebido_usa_icone_check_e_nao_glifo', () => {
+    const { regiao } = renderizar([salario(), camila('PREVISTO')])
+
+    const recebido = within(regiao).getByRole('button', { name: /Salário.*Recebido/ })
+    expect(recebido).toHaveTextContent('Recebido')
+    expect(recebido.textContent).not.toContain('✓')
+    expect(recebido.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+    expect(recebido.querySelector('svg')).toHaveAttribute('width', '12')
+    const aReceber = within(regiao).getByRole('button', { name: /Camila.*A receber/ })
+    expect(aReceber.querySelector('svg')).toBeNull()
+  })
+
   it('com_parte_a_receber_mostra_percentual_e_alterna_o_status', async () => {
     const { regiao, aoMudarStatus } = renderizar([salario(), camila('PREVISTO')])
 
