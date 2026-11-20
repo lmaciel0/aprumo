@@ -76,7 +76,7 @@ export function GraficoResultado({ ano, mes, serie, className, hoje }: Props) {
       >
         <div className="absolute inset-0">
           <Suspense fallback={null}>
-            <BarrasDoResultado ano={ano} dados={pontos} mesSelecionado={mes} compacto={compacto} hoje={hoje} />
+            <BarrasDoResultado ano={ano} dados={pontos} compacto={compacto} hoje={hoje} />
           </Suspense>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { Bar, BarChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import { mesAtual } from '../../formato/mes'
+import { mesAtual as mesDeHoje } from '../../formato/mes'
 import { COR_DESPESAS, COR_RECEITAS, FUNDO_DESPESAS_PREVISTAS, FUNDO_RECEITAS_PREVISTAS } from './cores'
 import { TooltipResultado } from './TooltipResultado'
 import { partesResultadoCurto, type PontoDoResultado } from './valores'
@@ -38,7 +38,8 @@ interface MesNoEixoProps {
   y?: number | string
   payload?: { value?: unknown }
   dados: PontoDoResultado[]
-  mesSelecionado: number
+  /** Mês atual (o do fio de prumo); `undefined` quando o ano exibido não é o atual. */
+  mesAtual?: number
   compacto: boolean
 }
 
@@ -46,12 +47,12 @@ interface MesNoEixoProps {
  * Rótulo do eixo: o mês e, abaixo, o resultado dele com sinal. No celular as colunas têm cerca de 25 px, então o
  * milhar quebra em duas linhas (`−1,2` e, embaixo, `mil`) para não encostar no rótulo do mês vizinho.
  */
-export function MesNoEixo({ x = 0, y = 0, payload, dados, mesSelecionado, compacto }: MesNoEixoProps) {
+export function MesNoEixo({ x = 0, y = 0, payload, dados, mesAtual, compacto }: MesNoEixoProps) {
   const ponto = dados.find((candidato) => candidato.rotulo === payload?.value)
   if (!ponto) {
     return null
   }
-  const selecionado = ponto.mes === mesSelecionado
+  const destacado = ponto.mes === mesAtual
   const { numero, sufixo } = partesResultadoCurto(ponto.resultado)
   const quebra = compacto && sufixo !== ''
   return (
@@ -60,9 +61,9 @@ export function MesNoEixo({ x = 0, y = 0, payload, dados, mesSelecionado, compac
         y={14}
         textAnchor="middle"
         fontSize={10}
-        fontWeight={selecionado ? 500 : 400}
-        fill={selecionado ? 'var(--cor-texto)' : 'var(--cor-mutado)'}
-        data-selecionado={selecionado ? 'true' : undefined}
+        fontWeight={destacado ? 500 : 400}
+        fill={destacado ? 'var(--cor-texto)' : 'var(--cor-mutado)'}
+        data-mes-atual={destacado ? 'true' : undefined}
       >
         {ponto.rotulo}
       </text>
@@ -101,7 +102,6 @@ function FioDePrumo({ x1, x2, y1, y2 }: FioProps) {
 interface Props {
   ano: number
   dados: PontoDoResultado[]
-  mesSelecionado: number
   compacto: boolean
   /** Instante de "agora"; injetável para teste. */
   hoje?: Date
@@ -111,11 +111,11 @@ interface Props {
  * Barras espelhadas por mês numa única pilha: receitas sobem da linha zero e despesas (negativas) descem, cada lado
  * empilhando a parte paga (cor cheia) e a prevista (padrão listrado).
  */
-export default function BarrasDoResultado({ ano, dados, mesSelecionado, compacto, hoje = new Date() }: Props) {
+export default function BarrasDoResultado({ ano, dados, compacto, hoje = new Date() }: Props) {
   const idBase = useId()
   const idReceitasPrevistas = `${idBase}-receitas-previstas`
   const idDespesasPrevistas = `${idBase}-despesas-previstas`
-  const agora = mesAtual(hoje)
+  const agora = mesDeHoje(hoje)
   const doMesAtual = agora.ano === ano ? dados.find((ponto) => ponto.mes === agora.mes) : undefined
 
   return (
@@ -137,7 +137,7 @@ export default function BarrasDoResultado({ ano, dados, mesSelecionado, compacto
               y={props.y}
               payload={props.payload}
               dados={dados}
-              mesSelecionado={mesSelecionado}
+              mesAtual={doMesAtual?.mes}
               compacto={compacto}
             />
           )}

@@ -16,10 +16,10 @@ const ponto = (resultado: number): PontoDoResultado => ({
   sentido: resultado > 0 ? 'sobrou' : resultado < 0 ? 'faltou' : 'zero',
 })
 
-function renderizar(resultado: number, compacto: boolean, mesSelecionado = 3) {
+function renderizar(resultado: number, compacto: boolean, mesAtual: number | undefined = 3) {
   const { container } = render(
     <svg>
-      <MesNoEixo x={10} y={0} payload={{ value: 'mar' }} dados={[ponto(resultado)]} mesSelecionado={mesSelecionado} compacto={compacto} />
+      <MesNoEixo x={10} y={0} payload={{ value: 'mar' }} dados={[ponto(resultado)]} mesAtual={mesAtual} compacto={compacto} />
     </svg>,
   )
   const textos = [...container.querySelectorAll('text')]
@@ -27,9 +27,12 @@ function renderizar(resultado: number, compacto: boolean, mesSelecionado = 3) {
 }
 
 describe('MesNoEixo', () => {
-  it('o mês selecionado usa peso 500, os demais 400', () => {
+  it('o mês atual usa peso 500 e cor do texto, os demais 400 e mutado', () => {
     expect(renderizar(80, false).rotuloMes).toHaveAttribute('font-weight', '500')
+    expect(renderizar(80, false).rotuloMes).toHaveAttribute('fill', 'var(--cor-texto)')
     expect(renderizar(80, false, 5).rotuloMes).toHaveAttribute('font-weight', '400')
+    expect(renderizar(80, false, 5).rotuloMes).toHaveAttribute('fill', 'var(--cor-mutado)')
+    expect(renderizar(80, false, 0).rotuloMes).toHaveAttribute('font-weight', '400')
   })
 
   it('no compacto, o milhar quebra em duas linhas: número e, abaixo, "mil"', () => {

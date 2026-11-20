@@ -23,7 +23,7 @@ const serieDeTeste = (): PontoSerie[] => {
 }
 
 async function renderizar(serie = serieDeTeste()) {
-  render(<GraficoResultado ano={2026} mes={10} serie={serie} />)
+  render(<GraficoResultado ano={2026} mes={10} serie={serie} hoje={new Date('2026-10-15T15:00:00Z')} />)
   const grafico = await screen.findByRole('group', { name: 'Gráfico do resultado de cada mês em 2026' })
   await waitFor(() => expect(grafico.querySelectorAll('.recharts-bar')).toHaveLength(4))
   return grafico
@@ -72,6 +72,27 @@ describe('GraficoResultado: fio de prumo', () => {
     const grafico = await comHoje(new Date('2027-10-15T15:00:00Z'))
 
     expect(grafico.querySelectorAll('[data-fio-prumo]')).toHaveLength(0)
+  })
+
+  it('o rótulo do mês atual fica em peso 500 e cor do texto, os demais em 400 e mutado, seja qual for o selecionado', async () => {
+    const grafico = await comHoje(HOJE, 11)
+
+    const out = within(grafico).getByText('Out')
+    const nov = within(grafico).getByText('Nov')
+    expect(out).toHaveAttribute('font-weight', '500')
+    expect(out).toHaveAttribute('fill', 'var(--cor-texto)')
+    expect(nov).toHaveAttribute('font-weight', '400')
+    expect(nov).toHaveAttribute('fill', 'var(--cor-mutado)')
+  })
+
+  it('ano exibido diferente do atual não destaca nenhum rótulo de mês', async () => {
+    const grafico = await comHoje(new Date('2027-10-15T15:00:00Z'), 10)
+
+    for (const rotulo of ['Out', 'Nov', 'Jan']) {
+      const texto = within(grafico).getByText(rotulo)
+      expect(texto).toHaveAttribute('font-weight', '400')
+      expect(texto).toHaveAttribute('fill', 'var(--cor-mutado)')
+    }
   })
 
   it('não há mais contorno em caixa no mês', async () => {
@@ -128,9 +149,9 @@ describe('GraficoResultado', () => {
 
     expect(within(grafico).getByText('+200')).toBeInTheDocument()
     expect(within(grafico).getAllByText('0')).toHaveLength(11)
-    expect(within(grafico).getByText('Out')).toHaveAttribute('data-selecionado', 'true')
-    expect(within(grafico).getByText('Nov')).not.toHaveAttribute('data-selecionado', 'true')
-    expect(within(grafico).getByText('Jan')).not.toHaveAttribute('data-selecionado', 'true')
+    expect(within(grafico).getByText('Out')).toHaveAttribute('data-mes-atual', 'true')
+    expect(within(grafico).getByText('Nov')).not.toHaveAttribute('data-mes-atual', 'true')
+    expect(within(grafico).getByText('Jan')).not.toHaveAttribute('data-mes-atual', 'true')
   })
 
   it('mes_com_deficit_leva_sinal_menos_sem_cor_de_alerta_e_sobra_idem', async () => {
