@@ -6,7 +6,25 @@ import {
   META_API_EM_ANDAMENTO,
   META_API_SEM_PRAZO,
 } from '../teste/fixturesMetas'
-import { conselheiroDaApi, metaDaApi, metaParaApi } from './adaptadorMetas'
+import { conselheiroDaApi, metaDaApi, metaParaApi, normalizarPrazo } from './adaptadorMetas'
+
+describe('normalizarPrazo', () => {
+  it('aceita AAAA-MM, AAAA-MM-DD e MM/AAAA e devolve AAAA-MM', () => {
+    expect(normalizarPrazo('2027-06')).toBe('2027-06')
+    expect(normalizarPrazo('2027-06-01')).toBe('2027-06')
+    expect(normalizarPrazo('06/2027')).toBe('2027-06')
+    expect(normalizarPrazo('6/2027')).toBe('2027-06')
+    expect(normalizarPrazo('  12/2028 ')).toBe('2028-12')
+  })
+
+  it('mês 00 ou 13, formato errado e vazio viram null', () => {
+    for (const texto of ['2027-00', '2027-13', '00/2027', '13/2027', 'junho', '2027/06', '06-2027', '06/27', '', '   ']) {
+      expect(normalizarPrazo(texto)).toBeNull()
+    }
+    expect(normalizarPrazo(null)).toBeNull()
+    expect(normalizarPrazo(undefined)).toBeNull()
+  })
+})
 
 describe('metaDaApi', () => {
   it('converte a meta da API no formato da UI', () => {
@@ -110,6 +128,12 @@ describe('metaParaApi', () => {
     expect(corpo.anoAlvo).toBe(2028)
   })
 
+  it('aceita prazo digitado como MM/AAAA', () => {
+    const corpo = metaParaApi({ titulo: 'Reserva', valorAlvo: '5000.00', prazo: '06/2027' })
+    expect(corpo.mesAlvo).toBe(6)
+    expect(corpo.anoAlvo).toBe(2027)
+  })
+
   it('campos opcionais ausentes viram null', () => {
     expect(metaParaApi({ titulo: 'Reserva', valorAlvo: '5000.00' })).toEqual({
       nome: 'Reserva',
@@ -157,6 +181,7 @@ describe('conselheiroDaApi', () => {
     expect(conselheiroDaApi(CONSELHEIRO_API_SEM_SUGESTOES)).toEqual({
       sobraPrevistaMes: '-350.00',
       totalSugeridoAporte: '0.00',
+      sugestaoTexto: CONSELHEIRO_API_SEM_SUGESTOES.sugestaoTexto,
       sugestoes: [],
     })
   })

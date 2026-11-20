@@ -7,6 +7,7 @@ import type { ResumoConselheiroApi } from '../../api/tipos'
 import {
   CONSELHEIRO_API,
   CONSELHEIRO_API_SEM_SUGESTOES,
+  CONSELHEIRO_API_SOBRA_NEGATIVA_COM_METAS,
   META_API_EM_ANDAMENTO,
 } from '../../teste/fixturesMetas'
 import { renderComApp } from '../../teste/render'
@@ -19,7 +20,7 @@ const conselheiroComSugestoes: ResumoConselheiroApi = {
   sobraMes: '800.00',
   sugestoes: [
     { metaId: 1, nome: 'IPVA 2027', valorSugerido: '300.00', mesesRestantes: 2 },
-    { metaId: 2, nome: 'Reserva de Emergência', valorSugerido: '150.00', mesesRestantes: null },
+    { metaId: 2, nome: 'Reserva de Emergência', valorSugerido: '150.00', mesesRestantes: 1 },
   ],
 }
 
@@ -51,7 +52,7 @@ describe('CardConselheiroMetas', () => {
     expect(screen.getByText('Sobra de R$ 800,00')).toBeInTheDocument()
   })
 
-  it('o motivo da sugestão vem dos meses restantes e sem prazo diz "Sem prazo fixo"', async () => {
+  it('o motivo da sugestão vem dos meses restantes', async () => {
     servidor.use(
       http.get('/api/metas/conselheiro', () => HttpResponse.json(conselheiroComSugestoes)),
     )
@@ -59,7 +60,53 @@ describe('CardConselheiroMetas', () => {
     renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
 
     expect(await screen.findByText('Faltam 2 meses')).toBeInTheDocument()
-    expect(screen.getByText('Sem prazo fixo')).toBeInTheDocument()
+    expect(screen.getByText('Falta 1 mês')).toBeInTheDocument()
+  })
+
+  it('sobra negativa com metas ativas esconde sugestões e total e mostra o sugestaoTexto da API', async () => {
+    servidor.use(
+      http.get('/api/metas/conselheiro', () =>
+        HttpResponse.json(CONSELHEIRO_API_SOBRA_NEGATIVA_COM_METAS),
+      ),
+    )
+
+    renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
+
+    expect(
+      await screen.findByText(CONSELHEIRO_API_SOBRA_NEGATIVA_COM_METAS.sugestaoTexto),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { level: 3 })).toBeNull()
+    expect(screen.queryByText(/Viagem para Lisboa/)).toBeNull()
+    expect(screen.queryByText(/Sugerimos destinar/)).toBeNull()
+    expect(screen.queryByText(/461,54/)).toBeNull()
+    expect(screen.queryByText(/Sobra de/)).toBeNull()
+  })
+
+  it('com sobra positiva mostra as sugestões e não mostra o aviso de excesso', async () => {
+    servidor.use(
+      http.get('/api/metas/conselheiro', () => HttpResponse.json(conselheiroComSugestoes)),
+    )
+
+    renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
+
+    expect(await screen.findByRole('heading', { name: 'IPVA 2027' })).toBeInTheDocument()
+    expect(screen.getByText(/Sugerimos destinar/)).toBeInTheDocument()
+    expect(screen.queryByText(/acima da sobra prevista do mês/)).toBeNull()
+  })
+
+  it('total sugerido acima da sobra mostra o total da API e a nota neutra em --cor-secundario', async () => {
+    servidor.use(
+      http.get('/api/metas/conselheiro', () =>
+        HttpResponse.json({ ...conselheiroComSugestoes, sobraMes: '300.00' }),
+      ),
+    )
+
+    renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
+
+    expect(await screen.findByText(/Sua sobra prevista é de R\$\s*300,00/)).toBeInTheDocument()
+    expect(screen.getByText(/R\$\s*450,00/)).toBeInTheDocument()
+    const nota = screen.getByText(/acima da sobra prevista do mês/)
+    expect(nota.className).toContain('text-[var(--cor-secundario)]')
   })
 
   it('o ícone da sugestão vem do preset da meta na lista; sem a meta na lista fica o ícone genérico', async () => {
@@ -126,7 +173,7 @@ describe('CardConselheiroMetas', () => {
 
     renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
 
-    const aviso = await screen.findByText(/sem sobra prevista para novos aportes/i)
+    const aviso = await screen.findByText(CONSELHEIRO_API_SEM_SUGESTOES.sugestaoTexto)
     expect(aviso).toBeInTheDocument()
     expect(aviso.parentElement?.className).toContain('bg-[var(--cor-aviso-fundo)]')
     expect(aviso.parentElement?.className).toContain('text-[var(--cor-aviso-texto)]')
@@ -154,7 +201,9 @@ describe('CardConselheiroMetas', () => {
 
     renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
 
-    expect(await screen.findByText(/sem sobra prevista para novos aportes/i)).toBeInTheDocument()
+    expect(
+      await screen.findByText(CONSELHEIRO_API_SEM_SUGESTOES.sugestaoTexto),
+    ).toBeInTheDocument()
     expect(screen.queryByRole('heading', { level: 3 })).toBeNull()
   })
 })

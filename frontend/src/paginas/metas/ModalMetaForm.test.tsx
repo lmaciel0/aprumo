@@ -148,6 +148,47 @@ describe('ModalMetaForm', () => {
     expect(aoSalvar).toHaveBeenLastCalledWith(expect.objectContaining({ prazo: '2028-03' }))
   })
 
+  describe('prazo digitado em navegador sem type="month" (campo de texto)', () => {
+    // jsdom sanitiza type="month"; trocar para text imita Firefox/Safari desktop, onde o campo é texto livre.
+    const prepararCampoTexto = async (digitado: string, aoSalvar = vi.fn()) => {
+      const user = userEvent.setup()
+      render(<ModalMetaForm aberto={true} meta={null} aoSalvar={aoSalvar} aoFechar={vi.fn()} />)
+      await user.type(screen.getByLabelText(/título/i), 'Notebook')
+      await user.type(screen.getByLabelText(/valor alvo/i), '4500')
+      const prazo = screen.getByLabelText(/prazo/i)
+      prazo.setAttribute('type', 'text')
+      fireEvent.change(prazo, { target: { value: digitado } })
+      await user.click(screen.getByRole('button', { name: /salvar meta/i }))
+      return aoSalvar
+    }
+
+    it('o campo tem placeholder AAAA-MM', () => {
+      render(<ModalMetaForm aberto={true} meta={null} aoSalvar={vi.fn()} aoFechar={vi.fn()} />)
+      expect(screen.getByLabelText(/prazo/i)).toHaveAttribute('placeholder', 'AAAA-MM')
+    })
+
+    it('MM/AAAA é normalizado para AAAA-MM no envio', async () => {
+      const aoSalvar = await prepararCampoTexto('06/2027')
+      expect(aoSalvar).toHaveBeenCalledWith(expect.objectContaining({ prazo: '2027-06' }))
+    })
+
+    it('AAAA-MM digitado continua valendo', async () => {
+      const aoSalvar = await prepararCampoTexto('2027-06')
+      expect(aoSalvar).toHaveBeenCalledWith(expect.objectContaining({ prazo: '2027-06' }))
+    })
+
+    it.each(['13/2027', '00/2027', '2027-13', 'junho de 2027'])(
+      'prazo inválido "%s" mostra erro com role=alert e não envia',
+      async (digitado) => {
+        const aoSalvar = await prepararCampoTexto(digitado)
+        expect(aoSalvar).not.toHaveBeenCalled()
+        const alerta = screen.getByRole('alert')
+        expect(alerta).toHaveTextContent(/prazo/i)
+        expect(alerta.className).toContain('text-[var(--cor-negativo-texto)]')
+      },
+    )
+  })
+
   it('na edição o campo de mês vem preenchido com o prazo da meta e vazio quando não há prazo', () => {
     const { unmount } = render(
       <ModalMetaForm aberto={true} meta={metaExemplo} aoSalvar={vi.fn()} aoFechar={vi.fn()} />,

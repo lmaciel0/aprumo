@@ -312,6 +312,8 @@ export interface SugestaoAporteMeta {
 export interface ResumoConselheiroResponse {
   sobraPrevistaMes: string
   totalSugeridoAporte: string
+  /** Texto do backend para o mês; é o que o card mostra quando não há sobra. */
+  sugestaoTexto: string
   sugestoes: SugestaoAporteMeta[]
 }
 

@@ -25,13 +25,29 @@ function prazoDaApi(mesAlvo: number | null, anoAlvo: number | null): string | nu
   return `${String(anoAlvo).padStart(4, '0')}-${String(mesAlvo).padStart(2, '0')}-01`
 }
 
-/** Lê `AAAA-MM` ou `AAAA-MM-DD`; vazio ou fora do formato vira mês e ano nulos. */
+/**
+ * Normaliza o prazo para `AAAA-MM`. Aceita `AAAA-MM`, `AAAA-MM-DD` e `MM/AAAA` (navegadores sem `type="month"`
+ * mostram texto livre). Vazio, formato errado ou mês fora de 1 a 12 viram `null`.
+ */
+export function normalizarPrazo(texto: string | null | undefined): string | null {
+  const valor = (texto ?? '').trim()
+  const iso = /^(\d{4})-(\d{2})(?:-\d{2})?$/.exec(valor)
+  const brasileiro = /^(\d{1,2})\/(\d{4})$/.exec(valor)
+  const ano = iso?.[1] ?? brasileiro?.[2]
+  const mes = Number(iso?.[2] ?? brasileiro?.[1])
+  if (!ano || mes < 1 || mes > 12) {
+    return null
+  }
+  return `${ano}-${String(mes).padStart(2, '0')}`
+}
+
+/** Lê o prazo (ver `normalizarPrazo`); vazio ou inválido vira mês e ano nulos. */
 function prazoParaApi(prazo: string | null | undefined): Pick<MetaRequestApi, 'mesAlvo' | 'anoAlvo'> {
-  const partes = /^(\d{4})-(\d{2})/.exec(prazo ?? '')
-  if (!partes) {
+  const normalizado = normalizarPrazo(prazo)
+  if (!normalizado) {
     return { mesAlvo: null, anoAlvo: null }
   }
-  return { mesAlvo: Number(partes[2]), anoAlvo: Number(partes[1]) }
+  return { mesAlvo: Number(normalizado.slice(5)), anoAlvo: Number(normalizado.slice(0, 4)) }
 }
 
 export function metaDaApi(m: MetaApi): MetaResponse {
@@ -63,6 +79,7 @@ export function metaParaApi(m: MetaRequest): MetaRequestApi {
     ...prazoParaApi(m.prazo),
     presetVisual: m.presetVisual ?? null,
     imagemUrl: m.fotoUrl ?? null,
+    // O PUT sempre manda corGradiente nulo e o backend grava; se a UI passar a usar o campo, mandar o valor salvo.
     corGradiente: null,
     ordem: m.ordem ?? null,
   }
@@ -98,6 +115,7 @@ export function conselheiroDaApi(r: ResumoConselheiroApi): ResumoConselheiroResp
   return {
     sobraPrevistaMes: r.sobraMes,
     totalSugeridoAporte: somarValores(r.sugestoes.map((s) => s.valorSugerido)),
+    sugestaoTexto: r.sugestaoTexto,
     sugestoes: r.sugestoes.map(sugestaoDaApi),
   }
 }

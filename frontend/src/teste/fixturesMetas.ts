@@ -70,6 +70,16 @@ export const CONSELHEIRO_API: ResumoConselheiroApi = {
   ],
 }
 
+/** Sobra negativa com meta ativa: o backend monta as sugestões mesmo assim (sem olhar a sobra do mês). */
+export const CONSELHEIRO_API_SOBRA_NEGATIVA_COM_METAS: ResumoConselheiroApi = {
+  sobraMes: '-350.00',
+  totalMetas: 1,
+  totalGuardado: '4000.00',
+  totalAlvo: '10000.00',
+  sugestaoTexto: 'Atenção: não há sobra prevista para 11/2026. O foco neste mês é manter as despesas no limite.',
+  sugestoes: [{ metaId: 1, nome: 'Viagem para Lisboa', valorSugerido: '461.54', mesesRestantes: 13 }],
+}
+
 export const CONSELHEIRO_API_SEM_SUGESTOES: ResumoConselheiroApi = {
   sobraMes: '-350.00',
   totalMetas: 0,
