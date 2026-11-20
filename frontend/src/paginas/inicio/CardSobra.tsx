@@ -24,27 +24,24 @@ function comparacao(sobra: string, anterior: TotaisMes | null, nomeMesAnterior: 
   return `${formatarMoeda(Math.abs(delta) / 100)} ${delta > 0 ? 'melhor' : 'pior'} que ${nomeMesAnterior}`
 }
 
-/** Destaque da tela: quanto sobrou no mês. Fica sempre em índigo; o valor negativo vai com o prefixo −. */
+/** Destaque da tela: quanto sobrou no mês, em card neutro com o número grande; o negativo vai com o prefixo −. */
 export function CardSobra({ sobra, sobraAno, receitas, anterior, nomeMesAnterior }: Props) {
   const texto = comparacao(sobra, anterior, nomeMesAnterior)
   const percentual = percentualDaReceita(sobra, receitas)
 
   return (
-    <section
-      aria-labelledby="titulo-sobra"
-      className="flex flex-col rounded-[var(--raio-card)] bg-[var(--cor-principal)] p-4 text-[var(--cor-sobre-principal)] md:col-span-11"
-    >
-      <h2 id="titulo-sobra" className="m-0 text-xs font-normal text-[var(--cor-sobre-principal-suave)]">
+    <section aria-labelledby="titulo-sobra" className="card flex flex-col md:col-span-11">
+      <h2 id="titulo-sobra" className="m-0 text-xs font-normal text-[var(--cor-secundario)]">
         Sobra do mês
       </h2>
-      <p className="valor m-0 mt-1.5 text-[26px] font-bold tracking-tight md:text-[30px]">{formatarComSinal(sobra)}</p>
+      <p className="valor m-0 mt-1.5 text-[28px] font-medium text-[var(--cor-texto)] md:text-[32px]">{formatarComSinal(sobra)}</p>
       {percentual !== null && (
-        <p className="valor m-0 mt-0.5 text-xs text-[var(--cor-sobre-principal-suave)]">{percentual} da receita</p>
+        <p className="valor m-0 mt-0.5 text-xs text-[var(--cor-mutado)]">{percentual} da receita</p>
       )}
       {texto !== null && (
-        <p className="m-0 mt-1.5 w-fit rounded-full bg-[var(--cor-sobre-principal)]/20 px-2 py-0.5 text-[11px] font-semibold">{texto}</p>
+        <p className="m-0 mt-1.5 w-fit rounded-md bg-[var(--cor-elevado)] px-2 py-0.5 text-xs text-[var(--cor-secundario)]">{texto}</p>
       )}
-      <p className="valor m-0 mt-auto pt-5 text-xs text-[var(--cor-sobre-principal-suave)]">No ano: {formatarComSinal(sobraAno)}</p>
+      <p className="valor m-0 mt-auto pt-5 text-xs text-[var(--cor-mutado)]">No ano: {formatarComSinal(sobraAno)}</p>
     </section>
   )
 }
