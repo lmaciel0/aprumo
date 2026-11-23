@@ -38,6 +38,12 @@ describe('escolherCartaoInicio', () => {
     expect(escolherCartaoInicio(cartoes, null)).toBe(cartoes[0])
   })
 
+  it('lista com um cartão devolve esse cartão', () => {
+    const cartoes = comFaturas('0.00')
+    expect(escolherCartaoInicio(cartoes, null)).toBe(cartoes[0])
+    expect(escolherCartaoInicio(cartoes, 9999)).toBe(cartoes[0])
+  })
+
   it('lista vazia devolve null', () => {
     expect(escolherCartaoInicio([], null)).toBeNull()
     expect(escolherCartaoInicio([], 1)).toBeNull()

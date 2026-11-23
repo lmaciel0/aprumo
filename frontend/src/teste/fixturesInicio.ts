@@ -95,7 +95,7 @@ export const RESUMO_API: ResumoResponse = {
   serieAno: Array.from({ length: 12 }, (_, i) => ({
     mes: i + 1,
     receitas: i < 11 ? '5000.00' : '0.00',
-    receitasPrevistas: i < 11 ? '0.00' : '0.00',
+    receitasPrevistas: '0.00',
     despesas: i < 11 ? '3000.00' : '0.00',
     despesasPrevistas: i === 10 ? '1300.00' : '0.00',
   })),

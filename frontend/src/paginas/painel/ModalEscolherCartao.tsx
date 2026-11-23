@@ -20,7 +20,7 @@ interface Props {
  */
 export function ModalEscolherCartao({ aberto, aoFechar, cartoes }: Props) {
   const { preferencias, setCartaoInicioId } = usePreferencias()
-  const { painel, prenderFoco } = useDialogoModal(aberto, aoFechar)
+  const { painel, prenderFoco } = useDialogoModal<HTMLDialogElement>(aberto, aoFechar)
   const atual = escolherCartaoInicio(cartoes, preferencias.cartaoInicioId)
 
   // O hook leva o foco ao primeiro item; aqui ele vai para a opção marcada, que é onde o Tab cairia num rádio.
@@ -37,13 +37,13 @@ export function ModalEscolherCartao({ aberto, aoFechar, cartoes }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
       <FundoDoDialogo testId="fundo-escolher-cartao" aoClicar={aoFechar} />
-      <div
+      <dialog
+        open
         ref={painel}
-        role="dialog"
         aria-modal="true"
         aria-labelledby="titulo-escolher-cartao"
         onKeyDown={prenderFoco}
-        className="superficie relative z-10 flex max-h-[85vh] w-full max-w-md flex-col rounded-t-3xl border border-[var(--cor-linha)] bg-[var(--cor-card)] shadow-2xl sm:rounded-3xl"
+        className="superficie relative z-10 m-0 flex max-h-[85vh] w-full max-w-md flex-col rounded-t-3xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-0 text-[var(--cor-texto)] shadow-2xl backdrop:bg-transparent sm:rounded-3xl"
       >
         <div className="flex items-center justify-between gap-3 border-b border-[var(--cor-linha)] px-5 py-3">
           <div className="min-w-0">
@@ -72,26 +72,24 @@ export function ModalEscolherCartao({ aberto, aoFechar, cartoes }: Props) {
             return (
               <label
                 key={cartao.itemId}
-                className={`flex min-h-11 cursor-pointer items-center gap-3 rounded-2xl border p-3 transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--cor-principal)] ${
+                htmlFor={`cartao-inicio-${cartao.itemId}`}
+                className={`grid min-h-11 cursor-pointer grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 rounded-2xl border p-3 transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--cor-principal)] ${
                   marcado
                     ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)]/10'
                     : 'border-[var(--cor-linha)] hover:border-[var(--cor-principal)]/60'
                 }`}
               >
                 <input
+                  id={`cartao-inicio-${cartao.itemId}`}
                   type="radio"
                   name="cartao-inicio"
                   value={cartao.itemId}
                   checked={marcado}
                   onChange={() => setCartaoInicioId(cartao.itemId)}
-                  className="size-5 shrink-0 cursor-pointer accent-[var(--cor-principal)]"
+                  className="row-span-2 size-5 shrink-0 cursor-pointer accent-[var(--cor-principal)]"
                 />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold text-[var(--cor-texto)]">{cartao.nome}</span>
-                  <span className="valor block text-xs text-[var(--cor-mutado)]">
-                    Fatura {formatarMoeda(cartao.fatura)}
-                  </span>
-                </span>
+                <span className="truncate text-sm font-semibold text-[var(--cor-texto)]">{cartao.nome}</span>
+                <span className="valor text-xs text-[var(--cor-mutado)]">Fatura {formatarMoeda(cartao.fatura)}</span>
               </label>
             )
           })}
@@ -106,7 +104,7 @@ export function ModalEscolherCartao({ aberto, aoFechar, cartoes }: Props) {
             Pronto
           </button>
         </div>
-      </div>
+      </dialog>
     </div>
   )
 }
