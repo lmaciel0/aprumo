@@ -21,6 +21,7 @@ export interface PreferenciasContextValor {
   setBarraFixa: (fixa: boolean) => void
   setDockRecolhida: (recolhida: boolean | ((antiga: boolean) => boolean)) => void
   setAtalhosMobile: (atalhos: IdAtalhoMobile[]) => void
+  setCartaoInicioId: (id: number | null) => void
   restaurarPadroes: () => void
 }
 
@@ -90,6 +91,10 @@ export function PreferenciasProvider({ children }: { children: ReactNode }) {
     setPreferencias((p) => ({ ...p, atalhosMobile }))
   }, [])
 
+  const setCartaoInicioId = useCallback((cartaoInicioId: number | null) => {
+    setPreferencias((p) => ({ ...p, cartaoInicioId }))
+  }, [])
+
   const restaurarPadroes = useCallback(() => {
     setPreferencias(PREFERENCIAS_PADRAO)
   }, [])
@@ -103,9 +108,10 @@ export function PreferenciasProvider({ children }: { children: ReactNode }) {
       setBarraFixa,
       setDockRecolhida,
       setAtalhosMobile,
+      setCartaoInicioId,
       restaurarPadroes,
     }),
-    [preferencias, setModoTema, setPresetCor, setLayoutLargura, setBarraFixa, setDockRecolhida, setAtalhosMobile, restaurarPadroes]
+    [preferencias, setModoTema, setPresetCor, setLayoutLargura, setBarraFixa, setDockRecolhida, setAtalhosMobile, setCartaoInicioId, restaurarPadroes]
   )
 
   return <PreferenciasContext.Provider value={valor}>{children}</PreferenciasContext.Provider>

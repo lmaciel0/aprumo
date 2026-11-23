@@ -10,7 +10,7 @@ function renderizar() {
   return renderComApp(
     <PreferenciasProvider>
       <Routes>
-        <Route path="/" element={<AtalhosRapidosMobile />} />
+        <Route path="/" element={<AtalhosRapidosMobile ano={2026} mes={10} />} />
         <Route path="/lancamentos/novo" element={<h1>Novo Lancamento</h1>} />
         <Route path="/cartoes" element={<h1>Cartoes</h1>} />
         <Route path="/tarefas" element={<h1>Tarefas</h1>} />
@@ -18,7 +18,7 @@ function renderizar() {
         <Route path="/orcamento" element={<h1>Orcamento</h1>} />
       </Routes>
     </PreferenciasProvider>,
-    '/?ano=2026&mes=10',
+    '/',
   )
 }
 
@@ -44,6 +44,14 @@ describe('AtalhosRapidosMobile', () => {
       expect.stringContaining('/lancamentos/novo?tipo=RECEITA'),
     )
     expect(screen.getByRole('link', { name: '+ Nota' })).toHaveAttribute('href', '/notas')
+  })
+
+  it('nenhum rótulo é cortado com reticências (cabe em 320 px ou quebra em duas linhas)', () => {
+    renderizar()
+
+    for (const link of within(screen.getByRole('region', { name: 'Acesso rápido' })).getAllByRole('link')) {
+      expect(link.querySelector('.truncate')).toBeNull()
+    }
   })
 
   it('permite abrir o modal de personalização e alterar os atalhos exibidos', async () => {

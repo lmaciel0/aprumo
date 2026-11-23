@@ -107,6 +107,7 @@ export function FinancasDoMes({ agora }: { agora: Date }) {
           />
           <ProximasContas
             contas={consulta.data.proximas}
+            limite={5}
             className="md:col-span-14 md:col-start-22 md:row-span-2 md:row-start-1"
           />
         </div>
