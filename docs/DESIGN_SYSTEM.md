@@ -95,7 +95,7 @@ Resumo de `docs/superpowers/plans/2026-11-12-painel-espacamento-primeira-dobra.m
 
 - Entre blocos da tela, o espaço é um só (`gap-5`, 20 px). Um wrapper que pode renderizar vazio conta o `gap` duas vezes: o widget de meta devolve `null` sem metas, então ele recebe `className` e `style` e anima a própria `<section>`, sem `div` embrulhador.
 - Não aninhar card dentro de card. O bloco "Finanças do mês" é uma `<section>` sem `.card`; os quatro cards de dentro são os cards. Isso devolve largura útil (296 px em vez de 262 px de 360). A mensagem de erro do bloco é a exceção: leva `.card` para não ficar solta sobre o fundo.
-- A "Sobra do mês" deve caber inteira acima da dock inferior (que começa perto de y = 555 em 640 de altura). Resultado medido em produção: espaço de 20 px entre os blocos e sobra de y 383 a 530.
+- A "Sobra do mês" deve caber inteira acima da dock inferior (que começa perto de y = 555 em 640 de altura). Resultado medido em produção: espaço de 20 px entre os blocos. Com os atalhos e o bloco do cartão na Início (2026-11-23), a sobra termina em y = 368.
 - O cabeçalho da frase do dia cabe em uma linha em 360 px: o subtítulo "Sabedoria diária" some abaixo de `sm` (`hidden sm:inline`). O `flex-wrap` do cabeçalho permanece, porque em 320 px o selo e os três botões somam mais que a área útil.
 - A ordem dos blocos da tela inicial foi definida pelo dono em 2026-11-23: saudação e data, atalhos (só abaixo de `md`), Finanças do mês, Cartão, Onde mais gastou, meta e reflexão do dia. Não muda sem pedido do dono.
 - A dock flutuante cobre o fundo da tela: o conteúdo principal precisa ficar acima dela. Elementos fixos embaixo (como o aviso de saída em `frontend/src/App.tsx`) sobem `6.5rem + env(safe-area-inset-bottom)` no celular.
