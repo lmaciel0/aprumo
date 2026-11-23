@@ -80,18 +80,18 @@ export function EditorCategoriaNota({ existente, aoFechar }: Props) {
         </button>
         {existente !== undefined &&
           (confirmando ? (
-            <div role="group" aria-label="Confirmar exclusão" className="flex flex-col gap-3 rounded-[var(--raio-card)] bg-[var(--cor-card)] p-3">
+            <div role="group" aria-label="Confirmar exclusão" className="flex flex-col gap-3 rounded-2xl bg-[var(--cor-card)] p-3">
               <p className="m-0 text-base font-medium">{`Excluir a categoria ${existente.nome}? ${textoNotas(existente.totalNotas)}`}</p>
               <div className="flex gap-2">
                 <button
                   type="button"
                   disabled={ocupado}
                   onClick={() => excluir.mutate(existente.id, { onSuccess: aoFechar, onError: aoErro })}
-                  className="min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-negativo)]"
+                  className="min-h-11 cursor-pointer rounded-full bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-negativo)]"
                 >
                   {excluir.isPending ? 'Excluindo…' : 'Sim, excluir'}
                 </button>
-                <button type="button" onClick={() => setConfirmando(false)} className={`min-h-11 cursor-pointer rounded-[10px] px-4 text-base font-medium ${classeFoco}`}>
+                <button type="button" onClick={() => setConfirmando(false)} className={`min-h-11 cursor-pointer rounded-full px-4 text-base font-medium ${classeFoco}`}>
                   Cancelar
                 </button>
               </div>
@@ -100,7 +100,7 @@ export function EditorCategoriaNota({ existente, aoFechar }: Props) {
             <button
               type="button"
               onClick={() => setConfirmando(true)}
-              className="min-h-11 cursor-pointer rounded-[10px] px-4 text-base font-semibold text-[var(--cor-negativo-texto)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-negativo)]"
+              className="min-h-11 cursor-pointer rounded-full px-4 text-base font-semibold text-[var(--cor-negativo-texto)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-negativo)]"
             >
               Excluir categoria
             </button>

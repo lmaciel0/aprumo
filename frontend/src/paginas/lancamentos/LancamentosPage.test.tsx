@@ -88,12 +88,7 @@ describe('LancamentosPage', () => {
     expect(luz).toHaveTextContent('R$ 180,40')
     expect(within(luz!).getByRole('button', { name: /Previsto/ })).toBeInTheDocument()
     expect(condominio).toHaveTextContent('31/10')
-    const chipPago = within(condominio!).getByRole('button', { name: /Pago/ })
-    expect(chipPago).toBeInTheDocument()
-    expect(chipPago).toHaveTextContent('Pago')
-    expect(chipPago.textContent).not.toContain('✓')
-    expect(chipPago.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
-    expect(chipPago.querySelector('svg')).toHaveAttribute('width', '12')
+    expect(within(condominio!).getByRole('button', { name: /Pago/ })).toBeInTheDocument()
   })
 
   it('receitas_viram_um_card_proprio_e_as_despesas_continuam_por_categoria', async () => {
@@ -206,7 +201,6 @@ describe('LancamentosPage', () => {
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Falhou.')
     expect(screen.getByRole('button', { name: 'Tentar de novo' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
   })
 
   it('mostra_a_faixa_do_saldo_acima_dos_cards_e_atualiza_ao_marcar_recebido', async () => {

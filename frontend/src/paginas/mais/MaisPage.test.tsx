@@ -136,15 +136,6 @@ describe('MaisPage', () => {
     }
   })
 
-  it('o cartão de atalhos usa o raio do card e o avatar continua círculo', () => {
-    renderizar()
-    const link = screen.getByRole('link', { name: /Cartões/ })
-    const cartao = link.closest('div.overflow-hidden')
-    expect(cartao).toHaveClass('rounded-[var(--raio-card)]')
-    expect(cartao).not.toHaveClass('rounded-2xl')
-    expect(screen.getByText('A')).toHaveClass('rounded-full')
-  })
-
   it('com nome ausente mostra "Minha conta" e a inicial M', () => {
     renderizar('/mais', { nomeUsuario: undefined })
     expect(screen.getByRole('heading', { name: 'Mais' })).toBeInTheDocument()
@@ -170,13 +161,5 @@ describe('MaisPage', () => {
       ),
     ).toThrow('useContextoShell precisa estar dentro do AppShell.')
     erro.mockRestore()
-  })
-
-  it('o_avatar_usa_o_degrau_elevado_e_nao_o_acento', () => {
-    renderizar()
-
-    const avatar = screen.getByText('A')
-    expect(avatar).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
-    expect(avatar.className).not.toContain('bg-[var(--cor-principal)]')
   })
 })

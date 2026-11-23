@@ -63,7 +63,7 @@ export function HeaderPrincipal({
         type="button"
         aria-label="Buscar páginas e atalhos"
         onClick={onAbrirBusca}
-        className={`superficie group flex h-11 min-w-0 flex-1 cursor-pointer items-center justify-between gap-2.5 rounded-[10px] px-4 text-sm text-[var(--cor-mutado)] transition-colors duration-200 hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)] ${foco}`}
+        className={`superficie group flex h-11 min-w-0 flex-1 cursor-pointer items-center justify-between gap-2.5 rounded-full px-4 text-sm text-[var(--cor-mutado)] transition-colors duration-200 hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)] ${foco}`}
       >
         <span className="flex min-w-0 items-center gap-2.5">
           <svg
@@ -87,19 +87,19 @@ export function HeaderPrincipal({
         </span>
         <kbd
           aria-hidden="true"
-          className="hidden sm:inline-flex items-center gap-1 rounded-md border border-[var(--cor-linha)] bg-[var(--cor-card)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--cor-mutado)] shadow-2xs transition-colors group-hover:border-[var(--cor-principal-clara)]/60 group-hover:text-[var(--cor-principal)]"
+          className="hidden sm:inline-flex items-center gap-1 rounded-md border border-[var(--cor-linha)] bg-[var(--cor-card)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-[var(--cor-mutado)] shadow-2xs transition-colors group-hover:border-[var(--cor-principal-clara)]/60 group-hover:text-[var(--cor-principal)]"
         >
           Ctrl K
         </kbd>
       </button>
 
       {/* Pílula à direita: Notificações + Perfil do Usuário. Sem overflow para o menu não ser cortado. */}
-      <div className="superficie flex h-11 shrink-0 items-center gap-1 rounded-[10px] px-1.5">
+      <div className="superficie flex h-11 shrink-0 items-center rounded-full">
         {/* Notificações */}
         <button
           type="button"
           aria-label="Notificações"
-          className={`relative grid min-h-11 min-w-11 cursor-pointer place-items-center rounded-[10px] text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-fundo)] active:scale-95 ${foco}`}
+          className={`relative grid min-h-11 min-w-11 cursor-pointer place-items-center rounded-full text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-fundo)] active:scale-95 ${foco}`}
         >
           <svg
             width="20"
@@ -131,7 +131,7 @@ export function HeaderPrincipal({
             aria-expanded={menuAberto}
             aria-haspopup="menu"
             onClick={() => setMenuAberto((prev) => !prev)}
-            className={`group relative grid min-h-11 min-w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-transform duration-150 active:scale-[0.98] motion-reduce:transition-none ${foco}`}
+            className={`group relative grid min-h-11 min-w-11 shrink-0 cursor-pointer place-items-center rounded-full transition-all duration-200 hover:scale-105 active:scale-95 ${foco}`}
           >
             {/* Informações acessíveis para leitores de tela e testes */}
             {nomeUsuario && <span className="sr-only">{nomeUsuario}</span>}
@@ -139,7 +139,7 @@ export function HeaderPrincipal({
 
             <span
               aria-hidden="true"
-              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-elevado)] text-sm font-medium text-[var(--cor-texto)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-shadow duration-150 motion-reduce:transition-none group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
+              className="grid size-9.5 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-bold text-[var(--cor-sobre-principal)] shadow-xs ring-2 ring-[var(--cor-linha)] transition-all duration-200 group-hover:ring-[var(--cor-principal-clara)] group-hover:shadow-sm"
             >
               {inicial}
             </span>
@@ -150,13 +150,13 @@ export function HeaderPrincipal({
             <div
               role="menu"
               aria-label="Opções da conta"
-              className="item-entra absolute top-full right-0 mt-2.5 w-64 rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-2 shadow-xl"
+              className="item-entra absolute top-full right-0 mt-2.5 w-64 rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-2 shadow-xl backdrop-blur-md"
             >
               {/* Cabeçalho do Perfil */}
               <div className="flex items-center gap-3 border-b border-[var(--cor-linha)] p-2.5 pb-3 mb-1">
                 <span
                   aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-base font-medium text-[var(--cor-texto)] ring-2 ring-[var(--cor-linha)]"
+                  className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-base font-bold text-[var(--cor-sobre-principal)] ring-2 ring-[var(--cor-linha)]"
                 >
                   {inicial}
                 </span>

@@ -26,7 +26,7 @@ export function Sidebar({ nomeUsuario, aoSair, aoNavegar }: Props) {
         {GRUPOS_MENU.map((grupo) => (
           <div key={grupo.titulo ?? 'principal'} className="flex flex-col gap-0.5">
             {grupo.titulo && (
-              <p className="m-0 px-3 pt-1 pb-1 text-xs font-medium text-[var(--cor-mutado)]">
+              <p className="m-0 px-3 pt-1 pb-1 text-xs font-semibold tracking-wide text-[var(--cor-mutado)] uppercase">
                 {grupo.titulo}
               </p>
             )}
@@ -39,7 +39,7 @@ export function Sidebar({ nomeUsuario, aoSair, aoNavegar }: Props) {
                 className={({ isActive }) =>
                   `${linhaBase} ` +
                   (isActive
-                    ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
+                    ? 'bg-[var(--cor-principal)] font-semibold text-[var(--cor-sobre-principal)]'
                     : 'text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]')
                 }
               >
@@ -55,7 +55,7 @@ export function Sidebar({ nomeUsuario, aoSair, aoNavegar }: Props) {
         <div className="flex items-center gap-3 px-3 py-1">
           <span
             aria-hidden="true"
-            className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-sm font-medium text-[var(--cor-texto)]"
+            className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-sm font-bold text-[var(--cor-sobre-principal)]"
           >
             {inicial}
           </span>

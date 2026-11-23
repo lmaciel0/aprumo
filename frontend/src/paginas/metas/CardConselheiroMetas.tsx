@@ -3,7 +3,6 @@ import { ArrowRight, Sparkles, Target } from 'lucide-react'
 import { Link } from 'react-router'
 import { endpoints } from '../../api/endpoints'
 import { formatarMoeda } from '../../formato/moeda'
-import { foco } from '../../layout/classesFoco'
 import { getIconePreset } from './iconesMeta'
 import { obterPresetVisual } from './presetsVisuais'
 
@@ -44,7 +43,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
           <p className="m-0 text-xs text-[var(--cor-mutado)]">
             Sua sobra prevista é de {formatarMoeda(sobraPrevistaMes)}.
             Sugerimos destinar{' '}
-            <strong className="font-medium text-[var(--cor-texto)]">
+            <strong className="font-semibold text-[var(--cor-texto)]">
               {formatarMoeda(totalSugeridoAporte)}
             </strong>{' '}
             para suas caixinhas:
@@ -62,23 +61,28 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
               return (
                 <div
                   key={sugestao.metaId}
-                  className="flex items-center justify-between rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] p-3"
+                  className="flex items-center justify-between rounded-xl border border-[var(--cor-linha)]/80 bg-[var(--cor-fundo)] p-3"
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <span className="flex size-7 shrink-0 items-center justify-center text-[var(--cor-secundario)]">
+                    <span
+                      className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[var(--cor-sobre-principal)]"
+                      style={{
+                        background: `linear-gradient(135deg, ${sugestao.corGradienteInicio || preset.corGradienteInicio}, ${sugestao.corGradienteFim || preset.corGradienteFim})`,
+                      }}
+                    >
                       {getIconePreset(meta?.icone || sugestao.icone || preset.icone)}
                     </span>
-                  <div className="min-w-0">
-                      <h3 className="m-0 truncate text-xs font-medium text-[var(--cor-texto)]">
+                    <div className="min-w-0">
+                      <h3 className="m-0 truncate text-xs font-bold text-[var(--cor-texto)]">
                         {sugestao.titulo}
                       </h3>
-                      <p className="m-0 truncate text-[11px] text-[var(--cor-mutado)]">
+                      <p className="m-0 truncate text-[10px] text-[var(--cor-mutado)]">
                         {sugestao.motivo}
                       </p>
                     </div>
                   </div>
 
-                  <span className="shrink-0 pl-2 valor text-xs font-medium text-[var(--cor-positivo-texto)]">
+                  <span className="shrink-0 pl-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                     + {formatarMoeda(sugestao.valorSugerido)}
                   </span>
                 </div>
@@ -98,7 +102,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
           </p>
           <Link
             to="/metas"
-            className={`mt-1 inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-3.5 text-xs font-medium text-[var(--cor-texto)] no-underline transition-colors hover:border-[var(--cor-secundario)] ${foco}`}
+            className="mt-1 inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[var(--cor-principal)] px-3.5 py-1.5 text-xs font-bold text-[var(--cor-sobre-principal)] shadow-xs hover:opacity-90"
           >
             <Target className="size-3.5" />
             <span>Criar uma meta</span>
@@ -108,7 +112,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
     }
 
     return (
-      <div className="rounded-[10px] bg-[var(--cor-aviso-fundo)] p-3 text-xs text-[var(--cor-aviso-texto)]">
+      <div className="py-1 text-xs text-[var(--cor-mutado)]">
         <p className="m-0">
           {sugestaoTexto ||
             'Sem sobra prevista para novos aportes este mês. Priorize manter o orçamento e as despesas em dia antes de realizar novos depósitos.'}
@@ -120,17 +124,19 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
   return (
     <section
       aria-labelledby="titulo-conselheiro-metas"
-      className={`card flex flex-col justify-between ${className}`}
+      className={`relative flex flex-col justify-between overflow-hidden rounded-[var(--raio-card)] border border-[var(--cor-linha)] bg-[var(--cor-card)] p-4 sm:p-5 shadow-xs transition-all hover:shadow-sm ${className}`}
     >
       <div>
         {/* Cabeçalho do Card */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--cor-linha)] pb-3">
+        <div className="flex items-center justify-between gap-2 border-b border-[var(--cor-linha)]/60 pb-3">
           <div className="flex items-center gap-2.5">
-            <Sparkles aria-hidden="true" className="size-4 shrink-0 text-[var(--cor-secundario)]" />
+            <div className="flex size-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              <Sparkles className="size-4" />
+            </div>
             <div>
               <h2
                 id="titulo-conselheiro-metas"
-                className="m-0 text-sm font-medium text-[var(--cor-texto)]"
+                className="m-0 text-sm font-bold text-[var(--cor-texto)]"
               >
                 Conselheiro de Metas
               </h2>
@@ -144,7 +150,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
 
           <Link
             to="/metas"
-            className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-[10px] px-1 text-xs font-medium text-[var(--cor-principal)] hover:underline ${foco}`}
+            className="inline-flex cursor-pointer items-center gap-1 text-xs font-semibold text-[var(--cor-principal)] hover:underline"
           >
             <span>Ver metas</span>
             <ArrowRight className="size-3.5" />

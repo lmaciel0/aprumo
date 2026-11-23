@@ -7,9 +7,10 @@ export function paraCentavos(valor: string): number {
   return centavos === 0 ? 0 : centavos // evita -0, que o Intl formataria como "-R$ 0,00"
 }
 
-/** `R$ 1.234,56`; negativo sai `−R$ 1.234,56`; zero nunca leva sinal. Um só formato: delega a `formatarMoeda`. */
+/** `R$ 1.234,56`; negativo sai `− R$ 1.234,56` (sinal − separado, como no mockup); zero nunca leva sinal. */
 export function formatarComSinal(valor: string): string {
-  return formatarMoeda(valor)
+  const centavos = paraCentavos(valor)
+  return centavos < 0 ? `− ${formatarMoeda(-centavos / 100)}` : formatarMoeda(centavos / 100)
 }
 
 export interface Variacao {
@@ -106,27 +107,18 @@ export function resultadoAcumulado(serie: PontoSerie[], ateMes: number): string 
   return semMenosZero(centavos / 100).toFixed(2)
 }
 
-/**
- * Resultado em reais para o rótulo do gráfico: `+80`, `−1,2 mil` (vírgula decimal, nunca `k`); zero sai `0`, sem sinal.
- * `_compacto` fica na assinatura por compatibilidade com o gráfico: o formato é o mesmo nos dois tamanhos.
- */
-export function resultadoCurto(resultado: number, _compacto: boolean): string {
-  const { numero, sufixo } = partesResultadoCurto(resultado)
-  return sufixo === '' ? numero : `${numero} ${sufixo}`
-}
-
-/** O mesmo rótulo de `resultadoCurto` em duas partes (`−1,2` e `mil`), para o eixo quebrar a linha no celular. */
-export function partesResultadoCurto(resultado: number): { numero: string; sufixo: string } {
+/** Resultado em reais para o rótulo do gráfico: `+80`, `−1,2 mil` (`−1,2k` se `compacto`); zero sai `0`, sem sinal. */
+export function resultadoCurto(resultado: number, compacto: boolean): string {
   const reais = Math.round(Math.abs(resultado))
   if (reais === 0) {
-    return { numero: '0', sufixo: '' }
+    return '0'
   }
   const sinal = resultado < 0 ? '−' : '+'
   if (reais < 1000) {
-    return { numero: `${sinal}${reais}`, sufixo: '' }
+    return `${sinal}${reais}`
   }
   const milhares = (Math.round(reais / 100) / 10).toLocaleString('pt-BR', { maximumFractionDigits: 1 })
-  return { numero: `${sinal}${milhares}`, sufixo: 'mil' }
+  return `${sinal}${milhares}${compacto ? 'k' : ' mil'}`
 }
 
 /** Sobra como percentual inteiro da receita (`−36%`, `+16%`); `null` sem receita; zero sai `0%`, sem sinal. */

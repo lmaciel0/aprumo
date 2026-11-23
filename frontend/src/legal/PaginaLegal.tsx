@@ -13,16 +13,16 @@ export function PaginaLegal({ titulo, children }: { titulo: string; children: Re
       <main className="mx-auto flex max-w-2xl flex-col gap-6">
         <Link
           to="/"
-          className="inline-flex min-h-11 w-fit items-center rounded-[10px] px-1 text-sm font-semibold text-[var(--cor-principal)] underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="inline-flex min-h-11 w-fit items-center rounded-full px-1 text-sm font-semibold text-[var(--cor-principal)] underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           Voltar ao Aprumo
         </Link>
         <article className="card flex flex-col gap-6 p-5 sm:p-8">
           <header className="flex flex-col gap-1">
-            <h1 className="m-0 text-2xl font-medium">{titulo}</h1>
+            <h1 className="m-0 text-2xl font-bold">{titulo}</h1>
             <p className="m-0 text-sm text-[var(--cor-mutado)]">Vigência: {VIGENCIA}</p>
           </header>
-          <div className="flex flex-col gap-6 text-base leading-relaxed [&_h2]:m-0 [&_h2]:text-lg [&_h2]:font-medium [&_li]:mt-1 [&_p]:m-0 [&_strong]:font-semibold [&_section]:flex [&_section]:flex-col [&_section]:gap-2 [&_ul]:m-0 [&_ul]:list-disc [&_ul]:pl-6">
+          <div className="flex flex-col gap-6 text-base leading-relaxed [&_h2]:m-0 [&_h2]:text-lg [&_h2]:font-bold [&_li]:mt-1 [&_p]:m-0 [&_section]:flex [&_section]:flex-col [&_section]:gap-2 [&_ul]:m-0 [&_ul]:list-disc [&_ul]:pl-6">
             {children}
           </div>
         </article>

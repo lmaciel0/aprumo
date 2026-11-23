@@ -10,5 +10,5 @@
   if (!tema) tema = 'claro'
   document.documentElement.dataset.tema = tema
   var barra = document.querySelector('meta[name="theme-color"]')
-  if (barra) barra.setAttribute('content', tema === 'escuro' ? '#141415' : '#14213D')
+  if (barra) barra.setAttribute('content', tema === 'escuro' ? '#0f0b2b' : '#27187E')
 })()

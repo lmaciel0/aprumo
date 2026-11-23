@@ -100,7 +100,7 @@ describe('CartoesPage', () => {
 
     // 0.7300 vira 73%, na cor do amarelo.
     expect(within(azul).getByText('73%')).toBeInTheDocument()
-    expect(preenchimento(azul)).toHaveStyle({ backgroundColor: 'var(--cor-aviso-texto)', width: '73%' })
+    expect(preenchimento(azul)).toHaveStyle({ backgroundColor: '#E0A100', width: '73%' })
     expect(within(azul).getByRole('meter')).toHaveAttribute('aria-valuenow', '73')
     expect(azul).toHaveTextContent('vence dia 05')
     expect(azul).toHaveTextContent('R$ 730,00')
@@ -108,15 +108,15 @@ describe('CartoesPage', () => {
 
     const verde = screen.getByRole('region', { name: 'Cartão Verde' })
     expect(within(verde).getByText('20%')).toBeInTheDocument()
-    // Texto do chip usa o tom escuro (contraste AA); a barra usa o token de preenchimento.
+    // Texto do chip usa o tom escuro (contraste AA); a barra mantém o verde da paleta.
     expect(within(verde).getByText('20%')).toHaveClass('text-[var(--cor-positivo-texto)]')
-    expect(preenchimento(verde)).toHaveStyle({ backgroundColor: 'var(--cor-positivo)', width: '20%' })
+    expect(preenchimento(verde)).toHaveStyle({ backgroundColor: '#2E9E5B', width: '20%' })
     expect(verde).toHaveTextContent('vence dia 25')
 
     const vermelho = screen.getByRole('region', { name: 'Cartão Vermelho' })
     expect(within(vermelho).getByText('99%')).toBeInTheDocument()
     expect(within(vermelho).getByText('99%')).toHaveClass('text-[var(--cor-negativo-texto)]')
-    expect(preenchimento(vermelho)).toHaveStyle({ backgroundColor: 'var(--cor-negativo)', width: '99%' })
+    expect(preenchimento(vermelho)).toHaveStyle({ backgroundColor: '#D64545', width: '99%' })
 
     // Resumo do mês.
     expect(within(screen.getByRole('region', { name: 'Faturas do mês' })).getByText('R$ 1.920,00')).toBeInTheDocument()
@@ -126,15 +126,6 @@ describe('CartoesPage', () => {
     // Ordem da API: maior fatura primeiro.
     const nomes = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)
     expect(nomes).toEqual(['Cartão Azul', 'Cartão Verde', 'Cartão Vermelho'])
-  })
-
-  it('grade_de_cartoes_tem_1_coluna_no_celular_2_em_sm_e_3_so_em_xl', async () => {
-    responderCartoes(resposta())
-    renderizar()
-
-    const grade = (await screen.findByRole('button', { name: 'Cadastrar novo cartão na grade' })).parentElement!
-    expect(grade).toHaveClass('sm:grid-cols-2', 'xl:grid-cols-3')
-    expect(grade.className).not.toMatch(/(md|lg):grid-cols-3/)
   })
 
   it('uso_acima_de_100_enche_a_barra_e_mostra_o_percentual_real', async () => {
@@ -307,10 +298,7 @@ describe('CartoesPage', () => {
 
     renderizar()
 
-    const novo = await screen.findByRole('button', { name: '+ Novo cartão' })
-    expect(novo).toHaveClass('rounded-[10px]', 'min-h-11')
-    expect(novo).not.toHaveClass('rounded-full')
-    await userEvent.click(novo)
+    await userEvent.click(await screen.findByRole('button', { name: '+ Novo cartão' }))
 
     expect(screen.getByRole('dialog', { name: 'Novo cartão' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Novo cartão' })).toBeInTheDocument()
@@ -390,48 +378,5 @@ describe('CartoesPage', () => {
     // Clicar no chip de sugestão preenche o campo
     await userEvent.click(botaoMariana)
     expect(screen.getByLabelText('Titular do cartão')).toHaveValue('Mariana')
-  })
-
-  it('com_titulares_o_chip_selecionado_e_texto_sobre_fundo_e_so_o_lancar_e_coral', async () => {
-    responderCartoes(
-      resposta({
-        cartoes: [
-          cartao({ itemId: 1, nome: 'Cartão Família', titular: 'Mariana' }),
-          cartao({ itemId: 2, nome: 'Cartão Casa', titular: 'João' }),
-        ],
-      }),
-    )
-    renderizar()
-
-    const todos = await screen.findByRole('button', { name: /^Todos \(2\)/ })
-    expect(todos).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-    expect(todos.className).not.toContain('bg-[var(--cor-principal)]')
-    expect(screen.getByRole('button', { name: 'Mariana (1)' }).className).not.toContain('bg-[var(--cor-texto)]')
-
-    await userEvent.click(screen.getByRole('button', { name: 'Mariana (1)' }))
-    expect(screen.getByRole('button', { name: 'Mariana (1)' })).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-
-    expect(screen.getByRole('link', { name: '+ Lançar' })).toHaveClass('bg-[var(--cor-principal-fundo)]')
-    const novo = screen.getByRole('button', { name: '+ Novo cartão' })
-    expect(novo).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]', 'border', 'border-[var(--cor-linha)]')
-    expect(novo.className).not.toContain('bg-[var(--cor-principal')
-  })
-
-  it('o_estado_vazio_e_o_erro_nao_competem_com_o_lancar_do_cabecalho', async () => {
-    responderCartoes(resposta({ cartoes: [], totalFaturas: '0.00', limiteTotal: '0.00', usoGeral: '0.0000' }))
-    renderizar()
-
-    const primeiro = await screen.findByRole('button', { name: '+ Cadastrar primeiro cartão' })
-    expect(primeiro).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
-    expect(primeiro.className).not.toContain('bg-[var(--cor-principal')
-  })
-
-  it('o_erro_de_carregamento_tem_tentar_de_novo_secundario', async () => {
-    servidor.use(http.get('/api/cartoes', () => HttpResponse.json({ mensagem: 'falhou' }, { status: 500 })))
-    renderizar()
-
-    const tentar = await screen.findByRole('button', { name: 'Tentar de novo' })
-    expect(tentar).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
-    expect(tentar.className).not.toContain('bg-[var(--cor-principal')
   })
 })

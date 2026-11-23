@@ -27,12 +27,9 @@ export function NotaPage() {
     )
   } else if (nota.data === undefined || excluir.isPending || excluir.isSuccess) {
     corpo = (
-      <div aria-busy="true" className="flex flex-col gap-3">
-        <span className="sr-only">Carregando a nota…</span>
-        <div aria-hidden="true" className="flex flex-col gap-3 motion-safe:animate-pulse">
-          <div className="h-11 w-2/3 rounded-xl bg-[var(--cor-card)]" />
-          <div className="h-64 rounded-[var(--raio-card)] bg-[var(--cor-card)]" />
-        </div>
+      <div aria-hidden="true" className="flex flex-col gap-3 motion-safe:animate-pulse">
+        <div className="h-11 w-2/3 rounded-xl bg-[var(--cor-card)]" />
+        <div className="h-64 rounded-[var(--raio-card)] bg-[var(--cor-card)]" />
       </div>
     )
   } else {

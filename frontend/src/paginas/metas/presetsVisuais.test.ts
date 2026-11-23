@@ -23,6 +23,8 @@ describe('Presets Visuais de Metas', () => {
     const preset = obterPresetVisual('viagem')
     expect(preset.id).toBe('viagem')
     expect(preset.nome).toBe('Viagem & Férias')
+    expect(preset.corGradienteInicio).toBe(PRESETS_VISUAIS.viagem.corGradienteInicio)
+    expect(preset.corGradienteFim).toBe(PRESETS_VISUAIS.viagem.corGradienteFim)
     expect(preset.icone).toBe('plane')
   })
 

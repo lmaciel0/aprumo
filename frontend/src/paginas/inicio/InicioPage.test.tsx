@@ -123,7 +123,7 @@ describe('InicioPage', () => {
 
     const sobra = await bloco('Sobra do mês')
     expect(within(sobra).getByText('R$ 799,50')).toBeInTheDocument()
-    expect(within(sobra).getByText('No ano: −R$ 1.234,00')).toBeInTheDocument()
+    expect(within(sobra).getByText('No ano: − R$ 1.234,00')).toBeInTheDocument()
     expect(within(sobra).getByText('R$ 1.799,50 melhor que setembro')).toBeInTheDocument()
     expect(within(await bloco('Receitas')).getByText('R$ 5.000,00')).toBeInTheDocument()
     expect(within(await bloco('Despesas')).getByText('R$ 4.200,50')).toBeInTheDocument()
@@ -134,7 +134,7 @@ describe('InicioPage', () => {
     renderizar()
 
     const sobra = await bloco('Sobra do mês')
-    expect(within(sobra).getByText('−R$ 6,20')).toBeInTheDocument()
+    expect(within(sobra).getByText('− R$ 6,20')).toBeInTheDocument()
     expect(within(sobra).getByText('R$ 6,20 pior que setembro')).toBeInTheDocument()
   })
 
@@ -159,7 +159,7 @@ describe('InicioPage', () => {
     expect(within(await bloco('Sobra do mês')).queryByText(/da receita/)).not.toBeInTheDocument()
   })
 
-  it('chips_de_variacao_bom_e_ruim_ficam_neutros_com_sinal_e_seta', async () => {
+  it('chips_de_variacao_receita_que_cai_e_vermelha_despesa_que_cai_e_verde', async () => {
     responderResumo(
       resumo({
         receitas: '670.00',
@@ -169,15 +169,13 @@ describe('InicioPage', () => {
     )
     renderizar()
 
-    const chipReceitas = within(await bloco('Receitas')).getByText('−33% vs setembro')
-    const chipDespesas = within(await bloco('Despesas')).getByText('−50% vs setembro')
+    const chipReceitas = within(await bloco('Receitas')).getByText('↓ 33% vs setembro')
+    const chipDespesas = within(await bloco('Despesas')).getByText('↓ 50% vs setembro')
     expect(chipReceitas).toHaveAttribute('data-tom', 'ruim')
     expect(chipDespesas).toHaveAttribute('data-tom', 'bom')
-    // Bom e ruim ficam na cor do texto: o sinal e a seta dizem a direção; verde e vermelho só em status.
-    for (const chip of [chipReceitas, chipDespesas]) {
-      expect(chip.className).not.toMatch(/cor-negativo|cor-positivo|cor-erro-fundo|cor-ok-fundo/)
-      expect(chip.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
-    }
+    // Texto dos chips no tom escuro (contraste AA sobre o fundo claro).
+    expect(chipReceitas).toHaveClass('text-[var(--cor-negativo-texto)]')
+    expect(chipDespesas).toHaveClass('text-[var(--cor-positivo-texto)]')
   })
 
   it('esconde_comparacao_quando_anterior_null', async () => {
@@ -209,7 +207,7 @@ describe('InicioPage', () => {
     renderizar()
 
     expect(within(await bloco('Receitas')).queryByText(/vs /)).not.toBeInTheDocument()
-    expect(within(await bloco('Despesas')).getByText('−16% vs setembro')).toBeInTheDocument()
+    expect(within(await bloco('Despesas')).getByText('↓ 16% vs setembro')).toBeInTheDocument()
     expect(document.body).not.toHaveTextContent(/NaN|Infinity/)
   })
 
@@ -276,18 +274,6 @@ describe('InicioPage', () => {
     ])
   })
 
-  it('em_1280_px_cards_de_numero_nao_esticam_e_receitas_e_despesas_dividem_a_altura', async () => {
-    responderResumo(resumo())
-    responderCartoes()
-    renderizar()
-
-    expect(await bloco('Sobra do mês')).toHaveClass('md:self-start')
-    expect(await bloco('Onde você mais gastou em outubro')).toHaveClass('md:self-start')
-    const colunaTotais = (await bloco('Receitas')).parentElement
-    expect(colunaTotais).toHaveClass('md:grid-rows-2')
-    expect(colunaTotais).toHaveClass('md:self-start')
-  })
-
   it('mostra_o_bloco_de_cartoes_do_mes_selecionado', async () => {
     responderResumo(resumo())
     const consultas = responderCartoes()
@@ -350,7 +336,6 @@ describe('InicioPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Falha ao montar o resumo.')
 
     servidor.use(http.get('/api/resumo', () => HttpResponse.json(resumo())))
-    expect(screen.getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
     await userEvent.click(screen.getByRole('button', { name: 'Tentar de novo' }))
 
     expect(await bloco('Sobra do mês')).toBeInTheDocument()

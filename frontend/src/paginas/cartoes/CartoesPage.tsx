@@ -27,7 +27,7 @@ function CardResumo({ titulo, valor }: CardResumoProps) {
       <h2 id={idTitulo} className="m-0 text-xs font-normal text-[var(--cor-mutado)]">
         {titulo}
       </h2>
-      <p className="valor m-0 mt-1 text-lg font-medium md:text-[26px]">{valor}</p>
+      <p className="valor m-0 mt-1 text-lg font-bold tracking-tight md:text-[26px]">{valor}</p>
     </section>
   )
 }
@@ -79,9 +79,9 @@ function FiltroTitulares({ titulares, cartoes, titularFiltro, aoSelecionar }: Fi
       <button
         type="button"
         onClick={() => aoSelecionar('todos')}
-        className={`cursor-pointer rounded-md px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
+        className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
           titularFiltro === 'todos'
-            ? 'bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
+            ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
             : 'border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)] hover:text-[var(--cor-texto)]'
         }`}
       >
@@ -97,9 +97,9 @@ function FiltroTitulares({ titulares, cartoes, titularFiltro, aoSelecionar }: Fi
             key={titular}
             type="button"
             onClick={() => aoSelecionar(titular)}
-            className={`cursor-pointer rounded-md px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 ${
               ativo
-                ? 'bg-[var(--cor-texto)] text-[var(--cor-fundo)]'
+                ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)]'
                 : 'border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal)] hover:text-[var(--cor-texto)]'
             }`}
           >
@@ -140,7 +140,7 @@ function ListaCartoes({
         <button
           type="button"
           onClick={aoCriarCartao}
-          className="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 text-sm font-semibold text-[var(--cor-texto)] hover:bg-[var(--cor-linha)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           + Cadastrar primeiro cartão
         </button>
@@ -157,7 +157,7 @@ function ListaCartoes({
   }
 
   return (
-    <div className="item-entra grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="item-entra grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
       {/* Botão/card pontilhado para adicionar novo cartão de forma intuitiva */}
       <button
         type="button"
@@ -169,7 +169,7 @@ function ListaCartoes({
           <Plus className="size-6 stroke-[2.5]" />
         </div>
         <div className="text-center">
-          <span className="block text-sm font-medium text-[var(--cor-texto)]">Novo cartão</span>
+          <span className="block text-sm font-bold text-[var(--cor-texto)]">Novo cartão</span>
           <span className="block mt-0.5 text-xs text-[var(--cor-mutado)]">Adicionar cartão de crédito</span>
         </div>
       </button>
@@ -222,7 +222,7 @@ export function CartoesPage() {
         <button
           type="button"
           onClick={() => setCriandoCartao(true)}
-          className="flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 text-sm font-semibold whitespace-nowrap text-[var(--cor-texto)] hover:bg-[var(--cor-linha)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-[var(--cor-principal)] px-4 text-sm font-semibold whitespace-nowrap text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           + Novo cartão
         </button>
@@ -267,7 +267,7 @@ export function CartoesPage() {
         <button
           type="button"
           onClick={() => void consulta.refetch()}
-          className="rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 py-2 text-sm font-semibold text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-full bg-[var(--cor-principal)] px-4 py-2 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           Tentar de novo
         </button>

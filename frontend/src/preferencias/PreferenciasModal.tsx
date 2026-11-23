@@ -12,9 +12,10 @@ const foco =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
 
 const PRESETS: Array<{ id: PresetCor; nome: string; cor: string }> = [
-  { id: 'coral', nome: 'Coral', cor: '#FF6B5B' },
-  { id: 'musgo', nome: 'Musgo', cor: '#8DB384' },
-  { id: 'ceu', nome: 'Céu', cor: '#7FB3D5' },
+  { id: 'azul', nome: 'Azul Aprumo', cor: '#3b82f6' },
+  { id: 'lima', nome: 'Lima', cor: '#84cc16' },
+  { id: 'esmeralda', nome: 'Esmeralda', cor: '#10b981' },
+  { id: 'indigo', nome: 'Índigo', cor: '#6366f1' },
 ]
 
 export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) {
@@ -99,7 +100,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         data-testid="preferencias-backdrop"
         aria-hidden="true"
         onClick={aoFechar}
-        className="fixed inset-0 bg-black/60 transition-opacity duration-200"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-200"
       />
 
       {/* Caixa do Diálogo */}
@@ -109,12 +110,12 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         aria-modal="true"
         aria-labelledby="titulo-preferencias"
         onKeyDown={prenderFoco}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-6 shadow-2xl"
+        className="relative z-10 w-full max-w-md rounded-3xl border border-[var(--cor-linha)] bg-[var(--cor-card)] p-6 shadow-2xl transition-all duration-200"
       >
         {/* Cabeçalho */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-[var(--cor-linha)]">
           <div>
-            <h2 id="titulo-preferencias" className="text-xl font-medium text-[var(--cor-texto)]">
+            <h2 id="titulo-preferencias" className="text-xl font-bold tracking-tight text-[var(--cor-texto)]">
               Preferências
             </h2>
             <p className="mt-1 text-sm text-[var(--cor-mutado)]">
@@ -126,7 +127,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
             type="button"
             aria-label="Fechar preferências"
             onClick={aoFechar}
-            className={`grid size-9 shrink-0 place-items-center rounded-[10px] text-[var(--cor-mutado)] transition-colors hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] ${foco}`}
+            className={`grid size-9 shrink-0 place-items-center rounded-full text-[var(--cor-mutado)] transition-colors hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] ${foco}`}
           >
             <svg
               width="20"
@@ -149,10 +150,10 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
         <div className="mt-5 flex flex-col gap-5 text-sm">
           {/* Preset de tema */}
           <div>
-            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
+            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
               Preset de cor
             </label>
-            <div className="mt-2 grid grid-cols-3 gap-2">
+            <div className="mt-2 grid grid-cols-2 gap-2">
               {PRESETS.map((p) => {
                 const ativo = preferencias.presetCor === p.id
                 return (
@@ -162,8 +163,8 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     onClick={() => setPresetCor(p.id)}
                     className={`flex items-center gap-2.5 rounded-xl border px-3 py-2 text-left font-medium transition-colors ${
                       ativo
-                        ? 'border-[var(--cor-texto)] bg-[var(--cor-texto)] text-[var(--cor-fundo)] font-semibold'
-                        : 'border-[var(--cor-auth-campo-borda)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)]'
+                        ? 'border-[var(--cor-principal)] bg-[var(--cor-principal)]/10 text-[var(--cor-texto)] font-semibold shadow-xs'
+                        : 'border-[var(--cor-linha)] bg-[var(--cor-fundo)] text-[var(--cor-mutado)] hover:border-[var(--cor-principal-clara)] hover:text-[var(--cor-texto)]'
                     } ${foco}`}
                   >
                     <span
@@ -180,7 +181,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
 
           {/* Modo do tema (Light, Dark, System) */}
           <div>
-            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
+            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
               Modo do tema
             </label>
             <div className="mt-2 flex rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] p-1">
@@ -197,7 +198,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     key={m.id}
                     type="button"
                     onClick={() => setModoTema(m.id as ModoTema)}
-                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${
+                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                       ativo
                         ? 'bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-xs ring-1 ring-[var(--cor-linha)]'
                         : 'text-[var(--cor-mutado)] hover:text-[var(--cor-texto)]'
@@ -212,7 +213,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
 
           {/* Layout da página (Centralizado / Largura total) */}
           <div>
-            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
+            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
               Layout da página
             </label>
             <div className="mt-2 flex rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] p-1">
@@ -228,7 +229,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     key={l.id}
                     type="button"
                     onClick={() => setLayoutLargura(l.id as LayoutLargura)}
-                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${
+                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                       ativo
                         ? 'bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-xs ring-1 ring-[var(--cor-linha)]'
                         : 'text-[var(--cor-mutado)] hover:text-[var(--cor-texto)]'
@@ -243,7 +244,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
 
           {/* Comportamento da barra de navegação (Fixa / Rolar) */}
           <div>
-            <label className="block text-xs font-medium text-[var(--cor-mutado)]">
+            <label className="block text-xs font-semibold tracking-wider text-[var(--cor-mutado)] uppercase">
               Comportamento da barra
             </label>
             <div className="mt-2 flex rounded-xl border border-[var(--cor-linha)] bg-[var(--cor-fundo)] p-1">
@@ -257,7 +258,7 @@ export function PreferenciasModal({ aberta, aoFechar }: PreferenciasModalProps) 
                     key={String(b.valor)}
                     type="button"
                     onClick={() => setBarraFixa(b.valor)}
-                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${
+                    className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all ${
                       ativo
                         ? 'bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-xs ring-1 ring-[var(--cor-linha)]'
                         : 'text-[var(--cor-mutado)] hover:text-[var(--cor-texto)]'

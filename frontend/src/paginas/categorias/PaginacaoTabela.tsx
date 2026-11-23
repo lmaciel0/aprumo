@@ -51,7 +51,7 @@ export function PaginacaoTabela({
           aria-label="Primeira página"
           disabled={paginaAtual <= 1}
           onClick={() => aoMudarPagina(1)}
-          className="grid size-8 place-items-center rounded-[10px] text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-8 place-items-center rounded-full text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           <ChevronsLeft className="size-4" aria-hidden="true" />
         </button>
@@ -61,7 +61,7 @@ export function PaginacaoTabela({
           aria-label="Página anterior"
           disabled={paginaAtual <= 1}
           onClick={() => aoMudarPagina(paginaAtual - 1)}
-          className="grid size-8 place-items-center rounded-[10px] text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-8 place-items-center rounded-full text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           <ChevronLeft className="size-4" aria-hidden="true" />
         </button>
@@ -71,7 +71,7 @@ export function PaginacaoTabela({
           aria-label="Próxima página"
           disabled={paginaAtual >= totalPaginas}
           onClick={() => aoMudarPagina(paginaAtual + 1)}
-          className="grid size-8 place-items-center rounded-[10px] text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-8 place-items-center rounded-full text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           <ChevronRight className="size-4" aria-hidden="true" />
         </button>
@@ -81,7 +81,7 @@ export function PaginacaoTabela({
           aria-label="Última página"
           disabled={paginaAtual >= totalPaginas}
           onClick={() => aoMudarPagina(totalPaginas)}
-          className="grid size-8 place-items-center rounded-[10px] text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-8 place-items-center rounded-full text-[var(--cor-texto)] transition-colors hover:bg-[var(--cor-linha)]/60 disabled:opacity-30 disabled:hover:bg-transparent focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           <ChevronsRight className="size-4" aria-hidden="true" />
         </button>

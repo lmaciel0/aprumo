@@ -86,15 +86,15 @@ describe('useTema', () => {
 
   it('a cor da barra do navegador acompanha o tema escolhido', () => {
     instalarSistema(false)
-    document.head.innerHTML = '<meta name="theme-color" content="#14213D" />'
+    document.head.innerHTML = '<meta name="theme-color" content="#27187E" />'
     document.documentElement.dataset.tema = 'claro'
     const { result } = renderHook(() => useTema())
     const cor = () => document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.content
-    expect(cor()).toBe('#14213D')
+    expect(cor()).toBe('#27187E')
     act(() => result.current.alternar())
-    expect(cor()).toBe('#141415')
+    expect(cor()).toBe('#0b0d13')
     act(() => result.current.alternar())
-    expect(cor()).toBe('#14213D')
+    expect(cor()).toBe('#27187E')
     document.head.innerHTML = ''
   })
 

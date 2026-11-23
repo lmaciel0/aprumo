@@ -33,10 +33,10 @@ export function MensagemDeErro({ texto }: { texto: string | null }) {
 }
 
 export const classeBotaoPrimario =
-  'min-h-11 rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 text-base font-semibold text-[var(--cor-sobre-principal-fundo)] ' +
+  'min-h-11 rounded-full bg-[var(--cor-principal)] px-5 text-base font-semibold text-[var(--cor-sobre-principal)] ' +
   'disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'
 
 /** Botão de ação secundária (ex.: "Reenviar"), sem preenchimento. Use com `type="button"`. */
 export const classeBotaoSecundario =
-  'min-h-11 rounded-[10px] px-4 text-sm font-semibold text-[var(--cor-principal)] ' +
+  'min-h-11 rounded-full px-4 text-sm font-semibold text-[var(--cor-principal)] ' +
   'disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]'

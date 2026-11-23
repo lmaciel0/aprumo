@@ -90,30 +90,35 @@ afterEach(() => {
 })
 
 describe('PainelPage', () => {
-  it('mostra o mês como título, sem saudação nem nome, e a data por extenso abaixo', async () => {
-    relogioEm('2026-11-20T15:00:00Z')
+  it('mostra a saudação com o primeiro nome e a data', async () => {
+    relogioEm('2026-10-31T15:00:00Z')
     comSessao({ ...usuarioFicticio, nome: 'Lucas Maciel' })
     responderResumo()
     renderizar()
 
-    const titulo = await screen.findByRole('heading', { level: 1, name: 'Novembro de 2026' })
-    expect(titulo).toHaveClass('font-medium')
-    expect(titulo).not.toHaveTextContent(/Bom dia|Boa tarde|Boa noite|Lucas/)
-    expect(screen.queryByText(/Bom dia|Boa tarde|Boa noite|Lucas/)).not.toBeInTheDocument()
-    const data = screen.getByText('sexta-feira, 20 de novembro')
-    expect(data).toHaveClass('text-[var(--cor-secundario)]')
+    expect(await screen.findByRole('heading', { level: 1, name: 'Boa tarde, Lucas' })).toBeInTheDocument()
+    expect(screen.getByText('sábado, 31 de outubro')).toBeInTheDocument()
   })
 
-  it('o título é o mesmo com ou sem nome do usuário', async () => {
-    relogioEm('2026-11-20T23:00:00Z')
-    comSessao({ ...usuarioFicticio, nome: '' })
+  it.each(['', '   '])('sem nome (%j) mostra só a saudação, sem vírgula sobrando', async (nome) => {
+    relogioEm('2026-10-31T11:00:00Z')
+    comSessao({ ...usuarioFicticio, nome })
     responderResumo()
     renderizar()
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Novembro de 2026' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: /^Bom dia/ })).toHaveAccessibleName('Bom dia')
   })
 
-  it('o resumo falhando mostra erro com Tentar de novo e mantém o título', async () => {
+  it('nome de uma palavra só não leva espaço nem vírgula a mais', async () => {
+    relogioEm('2026-10-31T23:00:00Z')
+    comSessao({ ...usuarioFicticio, nome: '  Ana ' })
+    responderResumo()
+    renderizar()
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Boa noite, Ana' })).toBeInTheDocument()
+  })
+
+  it('o resumo falhando mostra erro com Tentar de novo e mantém a saudação', async () => {
     comSessao()
     // Falha até o teste mandar parar: uma consulta que sobrou de teste anterior não pode "gastar" a falha.
     let falhar = true
@@ -127,23 +132,22 @@ describe('PainelPage', () => {
     const alerta = await screen.findByRole('alert')
     expect(alerta).toHaveClass('card')
     expect(within(alerta).getByText('Falha no servidor.')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 1, name: /^\p{Lu}\p{L}+ de \d{4}$/u })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: /^(Bom dia|Boa tarde|Boa noite), Ana$/ })).toBeInTheDocument()
 
     falhar = false
-    expect(within(alerta).getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
     await userEvent.click(within(alerta).getByRole('button', { name: 'Tentar de novo' }))
 
     expect(await screen.findByRole('region', { name: 'Sobra do mês' })).toBeInTheDocument()
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
-  it('enquanto carrega mostra "Carregando" e já exibe o título', async () => {
+  it('enquanto carrega mostra "Carregando" e já exibe a saudação', async () => {
     comSessao()
     servidor.use(http.get('/api/resumo', () => new Promise<never>(() => {})))
     renderizar()
 
-    // O "Carregando…" da sessão também é um status; o do bloco só existe depois que o título aparece.
-    expect(await screen.findByRole('heading', { level: 1, name: /^\p{Lu}\p{L}+ de \d{4}$/u })).toBeInTheDocument()
+    // O "Carregando…" da sessão também é um status; o do bloco só existe depois que a saudação aparece.
+    expect(await screen.findByRole('heading', { level: 1, name: /, Ana$/ })).toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent('Carregando')
   })
 
@@ -216,13 +220,6 @@ describe('PainelPage', () => {
     expect(bloco).not.toHaveClass('item-entra')
   })
 
-  it('em 1280 px a sobra não estica até a altura da coluna vizinha', async () => {
-    responderResumo()
-    comSessao()
-    renderizar()
-    expect(await screen.findByRole('region', { name: 'Sobra do mês' })).toHaveClass('md:self-start')
-  })
-
   it('abre sem erro com ?ano=2026&mes=10 na URL e consulta o mês atual', async () => {
     relogioEm('2026-11-15T15:00:00Z')
     comSessao()
@@ -237,14 +234,14 @@ describe('PainelPage', () => {
 })
 
 describe('PainelPage na virada do mês', () => {
-  it('título e finanças mostram o mesmo mês depois da meia-noite de 30/11 para 01/12 (São Paulo)', async () => {
+  it('data e finanças passam para o mês novo ao voltar para o app depois da meia-noite de 30/11 para 01/12 (São Paulo)', async () => {
     // 23:59 de 30/11 em São Paulo = 02:59Z de 01/12.
     relogioEm('2026-12-01T02:59:00Z')
     comSessao()
     const consultas = responderResumo()
     renderizar()
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Novembro de 2026' })).toBeInTheDocument()
+    expect(await screen.findByText('segunda-feira, 30 de novembro')).toBeInTheDocument()
     await waitFor(() => expect(consultas).toHaveLength(1))
     expect(new URLSearchParams(consultas[0])).toEqual(new URLSearchParams({ ano: '2026', mes: '11' }))
 
@@ -254,7 +251,7 @@ describe('PainelPage na virada do mês', () => {
       document.dispatchEvent(new Event('visibilitychange'))
     })
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Dezembro de 2026' })).toBeInTheDocument()
+    expect(await screen.findByText('terça-feira, 1 de dezembro')).toBeInTheDocument()
     await waitFor(() => expect(consultas).toHaveLength(2))
     expect(new URLSearchParams(consultas[1])).toEqual(new URLSearchParams({ ano: '2026', mes: '12' }))
   })

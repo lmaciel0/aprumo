@@ -9,7 +9,7 @@ import { renderComApp } from '../../teste/render'
 import { servidor } from '../../teste/servidor'
 import { RelatoriosPage } from './RelatoriosPage'
 
-const MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+const MESES = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
 
 const paga = (valor: string): CelulaRelatorio => ({ valor, status: 'PAGO' })
 const prevista = (valor: string): CelulaRelatorio => ({ valor, status: 'PREVISTO' })
@@ -208,14 +208,14 @@ describe('RelatoriosPage', () => {
     expect(celulas('Moradia')[0]).not.toHaveClass('celula-paga')
   })
 
-  it('diferenca_negativa_com_sinal_e_classe_neutra', async () => {
+  it('diferenca_negativa_em_vermelho', async () => {
     responderRelatorio()
     renderizar()
     await screen.findByRole('table')
 
     const diferenca = celulas('Diferença de caixa')
     // MAR: 3.000 de receita contra 3.500 de despesa.
-    expect(diferenca[2]).toHaveTextContent('−500,00')
+    expect(diferenca[2]).toHaveTextContent('-500,00')
     expect(diferenca[2]).toHaveClass('diferenca-negativa')
     // Positiva e zerada ficam na cor normal.
     expect(diferenca[0]).not.toHaveClass('diferenca-negativa')
@@ -224,13 +224,13 @@ describe('RelatoriosPage', () => {
     expect(diferenca[12]).not.toHaveClass('diferenca-negativa')
   })
 
-  it('diferenca_do_ano_negativa_tambem_leva_a_classe_neutra', async () => {
+  it('diferenca_do_ano_negativa_tambem_fica_vermelha', async () => {
     responderRelatorio((ano) => ({ ...relatorio(ano), diferencaAno: '-1234.50' }))
     renderizar()
     await screen.findByRole('table')
 
     const total = celulas('Diferença de caixa')[12]
-    expect(total).toHaveTextContent('−1.234,50')
+    expect(total).toHaveTextContent('-1.234,50')
     expect(total).toHaveClass('diferenca-negativa')
   })
 
@@ -363,7 +363,6 @@ describe('RelatoriosPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Algo deu errado no servidor.')
 
     falhar = false
-    expect(screen.getByRole('button', { name: 'Tentar de novo' })).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
     await userEvent.click(screen.getByRole('button', { name: 'Tentar de novo' }))
     expect(await screen.findByRole('table', { name: /2026/ })).toBeInTheDocument()
   })

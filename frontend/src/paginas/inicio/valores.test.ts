@@ -6,7 +6,6 @@ import {
   paraCentavos,
   percentualDaReceita,
   resultadoAcumulado,
-  partesResultadoCurto,
   resultadoCurto,
   serieDoResultado,
   variacao,
@@ -24,9 +23,8 @@ describe('paraCentavos', () => {
 })
 
 describe('formatarComSinal', () => {
-  it('põe o sinal − colado no R$ quando negativo', () => {
-    expect(semNbsp(formatarComSinal('-799.50'))).toBe('−R$ 799,50')
-    expect(semNbsp(formatarComSinal('-0.01'))).toBe('−R$ 0,01')
+  it('põe o sinal − antes do R$ quando negativo', () => {
+    expect(semNbsp(formatarComSinal('-799.50'))).toBe('− R$ 799,50')
   })
 
   it('não põe sinal em positivo nem em zero', () => {
@@ -134,14 +132,11 @@ describe('resultadoCurto', () => {
     expect(resultadoCurto(-80, false)).toBe('−80')
   })
 
-  it('a partir de mil usa uma casa decimal, vírgula e o sufixo mil, nunca k', () => {
+  it('a partir de mil usa uma casa decimal e o sufixo mil (ou k se compacto)', () => {
     expect(resultadoCurto(-1200, false)).toBe('−1,2 mil')
-    expect(resultadoCurto(-1200, true)).toBe('−1,2 mil')
-    expect(resultadoCurto(-2500, false)).toBe('−2,5 mil')
-    expect(resultadoCurto(-2500, true)).toMatch(/,/)
-    expect(resultadoCurto(-2500, true)).not.toMatch(/k$/)
+    expect(resultadoCurto(-1200, true)).toBe('−1,2k')
     expect(resultadoCurto(2000, false)).toBe('+2 mil')
-    expect(resultadoCurto(2000, true)).toBe('+2 mil')
+    expect(resultadoCurto(2000, true)).toBe('+2k')
     expect(resultadoCurto(999.6, false)).toBe('+1 mil')
     expect(resultadoCurto(1234567, false)).toBe('+1.234,6 mil')
   })
@@ -165,25 +160,5 @@ describe('percentualDaReceita', () => {
 
   it('devolve null quando a receita é zero', () => {
     expect(percentualDaReceita('100.00', '0.00')).toBeNull()
-  })
-})
-
-describe('partesResultadoCurto', () => {
-  it('separa o número do sufixo "mil" para o rótulo em duas linhas', () => {
-    expect(partesResultadoCurto(-1200)).toEqual({ numero: '−1,2', sufixo: 'mil' })
-    expect(partesResultadoCurto(2000)).toEqual({ numero: '+2', sufixo: 'mil' })
-    expect(partesResultadoCurto(1234567)).toEqual({ numero: '+1.234,6', sufixo: 'mil' })
-  })
-
-  it('abaixo de mil e zero ficam sem sufixo', () => {
-    expect(partesResultadoCurto(80)).toEqual({ numero: '+80', sufixo: '' })
-    expect(partesResultadoCurto(-0.4)).toEqual({ numero: '0', sufixo: '' })
-  })
-
-  it('o número e o sufixo juntos formam a string de resultadoCurto', () => {
-    for (const valor of [80, -1200, 999.6, 0]) {
-      const { numero, sufixo } = partesResultadoCurto(valor)
-      expect([numero, sufixo].filter(Boolean).join(' ')).toBe(resultadoCurto(valor, false))
-    }
   })
 })

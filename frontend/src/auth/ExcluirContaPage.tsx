@@ -16,7 +16,7 @@ const MENSAGEM_SENHA_VAZIA = 'Informe a sua senha.'
 const MENSAGEM_SEM_CIENCIA = 'Marque "Entendo que é definitivo" antes de confirmar.'
 
 const classeBotaoPerigo =
-  'min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] ' +
+  'min-h-11 cursor-pointer rounded-full bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] ' +
   'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-negativo)]'
 
 /**
@@ -76,7 +76,7 @@ export function ExcluirContaPage() {
 
   return (
     <section className="card mx-auto w-full max-w-md p-6">
-      <h1 className="m-0 mb-1 text-xl font-medium">Excluir conta</h1>
+      <h1 className="m-0 mb-1 text-xl font-bold">Excluir conta</h1>
       <p className="m-0 mb-3 text-sm">
         A exclusão é imediata e definitiva: apagamos a sua conta e tudo o que ela guarda (tarefas, notas, lançamentos,
         cartões, categorias e projetos). Não há como desfazer nem recuperar depois.

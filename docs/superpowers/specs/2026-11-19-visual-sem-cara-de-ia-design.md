@@ -1,5 +1,7 @@
 # Visual sem cara de IA (unslop) — design
 
+> **Revertido em 2026-11-23.** O resultado das fases 1 a 4 (PRs #72 a #75) deixou o app opaco e sem cor, inclusive no tema claro, e foi desfeito por inteiro. Ficaram o conserto de Metas do #76 e três correções de lógica do #75 (percentual de meta, `aria-valuenow` limitado a 100, `aoFechar` em ref no `useDialogoModal`). Este spec e os planos das fases ficam como registro.
+
 Data: 2026-11-19. Escopo: sistema todo, temas claro e escuro.
 
 Referência de método: unslop, de Damir Sokolovsky (https://github.com/heydamir/unslop), licença CC BY 4.0. Valores de tokens, raios, tipo e movimento abaixo adaptam `skills/unslop/references/tokens.md` e `signs.md`; manter o crédito em `docs/DESIGN_SYSTEM.md`.

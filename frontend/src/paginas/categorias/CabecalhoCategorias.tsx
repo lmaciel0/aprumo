@@ -53,7 +53,7 @@ export function CabecalhoCategorias({
           aria-haspopup="true"
           aria-expanded={menuAberto}
           onClick={() => setMenuAberto((prev) => !prev)}
-          className={`flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm font-medium shadow-sm transition-opacity duration-150 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 ${
+          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-offset-2 ${
             eDespesa
               ? 'bg-[var(--cor-negativo)] text-[var(--cor-sobre-negativo)] hover:opacity-90 focus-visible:outline-[var(--cor-negativo)]'
               : 'bg-[var(--cor-positivo)] text-[var(--cor-sobre-principal)] hover:opacity-90 focus-visible:outline-[var(--cor-positivo)]'
@@ -120,7 +120,7 @@ export function CabecalhoCategorias({
               onChange={(e) => aoMudarBusca(e.target.value)}
               placeholder="Filtrar categorias…"
               aria-label="Buscar categorias"
-              className="h-10 w-44 rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] pr-8 pl-8 text-xs text-[var(--cor-texto)] shadow-sm focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)] sm:w-56"
+              className="h-10 w-44 rounded-full border border-[var(--cor-linha)] bg-[var(--cor-card)] pr-8 pl-8 text-xs text-[var(--cor-texto)] shadow-sm focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)] sm:w-56"
             />
             <button
               type="button"
@@ -129,7 +129,7 @@ export function CabecalhoCategorias({
                 aoMudarBusca('')
                 setBuscaAberta(false)
               }}
-              className="absolute right-2 grid size-6 place-items-center rounded-md text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]"
+              className="absolute right-2 grid size-6 place-items-center rounded-full text-[var(--cor-mutado)] hover:bg-[var(--cor-linha)]"
             >
               <X className="size-3.5" aria-hidden="true" />
             </button>
@@ -139,7 +139,7 @@ export function CabecalhoCategorias({
             type="button"
             aria-label="Buscar categorias"
             onClick={() => setBuscaAberta(true)}
-            className="grid size-10 place-items-center rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+            className="grid size-10 place-items-center rounded-full border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
           >
             <Search className="size-4" aria-hidden="true" />
           </button>
@@ -149,7 +149,7 @@ export function CabecalhoCategorias({
           type="button"
           aria-label={todosExpandidos ? 'Recolher todas as subcategorias' : 'Expandir todas as subcategorias'}
           onClick={aoAlternarExpansao}
-          className="grid size-10 place-items-center rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-10 place-items-center rounded-full border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           {todosExpandidos ? (
             <Minimize2 className="size-4" aria-hidden="true" />
@@ -162,7 +162,7 @@ export function CabecalhoCategorias({
           type="button"
           aria-label="Nova categoria"
           onClick={aoNovaCategoria}
-          className="grid size-10 place-items-center rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-principal)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-10 place-items-center rounded-full border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-principal)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           <Plus className="size-5" aria-hidden="true" />
         </button>
@@ -170,7 +170,7 @@ export function CabecalhoCategorias({
         <button
           type="button"
           aria-label="Mais opções"
-          className="grid size-10 place-items-center rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
+          className="grid size-10 place-items-center rounded-full border border-[var(--cor-linha)] bg-[var(--cor-card)] text-[var(--cor-texto)] shadow-sm transition-colors hover:bg-[var(--cor-linha)]/40 focus-visible:outline-2 focus-visible:outline-[var(--cor-principal)]"
         >
           <MoreVertical className="size-4" aria-hidden="true" />
         </button>

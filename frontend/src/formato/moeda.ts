@@ -1,17 +1,8 @@
 const formatadorBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
-const SINAL_MENOS = '\u2212'
-
-/**
- * Formata valor da API (string decimal) ou número como `R$ 1.234,56`; negativo sai `−R$ 6,20` (sinal U+2212 colado no
- * `R$`, nunca hífen). Zero, ou o que arredonda para zero centavos, nunca leva sinal.
- */
+/** Formata valor da API (string decimal) ou número como `R$ 1.234,56`; negativo sai `-R$ 6,20`. */
 export function formatarMoeda(valor: string | number): string {
-  const numero = typeof valor === 'string' ? Number(valor) : valor
-  if (Math.round(Math.abs(numero) * 100) === 0) {
-    return formatadorBRL.format(0) // zero e -0 sem sinal
-  }
-  return numero < 0 ? `${SINAL_MENOS}${formatadorBRL.format(-numero)}` : formatadorBRL.format(numero)
+  return formatadorBRL.format(typeof valor === 'string' ? Number(valor) : valor)
 }
 
 // Aceita "1.234,56", "1234,56", "251,3", "10", "10.50"; recusa mais de 2 casas.

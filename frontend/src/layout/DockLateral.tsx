@@ -35,7 +35,7 @@ export function DockLateral({
 
   return (
     <aside
-      className={`relative flex h-full flex-col transition-[width,padding] duration-200 motion-reduce:transition-none select-none ${
+      className={`relative flex h-full flex-col transition-all duration-200 select-none ${
         recolhida ? 'w-[72px] px-2 py-4' : 'w-60 px-3 py-4'
       }`}
     >
@@ -47,7 +47,7 @@ export function DockLateral({
           {recolhida ? (
             <div
               title="Aprumo"
-              className="grid size-10 place-items-center rounded-[10px] bg-[var(--cor-principal-fundo)] text-[var(--cor-sobre-principal-fundo)] font-semibold text-lg shadow-sm"
+              className="grid size-10 place-items-center rounded-2xl bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] font-black text-lg shadow-sm"
             >
               A
             </div>
@@ -86,7 +86,7 @@ export function DockLateral({
         {GRUPOS_MENU.map((grupo) => (
           <div key={grupo.titulo ?? 'principal'} className="flex flex-col gap-1">
             {!recolhida && grupo.titulo && (
-              <p className="m-0 px-3 pt-1 pb-1 text-xs font-medium text-[var(--cor-mutado)]">
+              <p className="m-0 px-3 pt-1 pb-1 text-xs font-semibold tracking-wide text-[var(--cor-mutado)] uppercase">
                 {grupo.titulo}
               </p>
             )}
@@ -99,13 +99,13 @@ export function DockLateral({
                 title={recolhida ? item.rotulo : undefined}
                 className={({ isActive }) =>
                   recolhida
-                    ? `group relative grid size-11 place-items-center rounded-[10px] transition-[background-color,color,box-shadow] duration-150 motion-reduce:transition-none ${foco} ` +
+                    ? `group relative grid size-11 place-items-center rounded-2xl transition-all duration-150 ${foco} ` +
                       (isActive
-                        ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
+                        ? 'bg-[var(--cor-principal)] text-[var(--cor-sobre-principal)] shadow-md font-semibold'
                         : 'text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)]')
                     : `${linhaBase} ` +
                       (isActive
-                        ? 'bg-[var(--cor-elevado)] font-medium text-[var(--cor-texto)] shadow-[inset_2px_0_0_var(--cor-principal)]'
+                        ? 'bg-[var(--cor-principal)] font-semibold text-[var(--cor-sobre-principal)] shadow-xs'
                         : 'text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]')
                 }
               >
@@ -134,7 +134,7 @@ export function DockLateral({
           <div className="flex items-center gap-3 px-3 py-1 mb-0.5">
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-xs font-medium text-[var(--cor-texto)]"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-bold text-[var(--cor-sobre-principal)]"
             >
               {inicial}
             </span>
@@ -150,7 +150,7 @@ export function DockLateral({
           >
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-elevado)] text-xs font-medium text-[var(--cor-texto)]"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--cor-principal)] text-xs font-bold text-[var(--cor-sobre-principal)]"
             >
               {inicial}
             </span>
@@ -174,7 +174,7 @@ export function DockLateral({
           }}
           className={
             recolhida
-              ? `group relative grid size-11 place-items-center rounded-[10px] text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] transition-colors ${foco}`
+              ? `group relative grid size-11 place-items-center rounded-2xl text-[var(--cor-mutado)] hover:bg-[var(--cor-fundo)] hover:text-[var(--cor-texto)] transition-colors ${foco}`
               : `${linhaBase} text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]`
           }
         >
@@ -251,7 +251,7 @@ export function DockLateral({
           }}
           className={
             recolhida
-              ? `group relative grid size-11 place-items-center rounded-[10px] text-[var(--cor-negativo)] hover:bg-[var(--cor-erro-fundo)] transition-colors ${foco}`
+              ? `group relative grid size-11 place-items-center rounded-2xl text-[var(--cor-negativo)] hover:bg-[var(--cor-erro-fundo)] transition-colors ${foco}`
               : `${linhaBase} cursor-pointer text-left text-[var(--cor-negativo)] hover:bg-[var(--cor-erro-fundo)]`
           }
         >

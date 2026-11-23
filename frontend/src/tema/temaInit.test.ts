@@ -20,7 +20,7 @@ function meta() {
 beforeEach(() => {
   localStorage.clear()
   delete document.documentElement.dataset.tema
-  document.head.innerHTML = '<meta name="theme-color" content="#14213D" />'
+  document.head.innerHTML = '<meta name="theme-color" content="#27187E" />'
 })
 
 afterEach(() => {
@@ -55,8 +55,8 @@ describe('index.html', () => {
     expect(posScript).toBeGreaterThan(posMeta)
   })
 
-  it('theme-color padrão é o marinho da marca', () => {
-    expect(html).toMatch(/<meta name="theme-color" content="#14213D"/i)
+  it('theme-color padrão é o roxo da marca', () => {
+    expect(html).toMatch(/<meta name="theme-color" content="#27187E"/i)
   })
 })
 
@@ -66,14 +66,14 @@ describe('public/tema-init.js', () => {
     localStorage.setItem(CHAVE_TEMA, 'claro')
     executar()
     expect(document.documentElement.dataset.tema).toBe('claro')
-    expect(meta()?.content).toBe('#14213D')
+    expect(meta()?.content).toBe('#27187E')
   })
 
-  it('sem escolha abre no claro, mesmo com o sistema escuro, e pinta a barra de marinho', () => {
+  it('sem escolha abre no claro, mesmo com o sistema escuro, e pinta a barra de roxo', () => {
     vi.stubGlobal('matchMedia', () => ({ matches: true }))
     executar()
     expect(document.documentElement.dataset.tema).toBe('claro')
-    expect(meta()?.content).toBe('#14213D')
+    expect(meta()?.content).toBe('#27187E')
   })
 
   it('escolha salva escuro vence o sistema claro e pinta a barra escura', () => {
@@ -81,7 +81,7 @@ describe('public/tema-init.js', () => {
     localStorage.setItem(CHAVE_TEMA, 'escuro')
     executar()
     expect(document.documentElement.dataset.tema).toBe('escuro')
-    expect(meta()?.content).toBe('#141415')
+    expect(meta()?.content).toBe('#0f0b2b')
   })
 
   it('valor inválido salvo é ignorado e cai no claro', () => {

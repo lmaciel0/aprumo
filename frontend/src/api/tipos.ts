@@ -275,6 +275,8 @@ export interface MetaResponse {
   prazo: string | null
   presetVisual: string
   icone: string
+  corGradienteInicio?: string
+  corGradienteFim?: string
   fotoUrl: string | null
   ordem: number
   percentualConcluido: string
@@ -291,6 +293,8 @@ export interface MetaRequest {
   prazo?: string | null
   presetVisual?: string
   icone?: string
+  corGradienteInicio?: string
+  corGradienteFim?: string
   fotoUrl?: string | null
   ordem?: number
 }
@@ -304,6 +308,8 @@ export interface SugestaoAporteMeta {
   titulo: string
   presetVisual: string
   icone: string
+  corGradienteInicio?: string
+  corGradienteFim?: string
   fotoUrl: string | null
   valorSugerido: string
   motivo: string
