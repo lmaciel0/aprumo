@@ -110,19 +110,25 @@ export function CartaoInicio({ ano, mes }: { ano: number; mes: number }) {
 
         {comLimite ? (
           <>
-            <div
-              role="progressbar"
-              aria-label={`Uso do limite de ${cartao.nome}`}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={Math.round(larguraDaBarra(uso))}
-              aria-valuetext={`${formatarPercentual(uso)} do limite usado`}
-              className="my-2 h-2 overflow-hidden rounded-full bg-[var(--cor-linha)]"
-            >
+            <div className="my-2 flex items-center gap-2">
               <div
-                className="h-full rounded-full"
-                style={{ width: `${larguraDaBarra(uso)}%`, backgroundColor: COR_DA_BARRA[faixa] }}
-              />
+                role="progressbar"
+                aria-label={`Uso do limite de ${cartao.nome}`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(larguraDaBarra(uso))}
+                aria-valuetext={`${formatarPercentual(uso)} do limite usado`}
+                className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-[var(--cor-linha)]"
+              >
+                <div
+                  className="h-full rounded-full"
+                  style={{ width: `${larguraDaBarra(uso)}%`, backgroundColor: COR_DA_BARRA[faixa] }}
+                />
+              </div>
+              {/* O aria-valuetext da barra já lê o percentual: o texto visível fica fora da leitura de tela. */}
+              <span aria-hidden="true" className="valor shrink-0 text-xs font-semibold">
+                {formatarPercentual(uso)} do limite
+              </span>
             </div>
             {cartao.limiteDisponivel != null && (
               <div className="flex items-baseline justify-between gap-3">

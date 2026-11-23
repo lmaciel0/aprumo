@@ -46,6 +46,14 @@ describe('AtalhosRapidosMobile', () => {
     expect(screen.getByRole('link', { name: '+ Nota' })).toHaveAttribute('href', '/notas')
   })
 
+  it('nenhum rótulo é cortado com reticências (cabe em 320 px ou quebra em duas linhas)', () => {
+    renderizar()
+
+    for (const link of within(screen.getByRole('region', { name: 'Acesso rápido' })).getAllByRole('link')) {
+      expect(link.querySelector('.truncate')).toBeNull()
+    }
+  })
+
   it('permite abrir o modal de personalização e alterar os atalhos exibidos', async () => {
     const user = userEvent.setup()
     renderizar()

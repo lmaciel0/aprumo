@@ -133,4 +133,13 @@ describe('CartaoInicio', () => {
     expect(barra).toHaveAttribute('aria-valuetext', '73% do limite usado')
     expect(barra).toHaveAttribute('aria-valuenow', '73')
   })
+
+  it('mostra o percentual do limite em texto visível, escondido do leitor de tela', async () => {
+    preferir(NUBANK!.itemId)
+    renderizar()
+
+    await screen.findByRole('progressbar')
+    // O aria-valuetext da barra já lê o percentual; o texto visível não pode repeti-lo.
+    expect(screen.getByText('73% do limite')).toHaveAttribute('aria-hidden', 'true')
+  })
 })

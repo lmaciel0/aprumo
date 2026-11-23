@@ -33,7 +33,7 @@ export function AtalhosRapidosMobile() {
     .slice(0, 4)
 
   return (
-    <section aria-label="Acesso rápido" className="flex items-stretch gap-2">
+    <section aria-label="Acesso rápido" className="flex items-stretch gap-1">
       {atalhos.map((atalho) => {
         const destino = getDestino(atalho, busca)
         return (
@@ -42,10 +42,10 @@ export function AtalhosRapidosMobile() {
             to={destino}
             state={atalho.state}
             aria-label={atalho.rotulo}
-            className={`group flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] px-0.5 py-1 text-center text-[var(--cor-principal)] no-underline shadow-xs transition-colors hover:border-[var(--cor-principal)] hover:bg-[var(--cor-principal)]/10 active:bg-[var(--cor-principal)]/10 ${foco}`}
+            className={`group flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl border border-[var(--cor-linha)] bg-[var(--cor-card)] px-0 py-1 text-center text-[var(--cor-principal)] no-underline shadow-xs transition-colors hover:border-[var(--cor-principal)] hover:bg-[var(--cor-principal)]/10 active:bg-[var(--cor-principal)]/10 ${foco}`}
           >
             {atalho.icone('size-4 shrink-0')}
-            <span className="w-full truncate text-[11px] leading-tight font-semibold text-[var(--cor-texto)]">
+            <span className="w-full text-[11px] leading-tight font-semibold tracking-tight break-words text-[var(--cor-texto)]">
               {atalho.rotulo}
             </span>
           </Link>

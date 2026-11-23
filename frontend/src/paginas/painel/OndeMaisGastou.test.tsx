@@ -43,6 +43,15 @@ describe('OndeMaisGastou', () => {
     expect(barras[0]).toHaveAccessibleName('Doméstica')
   })
 
+  it('mostra o percentual de cada categoria em texto visível, escondido do leitor de tela', async () => {
+    renderComApp(<OndeMaisGastou ano={2026} mes={11} />)
+
+    await screen.findAllByRole('progressbar')
+    for (const percentual of ['47%', '25%']) {
+      expect(screen.getByText(percentual)).toHaveAttribute('aria-hidden', 'true')
+    }
+  })
+
   it('categoria fora do catálogo aparece sem erro', async () => {
     responderResumo({ ...RESUMO_API, categorias: [RESUMO_API.categorias[4]] })
     renderComApp(<OndeMaisGastou ano={2026} mes={11} />)

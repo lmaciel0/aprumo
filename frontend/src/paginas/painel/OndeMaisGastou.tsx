@@ -86,19 +86,25 @@ export function OndeMaisGastou({ ano, mes }: { ano: number; mes: number }) {
                   <span className="min-w-0 flex-1 truncate">{categoria.nome}</span>
                   <span className="valor shrink-0 font-semibold">{formatarMoeda(categoria.total)}</span>
                 </div>
-                <div
-                  role="progressbar"
-                  aria-label={categoria.nome}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={Math.round(larguraDaBarra(categoria.percentual))}
-                  aria-valuetext={`${formatarPercentual(categoria.percentual)} das despesas`}
-                  className="mt-1.5 h-2 overflow-hidden rounded-full bg-[var(--cor-linha)]"
-                >
+                <div className="mt-1.5 flex items-center gap-2">
                   <div
-                    className="h-full rounded-full"
-                    style={{ width: `${larguraDaBarra(categoria.percentual)}%`, backgroundColor: cor }}
-                  />
+                    role="progressbar"
+                    aria-label={categoria.nome}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(larguraDaBarra(categoria.percentual))}
+                    aria-valuetext={`${formatarPercentual(categoria.percentual)} das despesas`}
+                    className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-[var(--cor-linha)]"
+                  >
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${larguraDaBarra(categoria.percentual)}%`, backgroundColor: cor }}
+                    />
+                  </div>
+                  {/* O aria-valuetext da barra já lê o percentual: o texto visível fica fora da leitura de tela. */}
+                  <span aria-hidden="true" className="valor w-9 shrink-0 text-right text-xs font-semibold">
+                    {formatarPercentual(categoria.percentual)}
+                  </span>
                 </div>
               </li>
             )
