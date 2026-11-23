@@ -34,7 +34,7 @@ export function PainelPage() {
         <p className="m-0 mt-1.5 text-[13px] text-[var(--cor-mutado)]">{dataPorExtenso(agora)}</p>
       </header>
       <div className="item-entra md:hidden" style={{ '--i': 1 } as React.CSSProperties}>
-        <AtalhosRapidosMobile />
+        <AtalhosRapidosMobile ano={ano} mes={mes} />
       </div>
       <div className="item-entra" style={{ '--i': 2 } as React.CSSProperties}>
         <FinancasDoMes agora={agora} />

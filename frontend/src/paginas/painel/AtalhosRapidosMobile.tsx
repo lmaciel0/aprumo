@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { SlidersHorizontal } from 'lucide-react'
 import { foco } from '../../layout/classesFoco'
-import { useMesSelecionado } from '../../layout/useMesSelecionado'
 import { usePreferencias } from '../../preferencias/usePreferencias'
 import { ATALHOS_PADRAO } from '../../preferencias/preferenciasStorage'
 import { CATALOGO_ATALHOS, type AtalhoInfo } from './atalhosCatalogo'
@@ -21,8 +20,9 @@ function getDestino(atalho: AtalhoInfo, busca: string): { pathname: string; sear
   }
 }
 
-export function AtalhosRapidosMobile() {
-  const { busca } = useMesSelecionado()
+/** Atalhos da Início. `ano` e `mes` são os que a tela mostra (o mês atual), não o `?ano=&mes=` da URL. */
+export function AtalhosRapidosMobile({ ano, mes }: { ano: number; mes: number }) {
+  const busca = `?ano=${ano}&mes=${mes}`
   const { preferencias } = usePreferencias()
   const [personalizarAberto, setPersonalizarAberto] = useState(false)
 

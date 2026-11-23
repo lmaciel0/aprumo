@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { endpoints } from '../../api/endpoints'
@@ -25,6 +25,7 @@ export function CartaoInicio({ ano, mes }: { ano: number; mes: number }) {
   const consulta = useQuery({
     queryKey: ['cartoes', ano, mes],
     queryFn: () => endpoints.cartoes.listar(ano, mes),
+    placeholderData: keepPreviousData,
   })
 
   if (consulta.isPending) {

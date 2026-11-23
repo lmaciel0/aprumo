@@ -287,6 +287,40 @@ describe('PainelPage', () => {
     expect(new URLSearchParams(consultas[0])).toEqual(new URLSearchParams({ ano: '2026', mes: '11' }))
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
+
+  it('os atalhos levam o mês atual, não o ?ano=&mes= da URL', async () => {
+    relogioEm('2026-11-15T15:00:00Z')
+    comSessao()
+    responderResumo()
+    renderizar('/?ano=2026&mes=10')
+
+    const atalhos = await screen.findByRole('region', { name: 'Acesso rápido' })
+    expect(within(atalhos).getByRole('link', { name: 'Cartões' })).toHaveAttribute('href', '/cartoes?ano=2026&mes=11')
+    expect(within(atalhos).getByRole('link', { name: '+ Despesa' })).toHaveAttribute(
+      'href',
+      '/lancamentos/novo?ano=2026&mes=11',
+    )
+    await screen.findByRole('region', { name: 'Sobra do mês' })
+  })
+
+  it('limita Próximas contas a 5 e oferece o link Ver todas para /financeiro', async () => {
+    comSessao()
+    const proximas = Array.from({ length: 6 }, (_, i) => ({
+      lancamentoId: 200 + i,
+      itemNome: `Conta ${i + 1}`,
+      categoriaNome: 'Moradia',
+      valor: '10.00',
+      vencimento: `2026-11-${String(20 + i).padStart(2, '0')}`,
+      atrasada: false,
+    }))
+    servidor.use(http.get('/api/resumo', () => HttpResponse.json({ ...resumo, proximas })))
+    renderizar()
+
+    const bloco = await screen.findByRole('region', { name: 'Próximas contas' })
+    expect(within(bloco).getAllByRole('listitem')).toHaveLength(5)
+    expect(within(bloco).queryByText('Conta 6')).not.toBeInTheDocument()
+    expect(within(bloco).getByRole('link', { name: 'Ver todas' })).toHaveAttribute('href', '/financeiro')
+  })
 })
 
 describe('PainelPage na virada do mês', () => {
