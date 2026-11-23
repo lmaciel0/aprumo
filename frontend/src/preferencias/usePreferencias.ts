@@ -10,6 +10,7 @@ const VALOR_FALLBACK: PreferenciasContextValor = {
   setBarraFixa: () => {},
   setDockRecolhida: () => {},
   setAtalhosMobile: () => {},
+  setCartaoInicioId: () => {},
   restaurarPadroes: () => {},
 }
 

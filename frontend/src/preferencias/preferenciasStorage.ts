@@ -11,6 +11,7 @@ export const PREFERENCIAS_PADRAO: PreferenciasUsuario = {
   barraFixa: true,
   dockRecolhida: false,
   atalhosMobile: ATALHOS_PADRAO,
+  cartaoInicioId: null,
 }
 
 const ATALHOS_VALIDOS: IdAtalhoMobile[] = [
@@ -46,6 +47,10 @@ function validarAtalhos(salvo: unknown): IdAtalhoMobile[] {
   return unicos.slice(0, 4)
 }
 
+function validarCartaoInicioId(salvo: unknown): number | null {
+  return typeof salvo === 'number' && Number.isInteger(salvo) && salvo > 0 ? salvo : null
+}
+
 export function lerPreferenciasSalvas(): PreferenciasUsuario {
   try {
     const salvo = localStorage.getItem(CHAVE_PREFERENCIAS)
@@ -64,6 +69,7 @@ export function lerPreferenciasSalvas(): PreferenciasUsuario {
         barraFixa: typeof parsed.barraFixa === 'boolean' ? parsed.barraFixa : PREFERENCIAS_PADRAO.barraFixa,
         dockRecolhida: typeof parsed.dockRecolhida === 'boolean' ? parsed.dockRecolhida : PREFERENCIAS_PADRAO.dockRecolhida,
         atalhosMobile: validarAtalhos(parsed.atalhosMobile),
+        cartaoInicioId: validarCartaoInicioId(parsed.cartaoInicioId),
       }
     }
 

@@ -19,4 +19,5 @@ export interface PreferenciasUsuario {
   barraFixa: boolean
   dockRecolhida: boolean
   atalhosMobile: IdAtalhoMobile[]
+  cartaoInicioId: number | null
 }

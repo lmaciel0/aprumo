@@ -23,6 +23,7 @@ describe('preferenciasStorage', () => {
       barraFixa: false,
       dockRecolhida: true,
       atalhosMobile: ['cartoes', 'orcamento', 'nova-receita', 'nova-nota'] as const,
+      cartaoInicioId: 5,
     }
     gravarPreferencias(custom as unknown as Parameters<typeof gravarPreferencias>[0])
     expect(lerPreferenciasSalvas()).toEqual(custom)
@@ -50,5 +51,38 @@ describe('preferenciasStorage', () => {
     )
     const lido = lerPreferenciasSalvas()
     expect(lido.atalhosMobile).toEqual(['novo-lancamento', 'cartoes', 'nova-receita', 'nova-nota'])
+  })
+
+  it('cartaoInicioId começa nulo', () => {
+    expect(lerPreferenciasSalvas().cartaoInicioId).toBeNull()
+  })
+
+  it('lê cartaoInicioId salvo', () => {
+    localStorage.setItem(CHAVE_PREFERENCIAS, JSON.stringify({ ...PREFERENCIAS_PADRAO, cartaoInicioId: 7 }))
+    expect(lerPreferenciasSalvas().cartaoInicioId).toBe(7)
+  })
+
+  it('descarta cartaoInicioId inválido', () => {
+    for (const invalido of ['7', -1, 2.5, 0]) {
+      localStorage.setItem(CHAVE_PREFERENCIAS, JSON.stringify({ ...PREFERENCIAS_PADRAO, cartaoInicioId: invalido }))
+      expect(lerPreferenciasSalvas().cartaoInicioId).toBeNull()
+    }
+  })
+
+  it('preferência antiga sem o campo continua válida', () => {
+    localStorage.setItem(
+      CHAVE_PREFERENCIAS,
+      JSON.stringify({
+        modoTema: 'escuro',
+        presetCor: 'lima',
+        layoutLargura: 'centralizado',
+        barraFixa: true,
+        dockRecolhida: false,
+        atalhosMobile: ['cartoes', 'orcamento', 'nova-receita', 'nova-nota'],
+      }),
+    )
+    const lido = lerPreferenciasSalvas()
+    expect(lido.cartaoInicioId).toBeNull()
+    expect(lido.atalhosMobile).toEqual(['cartoes', 'orcamento', 'nova-receita', 'nova-nota'])
   })
 })

@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { PreferenciasProvider } from './PreferenciasContext'
+import { CHAVE_PREFERENCIAS } from './preferenciasStorage'
 import { usePreferencias } from './usePreferencias'
 
 describe('usePreferencias', () => {
@@ -45,5 +46,18 @@ describe('usePreferencias', () => {
     })
     expect(result.current.preferencias.presetCor).toBe('azul')
     expect(result.current.preferencias.dockRecolhida).toBe(false)
+  })
+
+  it('setCartaoInicioId grava e restaurarPadroes limpa', () => {
+    const { result } = renderHook(() => usePreferencias(), { wrapper: PreferenciasProvider })
+    act(() => {
+      result.current.setCartaoInicioId(3)
+    })
+    expect(result.current.preferencias.cartaoInicioId).toBe(3)
+    expect(JSON.parse(localStorage.getItem(CHAVE_PREFERENCIAS)!).cartaoInicioId).toBe(3)
+    act(() => {
+      result.current.restaurarPadroes()
+    })
+    expect(result.current.preferencias.cartaoInicioId).toBeNull()
   })
 })
