@@ -97,7 +97,7 @@ Resumo de `docs/superpowers/plans/2026-11-12-painel-espacamento-primeira-dobra.m
 - Não aninhar card dentro de card. O bloco "Finanças do mês" é uma `<section>` sem `.card`; os quatro cards de dentro são os cards. Isso devolve largura útil (296 px em vez de 262 px de 360). A mensagem de erro do bloco é a exceção: leva `.card` para não ficar solta sobre o fundo.
 - A "Sobra do mês" deve caber inteira acima da dock inferior (que começa perto de y = 555 em 640 de altura). Resultado medido em produção: espaço de 20 px entre os blocos e sobra de y 383 a 530.
 - O cabeçalho da frase do dia cabe em uma linha em 360 px: o subtítulo "Sabedoria diária" some abaixo de `sm` (`hidden sm:inline`). O `flex-wrap` do cabeçalho permanece, porque em 320 px o selo e os três botões somam mais que a área útil.
-- A ordem dos blocos da tela inicial não muda sem pedido do dono.
+- A ordem dos blocos da tela inicial foi definida pelo dono em 2026-11-23: saudação e data, atalhos (só abaixo de `md`), Finanças do mês, Cartão, Onde mais gastou, meta e reflexão do dia. Não muda sem pedido do dono.
 - A dock flutuante cobre o fundo da tela: o conteúdo principal precisa ficar acima dela. Elementos fixos embaixo (como o aviso de saída em `frontend/src/App.tsx`) sobem `6.5rem + env(safe-area-inset-bottom)` no celular.
 
 ## Componentes existentes
@@ -127,7 +127,7 @@ Só o que existe hoje. Ícones: SVGs de `frontend/src/layout/icones.tsx` e compo
 
 ### Padrões recorrentes por módulo (`frontend/src/paginas`)
 
-- Painel (`painel`): `CardReflexao` (frase do dia), `AtalhosRapidosMobile` (grade de 4 atalhos configuráveis, `ModalPersonalizarAtalhos`), `FinancasDoMes`, `NotaFixada` (conteúdo somente leitura, caixinhas marcáveis).
+- Painel (`painel`): `CardReflexao` (frase do dia), `AtalhosRapidosMobile` (fileira de 4 atalhos configuráveis de 44 px, `ModalPersonalizarAtalhos`), `FinancasDoMes`, `CartaoInicio` (um cartão com fatura, uso do limite e troca de cartão) e `OndeMaisGastou` (as 3 maiores categorias, versão da Início). `NotaFixada` continua no código, mas a Início não a mostra.
 - Visão geral (`inicio`): `CardSobra` (fundo `--cor-principal`), `CardsTotais` (cards compactos com chip de variação), `GraficoResultado` (cores `--cor-grafico-*` e tabela equivalente para leitor de tela), `OndeMaisGastou` (barras por categoria), `ProximasContas`, `ResumoCartoes`.
 - Orçamento (`lancamentos`): `FaixaSaldo` (saldo grande no destaque), `ReceitasCard`, `GrupoCategoria` (linhas tocáveis, chip que alterna o status), `LancamentoForm` dentro de `Moldura` (tela cheia no celular, janela modal a partir de 768 px).
 - Cartões (`cartoes`): `CardCartao` (visual `cartao-premium` em `CardCartao.css`), `EditorCartao`.

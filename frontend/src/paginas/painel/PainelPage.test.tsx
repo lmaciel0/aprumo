@@ -5,6 +5,9 @@ import { Route, Routes } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { MetaApi, PontoSerie, ResumoResponse } from '../../api/tipos'
 import { META_API_SEM_PRAZO } from '../../teste/fixturesMetas'
+import { CARTOES_API, CATEGORIAS_API, RESUMO_API } from '../../teste/fixturesInicio'
+import { ATALHOS_PADRAO } from '../../preferencias/preferenciasStorage'
+import { CATALOGO_ATALHOS } from './atalhosCatalogo'
 import { AuthProvider } from '../../auth/AuthProvider'
 import { RotaProtegida } from '../../auth/RotaProtegida'
 import { comSessao, usuarioFicticio } from '../../teste/auth'
@@ -129,7 +132,8 @@ describe('PainelPage', () => {
     )
     renderizar()
 
-    const alerta = await screen.findByRole('alert')
+    // O bloco "Onde mais gastou" também usa o resumo e mostra o próprio aviso; o das finanças traz a mensagem do servidor.
+    const alerta = (await screen.findAllByRole('alert')).find((a) => within(a).queryByText('Falha no servidor.'))!
     expect(alerta).toHaveClass('card')
     expect(within(alerta).getByText('Falha no servidor.')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: /^(Bom dia|Boa tarde|Boa noite), Ana$/ })).toBeInTheDocument()
@@ -148,7 +152,7 @@ describe('PainelPage', () => {
 
     // O "Carregando…" da sessão também é um status; o do bloco só existe depois que a saudação aparece.
     expect(await screen.findByRole('heading', { level: 1, name: /, Ana$/ })).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent('Carregando')
+    expect(screen.getByRole('status', { name: 'Carregando as finanças…' })).toHaveTextContent('Carregando')
   })
 
   it('com resumo ok mostra os cartões e o link para /financeiro', async () => {
@@ -175,21 +179,73 @@ describe('PainelPage', () => {
     expect(screen.queryByPlaceholderText('Nova tarefa para hoje…')).not.toBeInTheDocument()
   })
 
-  it('não mostra seletor de mês nem blocos de tarefas, agenda, projetos ou notas, nem atalhos de acesso rápido', async () => {
+  it('não mostra seletor de mês nem blocos de tarefas, agenda, projetos ou notas', async () => {
     comSessao()
     responderResumo()
     renderizar()
 
     await screen.findByRole('region', { name: 'Sobra do mês' })
     expect(screen.queryByRole('button', { name: /mês/i })).not.toBeInTheDocument()
-    expect(screen.queryByRole('region', { name: 'Acesso rápido' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Personalizar atalhos' })).not.toBeInTheDocument()
     for (const bloco of [/tarefas/i, /agenda/i, /projetos/i, /notas/i]) {
       expect(screen.queryByRole('heading', { name: bloco })).not.toBeInTheDocument()
     }
   })
 
-  it('sem metas, não deixa bloco vazio entre a reflexão e as finanças', async () => {
+  it('atalhos aparecem na Início', async () => {
+    comSessao()
+    responderResumo()
+    renderizar()
+
+    const atalhos = await screen.findByRole('region', { name: 'Acesso rápido' })
+    for (const id of ATALHOS_PADRAO) {
+      expect(within(atalhos).getByRole('link', { name: CATALOGO_ATALHOS[id].rotulo })).toBeInTheDocument()
+    }
+    expect(within(atalhos).getByRole('button', { name: 'Personalizar atalhos' })).toBeInTheDocument()
+    await screen.findByRole('region', { name: 'Sobra do mês' })
+  })
+
+  it('blocos na ordem nova', async () => {
+    comSessao()
+    servidor.use(
+      http.get('/api/resumo', () => HttpResponse.json(RESUMO_API)),
+      http.get('/api/cartoes', () => HttpResponse.json(CARTOES_API)),
+      http.get('/api/categorias', () => HttpResponse.json(CATEGORIAS_API)),
+      http.get('/api/metas', () => HttpResponse.json([metaFicticia])),
+    )
+    renderizar()
+
+    const titulos = [
+      await screen.findByRole('region', { name: 'Acesso rápido' }),
+      await screen.findByRole('region', { name: 'Sobra do mês' }),
+      await screen.findByRole('heading', { level: 2, name: 'Cartão' }),
+      await screen.findByRole('heading', { level: 2, name: 'Onde mais gastou' }),
+      await screen.findByRole('region', { name: metaFicticia.nome }),
+      await screen.findByRole('heading', { level: 2, name: 'Reflexão do dia' }),
+    ]
+    titulos.slice(1).forEach((titulo, i) => {
+      expect(
+        titulos[i]!.compareDocumentPosition(titulo) & Node.DOCUMENT_POSITION_FOLLOWING,
+        `o bloco ${i} deve vir antes do ${i + 1}`,
+      ).toBeTruthy()
+    })
+  })
+
+  it('erro nos cartões não derruba o resto', async () => {
+    comSessao()
+    servidor.use(
+      http.get('/api/resumo', () => HttpResponse.json(RESUMO_API)),
+      http.get('/api/cartoes', () => HttpResponse.json({ erro: 'Falha no servidor.' }, { status: 500 })),
+      http.get('/api/categorias', () => HttpResponse.json(CATEGORIAS_API)),
+    )
+    renderizar()
+
+    expect(await screen.findByRole('region', { name: 'Sobra do mês' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 2, name: 'Onde mais gastou' })).toBeInTheDocument()
+    expect(await screen.findByRole('alert')).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Sobra do mês' })).toBeInTheDocument()
+  })
+
+  it('sem metas, não deixa bloco vazio na tela', async () => {
     responderResumo()
     comSessao()
     renderizar()
@@ -197,7 +253,7 @@ describe('PainelPage', () => {
     expect(document.querySelectorAll('.item-entra:empty')).toHaveLength(0)
   })
 
-  it('com meta, o widget entra escalonado entre a reflexão e as finanças', async () => {
+  it('com meta, o widget entra escalonado depois dos blocos de dinheiro', async () => {
     responderResumo()
     servidor.use(http.get('/api/metas', () => HttpResponse.json([metaFicticia])))
     comSessao()
@@ -206,7 +262,7 @@ describe('PainelPage', () => {
     // Espera o resumo terminar: uma consulta pendente cairia no handler do teste seguinte.
     await screen.findByRole('region', { name: 'Sobra do mês' })
     expect(widget).toHaveClass('item-entra')
-    expect(widget.style.getPropertyValue('--i')).toBe('2')
+    expect(widget.style.getPropertyValue('--i')).toBe('3')
   })
 
   it('o bloco de finanças não é um card em volta dos cards', async () => {

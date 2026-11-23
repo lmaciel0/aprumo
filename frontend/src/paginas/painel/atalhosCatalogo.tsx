@@ -67,7 +67,7 @@ export const CATALOGO_ATALHOS: Record<IdAtalhoMobile, AtalhoInfo> = {
     descricao: 'Planejamento e controle do mês',
     icone: (classe = 'size-5') => <DollarSign className={classe} />,
     tipo: 'link',
-    caminho: '/orcamento',
+    caminho: '/lancamentos',
     comMes: true,
   },
   relatorios: {
@@ -93,7 +93,7 @@ export const CATALOGO_ATALHOS: Record<IdAtalhoMobile, AtalhoInfo> = {
     descricao: 'Dashboard financeiro do mês',
     icone: (classe = 'size-5') => <LayoutGrid className={classe} />,
     tipo: 'link',
-    caminho: '/inicio',
+    caminho: '/financeiro',
     comMes: true,
   },
 }
