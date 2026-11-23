@@ -219,8 +219,7 @@ describe('AppShell abaixo de 1280 px', () => {
 
     const painel = screen.getByRole('dialog', { name: 'Menu' })
 
-    expect(painel).toHaveClass('superficie', 'rounded-2xl')
-    expect(painel.className).not.toContain('rounded-3xl')
+    expect(painel).toHaveClass('superficie', 'rounded-3xl')
     expect(painel).not.toHaveClass('border-r')
     expect(painel).not.toHaveClass('bg-[var(--cor-card)]')
   })

@@ -50,32 +50,6 @@ describe('FaixaSaldo', () => {
     expect(within(faixa).getByText('R$ 5.500,00')).toBeInTheDocument()
   })
 
-  it('faixa_e_card_neutro_sem_degrade_nem_fundo_de_acento', async () => {
-    responderSaldo(ativo)
-    renderComApp(<FaixaSaldo ano={2026} mes={11} />)
-
-    const faixa = await screen.findByRole('region', { name: /saldo/i })
-
-    expect(faixa).toHaveClass('card')
-    expect(faixa.outerHTML).not.toMatch(/gradient|font-extrabold|font-bold|bg-\[var\(--cor-principal\)\]|--cor-sobre-principal/)
-    expect(faixa.getAttribute('style') ?? '').not.toMatch(/background/)
-  })
-
-  it('saldo_e_o_numero_protagonista_em_peso_medio_na_cor_do_texto', async () => {
-    responderSaldo(ativo)
-    renderComApp(<FaixaSaldo ano={2026} mes={11} />)
-
-    const faixa = await screen.findByRole('region', { name: /saldo/i })
-    const saldo = within(faixa).getByText('R$ 5.322,44')
-
-    expect(saldo).toHaveClass('text-[28px]', 'md:text-[32px]', 'font-medium', 'text-[var(--cor-texto)]')
-    expect(saldo).not.toHaveClass('tracking-tight')
-    expect(within(faixa).getByText('Saldo em conta hoje')).toHaveClass('text-[var(--cor-secundario)]')
-    expect(within(faixa).getByText('Recebido no mês')).toHaveClass('text-[var(--cor-secundario)]')
-    expect(within(faixa).getByText('R$ 5.500,00')).toHaveClass('font-medium')
-    expect(faixa.querySelector('.border-t')).toHaveClass('border-[var(--cor-linha)]')
-  })
-
   it('mes_futuro_mostra_saldo_ao_fim_do_mes_e_nao_diz_hoje', async () => {
     responderSaldo(ativo)
     renderComApp(<FaixaSaldo ano={2026} mes={12} />)

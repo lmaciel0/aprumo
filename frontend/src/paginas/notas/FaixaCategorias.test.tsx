@@ -104,23 +104,6 @@ describe('FaixaCategorias', () => {
     await waitFor(() => expect(apagou).toBe(true))
   })
 
-  it('chips_de_filtro_usam_raio_de_chip_e_o_ponto_de_cor_continua_circulo', () => {
-    renderizar()
-
-    for (const nome of ['Todas', 'Sem categoria', '+ Categoria']) {
-      const chip = screen.getByRole('button', { name: nome })
-      expect(chip, nome).toHaveClass('rounded-md')
-      expect(chip, nome).not.toHaveClass('rounded-full')
-    }
-    // Chip da categoria e botão de editar formam um par: cantos de 6 px nas pontas externas.
-    expect(screen.getByRole('button', { name: 'Trabalho' })).toHaveClass('rounded-l-md')
-    expect(screen.getByRole('button', { name: 'Editar categoria Trabalho' })).toHaveClass('rounded-r-md')
-    for (const nome of ['Trabalho', 'Editar categoria Trabalho']) {
-      expect(screen.getByRole('button', { name: nome }).className, nome).not.toMatch(/rounded-[lr]-full/)
-    }
-    expect(screen.getByRole('button', { name: 'Trabalho' }).querySelector('span[aria-hidden]')).toHaveClass('rounded-full')
-  })
-
   it('categoriaSelecionadaFicaMarcadaComAriaPressed', async () => {
     const user = userEvent.setup()
     const { aoSelecionar } = renderizar(undefined, 2)
@@ -135,24 +118,5 @@ describe('FaixaCategorias', () => {
     expect(aoSelecionar).toHaveBeenCalledWith(1)
     await user.click(screen.getByRole('button', { name: 'Todas' }))
     expect(aoSelecionar).toHaveBeenCalledWith('todas')
-  })
-
-  it('o_chip_selecionado_e_texto_sobre_fundo_e_nao_o_acento', () => {
-    renderizar(undefined, 'todas')
-
-    const todas = screen.getByRole('button', { name: 'Todas' })
-    expect(todas).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-    expect(todas.className).not.toContain('bg-[var(--cor-principal)]')
-    expect(screen.getByRole('button', { name: 'Sem categoria' }).className).not.toContain('bg-[var(--cor-texto)]')
-  })
-
-  it('o_chip_da_categoria_e_o_seu_lapis_selecionados_andam_juntos_em_texto_sobre_fundo', () => {
-    renderizar(undefined, 1)
-
-    expect(screen.getByRole('button', { name: 'Trabalho' })).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-    expect(screen.getByRole('button', { name: 'Editar categoria Trabalho' })).toHaveClass(
-      'bg-[var(--cor-texto)]',
-      'text-[var(--cor-fundo)]',
-    )
   })
 })

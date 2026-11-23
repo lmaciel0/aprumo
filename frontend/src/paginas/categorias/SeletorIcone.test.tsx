@@ -41,12 +41,4 @@ describe('SeletorIcone', () => {
 
     expect(screen.getByPlaceholderText(/buscar ícone/i)).toBeInTheDocument()
   })
-
-  it('o_icone_selecionado_e_texto_sobre_fundo_e_nao_o_acento', () => {
-    render(<SeletorIcone valor="restaurante" aoMudar={vi.fn()} />)
-
-    const selecionado = screen.getByRole('radio', { name: /restaurante/i })
-    expect(selecionado).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-    expect(selecionado.className).not.toContain('bg-[var(--cor-principal)]')
-  })
 })

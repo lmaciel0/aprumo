@@ -274,7 +274,7 @@ function Formulario({ categorias, existente, mesInicial, aoFechar, aoSalvar, ite
         )}
       </div>
       <Segmentado legenda="Situação" nome="situacao" opcoes={SITUACOES} valor={status} aoMudar={setStatus} />
-      <div className="flex flex-col gap-3 rounded-[var(--raio-card)] bg-[var(--cor-card)] p-3">
+      <div className="flex flex-col gap-3 rounded-2xl bg-[var(--cor-card)] p-3">
         <label className="flex min-h-11 items-center justify-between gap-3 text-base font-medium">
           <span>Repetir nos próximos meses</span>
           <input
@@ -305,21 +305,21 @@ function Formulario({ categorias, existente, mesInicial, aoFechar, aoSalvar, ite
       </button>
       {existente !== undefined &&
         (confirmandoExclusao ? (
-          <div role="group" aria-label="Confirmar exclusão" className="flex flex-col gap-3 rounded-[var(--raio-card)] bg-[var(--cor-card)] p-3">
+          <div role="group" aria-label="Confirmar exclusão" className="flex flex-col gap-3 rounded-2xl bg-[var(--cor-card)] p-3">
             <p className="m-0 text-base font-medium">Excluir este lançamento?</p>
             <div className="flex gap-2">
               <button
                 type="button"
                 disabled={ocupado}
                 onClick={() => excluir.mutate(existente.id)}
-                className="min-h-11 rounded-[10px] bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-negativo)]"
+                className="min-h-11 rounded-full bg-[var(--cor-negativo)] px-5 text-base font-semibold text-[var(--cor-sobre-negativo)] disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-negativo)]"
               >
                 {excluir.isPending ? 'Excluindo…' : 'Sim, excluir'}
               </button>
               <button
                 type="button"
                 onClick={() => setConfirmandoExclusao(false)}
-                className="min-h-11 rounded-[10px] px-4 text-base font-medium focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
+                className="min-h-11 rounded-full px-4 text-base font-medium focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
               >
                 Cancelar
               </button>
@@ -329,7 +329,7 @@ function Formulario({ categorias, existente, mesInicial, aoFechar, aoSalvar, ite
           <button
             type="button"
             onClick={() => setConfirmandoExclusao(true)}
-            className="min-h-11 rounded-[10px] px-4 text-base font-semibold text-[var(--cor-negativo)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-negativo)]"
+            className="min-h-11 rounded-full px-4 text-base font-semibold text-[var(--cor-negativo)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-negativo)]"
           >
             Excluir
           </button>

@@ -30,31 +30,6 @@ describe('PreferenciasModal', () => {
     expect(screen.getByRole('button', { name: /restaurar padrões/i })).toBeInTheDocument()
   })
 
-  it('o modal tem 16 px de raio e o botão fechar usa raio de controle', () => {
-    render(
-      <PreferenciasProvider>
-        <PreferenciasModal aberta={true} aoFechar={() => {}} />
-      </PreferenciasProvider>
-    )
-    const dialogo = screen.getByRole('dialog', { name: /preferências/i })
-    expect(dialogo).toHaveClass('rounded-2xl')
-    expect(dialogo.innerHTML).not.toContain('rounded-3xl')
-    const fechar = screen.getAllByRole('button', { name: /fechar/i })[0]
-    expect(fechar).toHaveClass('rounded-[10px]')
-    expect(fechar).not.toHaveClass('rounded-full')
-  })
-
-  it('os presets de cor não selecionados têm contorno de 3:1', () => {
-    render(
-      <PreferenciasProvider>
-        <PreferenciasModal aberta={true} aoFechar={() => {}} />
-      </PreferenciasProvider>
-    )
-    const musgo = screen.getByRole('button', { name: /musgo/i })
-    expect(musgo).toHaveClass('border-[var(--cor-auth-campo-borda)]')
-    expect(musgo.className).not.toContain('border-[var(--cor-linha)]')
-  })
-
   it('chama aoFechar ao pressionar Escape', () => {
     const fechar = vi.fn()
     render(
@@ -80,7 +55,7 @@ describe('PreferenciasModal', () => {
     expect(fechar).toHaveBeenCalledTimes(2)
   })
 
-  it('permite selecionar modo escuro e preset musgo', () => {
+  it('permite selecionar modo escuro e preset lima', () => {
     render(
       <PreferenciasProvider>
         <PreferenciasModal aberta={true} aoFechar={() => {}} />
@@ -89,33 +64,7 @@ describe('PreferenciasModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /^escuro$/i }))
     expect(document.documentElement.dataset.tema).toBe('escuro')
 
-    fireEvent.click(screen.getByRole('button', { name: /^musgo$/i }))
-    expect(document.documentElement.dataset.preset).toBe('musgo')
-  })
-
-  it('lista exatamente os presets Coral, Musgo e Céu', () => {
-    render(
-      <PreferenciasProvider>
-        <PreferenciasModal aberta={true} aoFechar={() => {}} />
-      </PreferenciasProvider>
-    )
-    expect(screen.getByRole('button', { name: /^coral$/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /^musgo$/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /^céu$/i })).toBeInTheDocument()
-    for (const antigo of [/azul/i, /lima/i, /esmeralda/i, /índigo/i]) {
-      expect(screen.queryByRole('button', { name: antigo })).toBeNull()
-    }
-  })
-
-  it('o_preset_selecionado_e_texto_sobre_fundo_e_nao_o_acento', () => {
-    render(
-      <PreferenciasProvider>
-        <PreferenciasModal aberta={true} aoFechar={() => {}} />
-      </PreferenciasProvider>
-    )
-    const coral = screen.getByRole('button', { name: 'Coral' })
-    expect(coral).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-    expect(coral.className).not.toContain('bg-[var(--cor-principal)]')
-    expect(screen.getByRole('button', { name: 'Musgo' }).className).not.toContain('bg-[var(--cor-texto)]')
+    fireEvent.click(screen.getByRole('button', { name: /lima/i }))
+    expect(document.documentElement.dataset.preset).toBe('lima')
   })
 })

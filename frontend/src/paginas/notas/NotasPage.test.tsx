@@ -37,19 +37,6 @@ function renderizar(rota = '/notas') {
 }
 
 describe('NotasPage', () => {
-  it('esqueletoDeCarregamentoAnunciaOCarregamentoSemPulsarFora', async () => {
-    api([resumo(1, { titulo: 'Compras' })])
-    const { container } = renderizar()
-
-    const ocupado = container.querySelector('[aria-busy="true"]')
-    expect(ocupado).not.toBeNull()
-    expect(ocupado).toHaveTextContent('Carregando as notas')
-    for (const pulsante of container.querySelectorAll('.animate-pulse, [class*="animate-pulse"]')) {
-      expect(ocupado).toContainElement(pulsante as HTMLElement)
-    }
-    await screen.findByRole('link', { name: /Compras/ })
-  })
-
   it('listaCartoesComTituloPreviaECategoria', async () => {
     api(
       [resumo(1, { titulo: 'Compras', previa: 'Leite e pão', categoriaId: 5, atualizadoEm: '2026-10-30T14:00:00' })],
@@ -277,18 +264,5 @@ describe('NotasPage com estado de navegação { nova: true } (ação rápida do 
 
     await screen.findByText('Nenhuma nota ainda. Crie a primeira.')
     expect(corpos).toHaveLength(0)
-  })
-
-  it('nova_nota_e_a_acao_principal_em_coral_vivo_e_o_alfinete_fixado_e_texto_sobre_fundo', async () => {
-    api([resumo(1, { titulo: 'Compras', fixada: true })])
-    renderizar()
-
-    const nova = screen.getByRole('button', { name: 'Nova nota' })
-    expect(nova).toHaveClass('bg-[var(--cor-principal-fundo)]', 'text-[var(--cor-sobre-principal-fundo)]')
-    expect(nova.className).not.toContain('bg-[var(--cor-principal)]')
-
-    const alfinete = await screen.findByRole('button', { name: 'Tirar da tela inicial' })
-    expect(alfinete).toHaveClass('bg-[var(--cor-texto)]', 'text-[var(--cor-fundo)]')
-    expect(alfinete.className).not.toContain('bg-[var(--cor-principal)]')
   })
 })

@@ -286,16 +286,4 @@ describe('PaletaNavegacao', () => {
     await user.keyboard('{Control>}k{/Control}')
     expect(await screen.findByRole('dialog', { name: 'Ir para' })).toBeInTheDocument()
   })
-
-  it('a_opcao_ativa_usa_o_degrau_elevado_e_nao_o_acento', async () => {
-    const user = userEvent.setup()
-    renderizar()
-    await user.keyboard('{Control>}k{/Control}')
-
-    const [ativa, outra] = screen.getAllByRole('option') as [HTMLElement, HTMLElement]
-    expect(ativa).toHaveAttribute('aria-selected', 'true')
-    expect(ativa).toHaveClass('bg-[var(--cor-elevado)]', 'text-[var(--cor-texto)]')
-    expect(ativa.className).not.toContain('bg-[var(--cor-principal)]')
-    expect(outra.className).not.toContain('bg-[var(--cor-elevado)]')
-  })
 })

@@ -32,30 +32,20 @@ describe('TooltipResultado', () => {
     expect(semNbsp(resultado?.textContent ?? null)).toContain('R$ 200,00')
   })
 
-  it('resultado_negativo_leva_sinal_menos_seta_e_cor_neutra', () => {
+  it('resultado_negativo_leva_sinal_menos_e_cor_negativa', () => {
     const [ponto] = serieDoResultado([{ ...novembro, receitas: '100.00', receitasPrevistas: '0.00' }])
     render(<TooltipResultado ponto={ponto ?? null} />)
 
-    const valor = screen.getByTestId('tooltip-resultado-valor')
-    expect(semNbsp(valor.textContent)).toBe('−R$ 700,00')
-    expect(valor.className).not.toMatch(/cor-negativo|cor-positivo/)
-    expect(valor.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+    const valor = screen.getByText(/^− R\$/)
+    expect(semNbsp(valor.textContent)).toBe('− R$ 700,00')
+    expect(valor).toHaveClass('text-[var(--cor-negativo-texto)]')
   })
 
-  it('resultado_positivo_tambem_fica_na_cor_neutra_e_leva_seta', () => {
+  it('resultado_positivo_usa_a_cor_positiva', () => {
     const [ponto] = serieDoResultado([novembro])
     render(<TooltipResultado ponto={ponto ?? null} />)
 
-    const valor = screen.getByTestId('tooltip-resultado-valor')
-    expect(valor.className).not.toMatch(/cor-negativo|cor-positivo/)
-    expect(valor.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
-  })
-
-  it('resultado_zero_nao_leva_seta', () => {
-    const [ponto] = serieDoResultado([{ ...novembro, receitas: '800.00', receitasPrevistas: '0.00' }])
-    render(<TooltipResultado ponto={ponto ?? null} />)
-
-    expect(screen.getByTestId('tooltip-resultado-valor').querySelector('svg')).toBeNull()
+    expect(screen.getByTestId('tooltip-resultado-valor')).toHaveClass('text-[var(--cor-positivo-texto)]')
   })
 
   it('sem_ponto_devolve_null', () => {

@@ -23,7 +23,6 @@ interface ManifestoTwa {
   host: string
   startUrl: string
   themeColor: string
-  backgroundColor: string
   display: string
   minSdkVersion: number
   signingKey: { path: string; alias: string }
@@ -177,8 +176,7 @@ describe('android/twa-manifest.json', () => {
     expect(twa.packageId).toBe('br.com.useaprumo.app')
     expect(twa.host).toBe('app.useaprumo.com.br')
     expect(twa.startUrl).toBe('/')
-    expect(twa.themeColor).toBe('#14213D')
-    expect(twa.backgroundColor).toBe('#F4EDE0')
+    expect(twa.themeColor).toBe('#27187E')
     expect(twa.display).toBe('standalone')
   })
 

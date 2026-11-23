@@ -158,7 +158,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
   )
 
   const dockDesktop = (
-    <div className="superficie row-span-2 row-start-1 col-start-1 sticky top-3 flex h-[calc(100dvh-1.5rem)] flex-col overflow-hidden rounded-2xl">
+    <div className="superficie row-span-2 row-start-1 col-start-1 sticky top-3 flex h-[calc(100dvh-1.5rem)] flex-col overflow-hidden rounded-3xl">
       <DockLateral
         nomeUsuario={nomeUsuario}
         aoSair={aoSair}
@@ -171,7 +171,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
   // trocam, então cruzar 1280 px não remonta a rota nem perde o que foi digitado.
   return (
     <PaletaContext value={paleta}>
-      <div className="min-h-dvh bg-[var(--cor-fundo)]">
+      <div className="min-h-dvh" style={{ background: 'var(--fundo-degrade)' }}>
         <AvisoServidor />
         <div className={ehDesktop ? 'grid min-h-dvh grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-3 p-3' : undefined}>
           {ehDesktop ? dockDesktop : !ehCelular && barraSuperior}
@@ -187,7 +187,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
                 <div
                   aria-hidden="true"
                   data-testid="fundo-da-barra-fixa"
-                  className="pointer-events-none absolute -inset-x-3 -top-3 -bottom-5 -z-10 bg-[var(--cor-fundo)]"
+                  className="pointer-events-none absolute -inset-x-3 -top-3 -bottom-5 -z-10 bg-[var(--cor-fundo)]/60 backdrop-blur-md"
                   style={{
                     maskImage: 'linear-gradient(to bottom, black 85%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent)',
@@ -231,7 +231,7 @@ export function AppShell({ nomeUsuario, aoSair = () => undefined }: Props) {
               aria-modal="true"
               aria-label="Menu"
               onKeyDown={prenderFoco}
-              className="menu-painel superficie absolute inset-y-3 left-3 flex w-[min(20rem,calc(100vw-1.5rem))] flex-col gap-3 overflow-y-auto rounded-2xl p-3"
+              className="menu-painel superficie absolute inset-y-3 left-3 flex w-[min(20rem,calc(100vw-1.5rem))] flex-col gap-3 overflow-y-auto rounded-3xl p-3"
             >
               <div className="flex items-center justify-between gap-2 px-1 pb-2 border-b border-[var(--cor-linha)]">
                 <Logo />

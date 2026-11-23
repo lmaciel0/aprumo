@@ -11,7 +11,7 @@ const ANO_MINIMO = 2000
 const ANO_MAXIMO = 2100
 
 const botao =
-  'grid h-8 min-w-8 place-items-center rounded-[10px] text-[var(--cor-principal)] hover:bg-[var(--cor-fundo)] ' +
+  'grid h-8 min-w-8 place-items-center rounded-full text-[var(--cor-principal)] hover:bg-[var(--cor-fundo)] ' +
   'disabled:cursor-not-allowed disabled:text-[var(--cor-principal-clara)] disabled:hover:bg-transparent ' +
   'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]'
 
@@ -26,7 +26,7 @@ function SeletorAno({ ano, irParaAno }: SeletorAnoProps) {
     <div
       role="group"
       aria-label="Ano"
-      className="flex items-center gap-1 rounded-[10px] bg-[var(--cor-card)] px-1 py-0.5 text-sm font-semibold shadow-sm"
+      className="flex items-center gap-1 rounded-full bg-[var(--cor-card)] px-1 py-0.5 text-sm font-semibold shadow-sm"
     >
       <button
         type="button"
@@ -75,7 +75,7 @@ export function RelatoriosPage() {
         <button
           type="button"
           onClick={() => void consulta.refetch()}
-          className="rounded-[10px] border border-[var(--cor-linha)] bg-[var(--cor-elevado)] px-4 py-2 text-sm font-semibold text-[var(--cor-texto)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
+          className="rounded-full bg-[var(--cor-principal)] px-4 py-2 text-sm font-semibold text-[var(--cor-sobre-principal)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--cor-principal)]"
         >
           Tentar de novo
         </button>
@@ -109,7 +109,7 @@ export function RelatoriosPage() {
     <>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3 md:mb-5">
         <div className="sr-only md:not-sr-only">
-          <h1 className="m-0 text-[28px] font-medium tracking-tight">Relatórios</h1>
+          <h1 className="m-0 text-[28px] font-bold tracking-tight">Relatórios</h1>
           <p className="m-0 mt-1 text-[13px] text-[var(--cor-mutado)]">O ano inteiro, item por item, mês a mês.</p>
         </div>
         <SeletorAno ano={ano} irParaAno={(novoAno) => irPara(novoAno, mes)} />

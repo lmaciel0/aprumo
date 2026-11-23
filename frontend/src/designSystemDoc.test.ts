@@ -35,8 +35,8 @@ function tokensCor(bloco: string): Map<string, string> {
 const claro = tokensCor(blocoCss(':root'))
 const escuro = tokensCor(blocoCss(":root[data-tema='escuro']"))
 
-const PRESETS = ['musgo', 'ceu']
-const TOKENS_DO_PRESET = ['cor-principal', 'cor-sobre-principal', 'cor-principal-fundo']
+const PRESETS = ['lima', 'esmeralda', 'indigo']
+const TOKENS_DO_PRESET = ['cor-principal', 'cor-principal-clara', 'cor-principal-fim']
 
 /** Linhas de tabela entre `## de` e `## ate`, como células aparadas e sem crases. */
 function linhasDaTabela(de: string, ate: string): string[][] {
@@ -113,7 +113,7 @@ describe('DESIGN_SYSTEM.md contra o index.css', () => {
         ...TOKENS_DO_PRESET.map((t) => valorNoPreset('claro', preset, t)),
         ...TOKENS_DO_PRESET.map((t) => valorNoPreset('escuro', preset, t)),
       ]
-      const rotulos = ['Principal (claro)', 'Sobre principal (claro)', 'Fundo (claro)', 'Principal (escuro)', 'Sobre principal (escuro)', 'Fundo (escuro)']
+      const rotulos = ['Principal (claro)', 'Clara (claro)', 'Fim (claro)', 'Principal (escuro)', 'Clara (escuro)', 'Fim (escuro)']
       return esperado.flatMap((valor, i) => (linha[i + 1] === valor ? [] : [`${preset} ${rotulos[i]}: css=${valor}, doc=${linha[i + 1]}`]))
     })
     expect(divergentes, `presets divergentes:\n${divergentes.join('\n')}`).toEqual([])

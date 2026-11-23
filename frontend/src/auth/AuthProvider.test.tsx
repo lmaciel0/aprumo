@@ -303,7 +303,6 @@ describe('AuthProvider: re-renderização', () => {
       </AuthProvider>,
     )
     await screen.findByText('pronto')
-    await act(async () => {}) // descarrega efeitos passivos pendentes antes de medir
     const antes = renders
 
     await userEvent.click(screen.getByRole('button', { name: 'ir' }))

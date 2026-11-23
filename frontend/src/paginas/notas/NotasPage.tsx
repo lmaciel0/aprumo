@@ -13,14 +13,11 @@ const grade = 'm-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-c
 
 function Esqueleto() {
   return (
-    <div aria-busy="true">
-      <span className="sr-only">Carregando as notas…</span>
-      <ul aria-hidden="true" className={grade}>
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <li key={i} className="h-32 rounded-[var(--raio-card)] bg-[var(--cor-card)] motion-safe:animate-pulse" />
-        ))}
-      </ul>
-    </div>
+    <ul aria-hidden="true" className={grade}>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <li key={i} className="h-32 rounded-[var(--raio-card)] bg-[var(--cor-card)] motion-safe:animate-pulse" />
+      ))}
+    </ul>
   )
 }
 
@@ -111,12 +108,12 @@ export function NotasPage() {
   return (
     <div className="flex min-w-0 flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="m-0 text-[28px] font-medium tracking-tight">Notas</h1>
+        <h1 className="m-0 text-[28px] font-bold tracking-tight">Notas</h1>
         <button
           type="button"
           disabled={criar.isPending}
           onClick={novaNota}
-          className={`min-h-11 cursor-pointer rounded-[10px] bg-[var(--cor-principal-fundo)] px-5 text-sm font-semibold text-[var(--cor-sobre-principal-fundo)] transition-opacity duration-200 hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none ${foco}`}
+          className={`min-h-11 cursor-pointer rounded-full bg-[var(--cor-principal)] px-5 text-sm font-semibold text-[var(--cor-sobre-principal)] transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none ${foco}`}
         >
           Nova nota
         </button>

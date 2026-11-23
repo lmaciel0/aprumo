@@ -101,7 +101,7 @@ export function BotaoGoogle({
       ref={alvo}
       data-testid="botao-google"
       style={{ colorScheme: 'light' }}
-      className="flex min-h-11 justify-center overflow-hidden rounded-[10px]"
+      className="flex min-h-11 justify-center overflow-hidden rounded-full"
     />
   )
 }

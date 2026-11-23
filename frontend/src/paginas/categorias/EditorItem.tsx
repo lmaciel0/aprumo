@@ -118,7 +118,7 @@ export function EditorItem({ categoria, existente, aoFechar }: Props) {
           }}
         />
         {categoria.tipo !== 'RECEITA' && (
-          <div className="flex flex-col gap-3 rounded-[var(--raio-card)] bg-[var(--cor-card)] p-3">
+          <div className="flex flex-col gap-3 rounded-2xl bg-[var(--cor-card)] p-3">
             <label className={classeCaixa}>
               <span>É cartão de crédito</span>
               <input
@@ -150,7 +150,7 @@ export function EditorItem({ categoria, existente, aoFechar }: Props) {
           </div>
         )}
         {existente !== undefined && (
-          <div className="flex flex-col gap-1 rounded-[var(--raio-card)] bg-[var(--cor-card)] p-3">
+          <div className="flex flex-col gap-1 rounded-2xl bg-[var(--cor-card)] p-3">
             <label className={classeCaixa}>
               <span>{categoria.tipo === 'RECEITA' ? 'Arquivar esta receita' : 'Arquivar este item'}</span>
               <input

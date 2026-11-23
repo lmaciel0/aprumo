@@ -109,13 +109,13 @@ export function SeletorItem({
         <button
           type="button"
           onClick={() => setCriando(true)}
-          className="min-h-11 self-start rounded-[10px] px-3 text-sm font-semibold text-[var(--cor-principal)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
+          className="min-h-11 self-start rounded-full px-3 text-sm font-semibold text-[var(--cor-principal)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
         >
           {textoCriar}
         </button>
       )}
       {criando && (
-        <div className="flex flex-col gap-3 rounded-[var(--raio-card)] bg-[var(--cor-fundo)] p-3">
+        <div className="flex flex-col gap-3 rounded-2xl bg-[var(--cor-fundo)] p-3">
           <CampoTexto
             rotulo={rotuloNovo}
             value={nome}
@@ -138,7 +138,7 @@ export function SeletorItem({
             <button
               type="button"
               onClick={cancelar}
-              className="min-h-11 rounded-[10px] px-4 text-base font-medium focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
+              className="min-h-11 rounded-full px-4 text-base font-medium focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--cor-principal)]"
             >
               Cancelar
             </button>

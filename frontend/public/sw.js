@@ -2,7 +2,7 @@
 // Regra de ouro: NUNCA servir o HTML do app nem JS do cache (senão a aba ficaria presa numa versão antiga depois de
 // um deploy). Só a página offline e o ícone dela ficam em cache; a API e todo o resto vão direto para a rede.
 // Ao mudar offline.html ou icon-192.png, subir a versão do cache (v2, v3...): o activate apaga os caches de outro nome.
-const CACHE = 'aprumo-offline-v2'
+const CACHE = 'aprumo-offline-v1'
 const PAGINA_OFFLINE = '/offline.html'
 const ARQUIVOS = [PAGINA_OFFLINE, '/icon-192.png']
 

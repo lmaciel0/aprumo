@@ -3,25 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sem conexão · Aprumo</title>
+        <title>Sem conexão · Aprumo</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!-- Página independente: sem JS (a CSP bloqueia script inline, então não dá para ler o tema salvo: segue o tema do sistema por prefers-color-scheme) e com cores literais, espelhando src/index.css. -->
+    <!-- Página independente: sem JS (a CSP bloqueia script inline, então não dá para ler o tema salvo: só o claro, que é o padrão do app) e com cores literais, espelhando src/index.css. -->
     <style>
       :root {
-        --fundo: #f4ede0;
-        --texto: #14213d;
-        --secundario: #3a4459;
-        --acao: #ff6b5b;
-        --sobre-acao: #14213d;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --fundo: #141415;
-          --texto: #ededed;
-          --secundario: #a1a1a6;
-          --acao: #ff6b5b;
-          --sobre-acao: #141415;
-        }
+        --fundo: #f7f7ff;
+        --texto: #16123a;
+        --mutado: #706e8a;
+        --principal: #27187e;
+        --sobre-principal: #fff;
       }
       * {
         box-sizing: border-box;
@@ -56,7 +47,7 @@
       }
       p {
         margin: 0;
-        color: var(--secundario);
+        color: var(--mutado);
       }
       a {
         display: inline-flex;
@@ -67,8 +58,8 @@
         margin-top: 8px;
         padding: 0 24px;
         border-radius: 10px;
-        background: var(--acao);
-        color: var(--sobre-acao);
+        background: var(--principal);
+        color: var(--sobre-principal);
         font-weight: 600;
         text-decoration: none;
         transition: opacity 150ms;

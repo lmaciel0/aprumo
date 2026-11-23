@@ -1,6 +1,4 @@
 import { screen } from '@testing-library/react'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import type { MetaApi } from '../../api/tipos'
@@ -34,30 +32,6 @@ describe('WidgetMetaInicio', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  it('meta não atingida por pouco (995 de 1000) mostra 99%, nunca 100%', async () => {
-    servidor.use(
-      http.get('/api/metas', () =>
-        HttpResponse.json([
-          {
-            ...metaExemplo,
-            valorAlvo: '1000.00',
-            valorGuardado: '995.00',
-            percentualConcluido: '0.9950',
-            valorRestante: '5.00',
-          },
-        ]),
-      ),
-    )
-
-    renderComApp(<WidgetMetaInicio />, '/')
-
-    expect(await screen.findByText('99%')).toBeInTheDocument()
-    expect(screen.queryByText('100%')).toBeNull()
-    const barra = screen.getByRole('progressbar')
-    expect(barra).toHaveAttribute('aria-valuenow', '99')
-    expect((barra.firstElementChild as HTMLElement).style.width).toBe('99%')
-  })
-
   it('renderiza card compacto com a meta mais relevante e barra de progresso', async () => {
     servidor.use(http.get('/api/metas', () => HttpResponse.json([metaExemplo])))
 
@@ -72,34 +46,7 @@ describe('WidgetMetaInicio', () => {
     expect(link).toHaveAttribute('href', '/metas')
   })
 
-  it('o ícone fica num tile elevado com o ícone em cor de texto, sem degradê', async () => {
-    servidor.use(http.get('/api/metas', () => HttpResponse.json([metaExemplo])))
-
-    const { container } = renderComApp(<WidgetMetaInicio />, '/')
-
-    await screen.findByRole('heading', { name: 'Reserva de Emergência' })
-    const tile = container.querySelector('svg')?.parentElement
-    expect(tile?.className).toContain('bg-[var(--cor-elevado)]')
-    expect(tile?.className).toContain('text-[var(--cor-texto)]')
-    expect(tile?.className).not.toContain('--cor-sobre-')
-    expect(tile?.getAttribute('style') ?? '').not.toContain('gradient')
-  })
-
-  it('a barra usa a cor de dinheiro guardado e o percentual o tom secundário', async () => {
-    servidor.use(http.get('/api/metas', () => HttpResponse.json([metaExemplo])))
-
-    renderComApp(<WidgetMetaInicio />, '/')
-
-    await screen.findByRole('heading', { name: 'Reserva de Emergência' })
-    const barra = screen.getByRole('progressbar')
-    expect(barra.className).toContain('bg-[var(--cor-elevado)]')
-    const preenchimento = barra.firstElementChild as HTMLElement
-    expect(preenchimento.className).toContain('bg-[var(--cor-grafico-receitas)]')
-    expect(preenchimento.style.width).toBe('45%')
-    expect(screen.getByText('45%').className).toContain('text-[var(--cor-secundario)]')
-  })
-
-  it('meta concluída usa barra positiva, texto de status e nada de emoji', async () => {
+  it('meta concluída mostra a barra cheia', async () => {
     servidor.use(
       http.get('/api/metas', () =>
         HttpResponse.json([
@@ -120,28 +67,31 @@ describe('WidgetMetaInicio', () => {
     const barra = screen.getByRole('progressbar')
     expect(barra).toHaveAttribute('aria-valuenow', '100')
     const preenchimento = barra.firstElementChild as HTMLElement
-    expect(preenchimento.className).toContain('bg-[var(--cor-positivo)]')
     expect(preenchimento.style.width).toBe('100%')
-    const status = screen.getByText('Concluída')
-    expect(status.className).toContain('text-[var(--cor-positivo-texto)]')
-    expect(status.textContent).toBe('Concluída')
+    expect(screen.getByText('100%')).toBeInTheDocument()
+    expect(screen.queryByText('120%')).toBeNull()
   })
 
-  it('o código não usa paleta crua nem degradê em classe', () => {
-    const arquivo = readFileSync(resolve(process.cwd(), 'src/paginas/metas/WidgetMetaInicio.tsx'), 'utf8')
-
-    expect(arquivo).not.toMatch(/\b(emerald|sky|amber|red|blue)-\d/)
-    expect(arquivo).not.toMatch(/(black|white)\//)
-    expect(arquivo).not.toMatch(/gradient/)
-    expect(arquivo).not.toMatch(/dark:/)
-  })
-
-  it('o atalho para /metas tem alvo de 44 px', async () => {
-    servidor.use(http.get('/api/metas', () => HttpResponse.json([metaExemplo])))
+  it('meta não atingida por pouco (995 de 1000) mostra 99%, nunca 100%', async () => {
+    servidor.use(
+      http.get('/api/metas', () =>
+        HttpResponse.json([
+          {
+            ...metaExemplo,
+            valorAlvo: '1000.00',
+            valorGuardado: '995.00',
+            percentualConcluido: '0.9950',
+            valorRestante: '5.00',
+          },
+        ]),
+      ),
+    )
 
     renderComApp(<WidgetMetaInicio />, '/')
 
-    const link = await screen.findByRole('link', { name: /ver metas/i })
-    expect(link.className).toContain('size-11')
+    await screen.findByRole('heading', { name: 'Reserva de Emergência' })
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '99')
+    expect(screen.getByText('99%')).toBeInTheDocument()
+    expect(screen.queryByText('100%')).toBeNull()
   })
 })
