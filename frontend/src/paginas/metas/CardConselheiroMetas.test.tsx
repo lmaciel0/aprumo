@@ -159,4 +159,19 @@ describe('CardConselheiroMetas', () => {
     ).toBeInTheDocument()
     expect(screen.queryByRole('heading', { level: 3 })).toBeNull()
   })
+
+  it('não usa paleta crua do Tailwind e aplica --cor-positivo-texto nos valores sugeridos', async () => {
+    servidor.use(
+      http.get('/api/metas/conselheiro', () => HttpResponse.json(CONSELHEIRO_API)),
+    )
+
+    const { container } = renderComApp(<CardConselheiroMetas ano={2026} mes={10} />)
+
+    await screen.findByRole('heading', { name: /conselheiro de metas/i })
+    expect(container.innerHTML).not.toMatch(
+      /\b(?:bg|text|border|from|to)-(?:emerald|green|red|amber|blue|sky|slate|gray)-\d/,
+    )
+    expect(screen.getByText(/\+\s*R\$\s*461,54/)).toHaveClass('text-[var(--cor-positivo-texto)]')
+    expect(screen.getByText(/\+\s*R\$\s*300,00/)).toHaveClass('text-[var(--cor-positivo-texto)]')
+  })
 })

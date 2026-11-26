@@ -82,7 +82,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
                     </div>
                   </div>
 
-                  <span className="shrink-0 pl-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="shrink-0 pl-2 text-xs font-bold text-[var(--cor-positivo-texto)]">
                     + {formatarMoeda(sugestao.valorSugerido)}
                   </span>
                 </div>
@@ -130,9 +130,7 @@ export function CardConselheiroMetas({ ano, mes, className = '' }: Readonly<Prop
         {/* Cabeçalho do Card */}
         <div className="flex items-center justify-between gap-2 border-b border-[var(--cor-linha)]/60 pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-              <Sparkles className="size-4" />
-            </div>
+            <Sparkles className="size-4 shrink-0 text-[var(--cor-mutado)]" aria-hidden="true" />
             <div>
               <h2
                 id="titulo-conselheiro-metas"
