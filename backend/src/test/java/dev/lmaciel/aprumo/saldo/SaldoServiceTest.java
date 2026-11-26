@@ -49,7 +49,6 @@ class SaldoServiceTest extends IntegracaoTest {
 
         assertThat(s.ativo()).isFalse();
         assertThat(s.saldo()).isEqualByComparingTo("0.00");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("0.00");
     }
 
     @Test
@@ -61,7 +60,6 @@ class SaldoServiceTest extends IntegracaoTest {
 
         assertThat(s.ativo()).isTrue();
         assertThat(s.saldo()).isEqualByComparingTo("5322.44");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("5500.00");
     }
 
     @Test
@@ -74,7 +72,6 @@ class SaldoServiceTest extends IntegracaoTest {
         SaldoMes novembro = saldos.saldo(2026, 11, u);
 
         assertThat(dezembro.saldo()).isEqualByComparingTo("5422.44");
-        assertThat(dezembro.recebidoNoMes()).isEqualByComparingTo("100.00");
         assertThat(novembro.saldo()).isEqualByComparingTo("5322.44");
     }
 
@@ -87,7 +84,6 @@ class SaldoServiceTest extends IntegracaoTest {
 
         assertThat(s.ativo()).isTrue();
         assertThat(s.saldo()).isEqualByComparingTo("5322.44");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("0.00");
     }
 
     @Test
@@ -116,7 +112,6 @@ class SaldoServiceTest extends IntegracaoTest {
         SaldoMes s = saldos.saldo(2026, 11, dono);
 
         assertThat(s.saldo()).isEqualByComparingTo("5322.44");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("5500.00");
     }
 
     @Test
@@ -130,11 +125,10 @@ class SaldoServiceTest extends IntegracaoTest {
 
         assertThat(s.ativo()).isTrue();
         assertThat(s.saldo()).isEqualByComparingTo("5422.44");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("0.00");
     }
 
     @Test
-    void receitaPrevistaNaoAlteraSaldoNemRecebido() throws Exception {
+    void receitaPrevistaNaoAlteraSaldo() throws Exception {
         UsuarioLogado u = cadastrar(DONO);
         cenarioDeNovembro();
         criarLancamento(criarItem(DONO, "Receitas", "Salário extra"), 2026, 11, "742.00", "PREVISTO");
@@ -142,7 +136,6 @@ class SaldoServiceTest extends IntegracaoTest {
         SaldoMes s = saldos.saldo(2026, 11, u);
 
         assertThat(s.saldo()).isEqualByComparingTo("5322.44");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("5500.00");
     }
 
     @Test
@@ -154,7 +147,6 @@ class SaldoServiceTest extends IntegracaoTest {
         SaldoMes s = saldos.saldo(2026, 11, u);
 
         assertThat(s.saldo()).isEqualByComparingTo("-207.07");
-        assertThat(s.recebidoNoMes()).isEqualByComparingTo("100.00");
     }
 
     @Test
