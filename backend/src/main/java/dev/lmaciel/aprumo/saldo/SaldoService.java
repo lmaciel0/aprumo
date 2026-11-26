@@ -51,12 +51,11 @@ public class SaldoService {
     public SaldoMes saldo(int ano, int mes, UsuarioLogado usuario) {
         int indice = new MesAno(ano, mes).indice();
         if (indice < inicio.indice()) {
-            return new SaldoMes(false, ZERO, ZERO);
+            return new SaldoMes(false, ZERO);
         }
         List<TotalTipo> acumulado = lancamentos.totaisPagosPorTipo(usuario.id(), inicio.indice(), indice);
-        List<TotalTipo> doMes = lancamentos.totaisPagosPorTipo(usuario.id(), indice, indice);
         BigDecimal saldo = total(acumulado, TipoCategoria.RECEITA).subtract(total(acumulado, TipoCategoria.DESPESA));
-        return new SaldoMes(true, saldo, total(doMes, TipoCategoria.RECEITA));
+        return new SaldoMes(true, saldo);
     }
 
     private static BigDecimal total(List<TotalTipo> totais, TipoCategoria tipo) {

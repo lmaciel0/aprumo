@@ -33,7 +33,7 @@ class SaldoControllerTest extends IntegracaoTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ativo").value(true))
                 .andExpect(jsonPath("$.saldo").value("5500.00"))
-                .andExpect(jsonPath("$.recebidoNoMes").value("5500.00"));
+                .andExpect(jsonPath("$.recebidoNoMes").doesNotExist());
     }
 
     @Test

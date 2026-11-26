@@ -224,7 +224,6 @@ describe('LancamentosPage', () => {
         return HttpResponse.json({
           ativo: true,
           saldo: status === 'PAGO' ? '6242.00' : '5500.00',
-          recebidoNoMes: status === 'PAGO' ? '6242.00' : '5500.00',
         })
       }),
       http.patch('/api/lancamentos/:id/status', () => {
@@ -237,12 +236,12 @@ describe('LancamentosPage', () => {
     const faixa = await screen.findByRole('region', { name: /saldo/i })
     const receitas = await screen.findByRole('region', { name: 'Receitas' })
     expect(faixa.compareDocumentPosition(receitas) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    await waitFor(() => expect(within(faixa).getAllByText('R$ 5.500,00')).toHaveLength(2))
+    await waitFor(() => expect(within(faixa).getByText('R$ 5.500,00')).toBeInTheDocument())
     expect(consultasSaldo).toBe(1)
 
     await userEvent.click(screen.getByRole('button', { name: /Camila.*A receber/ }))
 
-    await waitFor(() => expect(within(faixa).getAllByText('R$ 6.242,00')).toHaveLength(2))
+    await waitFor(() => expect(within(faixa).getByText('R$ 6.242,00')).toBeInTheDocument())
     expect(consultasSaldo).toBe(2)
   })
 })

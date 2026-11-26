@@ -9,37 +9,27 @@ interface Props {
 }
 
 /** Medidas compartilhadas entre a faixa e o esqueleto, para a página não pular quando o saldo chega. */
-const medidas = 'flex flex-col gap-3 rounded-[var(--raio-card)] px-5 py-4 sm:flex-row sm:items-center sm:justify-between'
+const medidas = 'rounded-[var(--raio-card)] px-5 py-4'
 
 interface MioloProps {
   rotulo: string
   saldo: string
-  recebido: string
   'aria-hidden'?: boolean
 }
 
-/** Os dois blocos da faixa: saldo à esquerda, recebido no mês à direita (sob o saldo no celular). */
-function Miolo({ rotulo, saldo, recebido, 'aria-hidden': oculto }: MioloProps) {
+/** Conteúdo da faixa: rótulo e saldo em conta, compartilhado com o esqueleto para manter a mesma altura. */
+function Miolo({ rotulo, saldo, 'aria-hidden': oculto }: MioloProps) {
   return (
-    <>
-      <div aria-hidden={oculto}>
-        <p className="m-0 text-xs font-semibold">{rotulo}</p>
-        <p className="valor m-0 text-[30px] leading-[1.1] font-extrabold tracking-tight">{formatarMoeda(saldo)}</p>
-      </div>
-      <div
-        aria-hidden={oculto}
-        className="border-t border-[color-mix(in_srgb,currentColor_30%,transparent)] pt-3 sm:border-t-0 sm:pt-0 sm:text-right"
-      >
-        <p className="m-0 text-xs font-semibold">Recebido no mês</p>
-        <p className="valor m-0 text-lg font-bold">{formatarMoeda(recebido)}</p>
-      </div>
-    </>
+    <div aria-hidden={oculto}>
+      <p className="m-0 text-xs font-semibold">{rotulo}</p>
+      <p className="valor m-0 text-[30px] leading-[1.1] font-extrabold tracking-tight">{formatarMoeda(saldo)}</p>
+    </div>
   )
 }
 
 /**
- * Faixa do saldo no topo do Orçamento: saldo em conta (só lançamentos pagos) à esquerda e o recebido no mês à direita;
- * empilha no celular. Fica escondida antes do mês de início do cálculo e se a consulta falhar (a página segue usável).
+ * Faixa do saldo no topo do Orçamento: saldo em conta (só lançamentos pagos).
+ * Fica escondida antes do mês de início do cálculo e se a consulta falhar (a página segue usável).
  */
 export function FaixaSaldo({ ano, mes }: Props) {
   const consulta = useQuery({
@@ -58,7 +48,7 @@ export function FaixaSaldo({ ano, mes }: Props) {
         aria-busy="true"
         className={`${medidas} esqueleto-shimmer mb-3 text-transparent`}
       >
-        <Miolo rotulo="Saldo em conta hoje" saldo="0" recebido="0" aria-hidden />
+        <Miolo rotulo="Saldo em conta hoje" saldo="0" aria-hidden />
       </div>
     )
   }
@@ -74,7 +64,7 @@ export function FaixaSaldo({ ano, mes }: Props) {
       className={`${medidas} mb-3 text-[var(--cor-sobre-principal)] shadow-[var(--sombra-flutuante)]`}
       style={{ background: 'linear-gradient(120deg, var(--cor-principal), var(--cor-principal-fim))' }}
     >
-      <Miolo rotulo={rotulo} saldo={consulta.data.saldo} recebido={consulta.data.recebidoNoMes} />
+      <Miolo rotulo={rotulo} saldo={consulta.data.saldo} />
     </section>
   )
 }

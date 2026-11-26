@@ -175,7 +175,6 @@ export interface PontoSerie {
 export interface SaldoResponse {
   ativo: boolean
   saldo: string
-  recebidoNoMes: string
 }
 
 export interface ResumoResponse {
