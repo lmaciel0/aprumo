@@ -1,7 +1,8 @@
 // @vitest-environment node
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath } from 'node:url'
-import { http, passthrough } from 'msw'
-import { createServer, resolveConfig, type PluginOption, type ViteDevServer } from 'vite'
+import { http, HttpResponse, passthrough, type HttpHandler } from 'msw'
+import { createServer, resolveConfig, type Connect, type PluginOption, type ViteDevServer } from 'vite'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { usuarioFicticio } from '../src/teste/auth'
 import { servidor } from '../src/teste/servidor'
@@ -105,4 +106,119 @@ describe('apiFalsa E2E', () => {
     },
     10_000,
   )
+})
+
+type MiddlewareApi = (
+  req: Connect.IncomingMessage,
+  res: ServerResponse,
+  next: Connect.NextFunction,
+) => Promise<void> | void
+
+function criarMiddleware(handlers: HttpHandler[]): MiddlewareApi {
+  let middlewareCapturado: MiddlewareApi | undefined
+  const servidorFalso = {
+    middlewares: {
+      use(_caminho: string, fn: Connect.NextHandleFunction) {
+        middlewareCapturado = fn as unknown as MiddlewareApi
+      },
+    },
+    ssrLoadModule: async () => ({ handlersDev: handlers }),
+  } as unknown as ViteDevServer
+
+  const plugin = apiFalsa()
+  if (typeof plugin.configureServer !== 'function') {
+    throw new Error('apiFalsa() deve expor configureServer como função')
+  }
+  const configurar = plugin.configureServer as (server: ViteDevServer) => unknown
+  configurar(servidorFalso)
+
+  if (!middlewareCapturado) {
+    throw new Error('Middleware /api não foi registrado')
+  }
+  return middlewareCapturado
+}
+
+async function invocarMiddleware(
+  handlers: HttpHandler[],
+  reqParcial: Partial<IncomingMessage> & { originalUrl?: string },
+) {
+  const middleware = criarMiddleware(handlers)
+  const setHeader = vi.fn()
+  const end = vi.fn()
+  const next = vi.fn()
+  const req = {
+    method: 'GET',
+    url: '/',
+    headers: {},
+    ...reqParcial,
+  } as unknown as Connect.IncomingMessage
+  const res = {
+    statusCode: 200,
+    setHeader,
+    end,
+  } as unknown as ServerResponse
+
+  await middleware(req, res, next)
+  return { res, setHeader, end, next }
+}
+
+describe('apiFalsa middleware (casos de borda)', () => {
+  it('repassa múltiplos Set-Cookie como array para res.setHeader', async () => {
+    const c1 = 'a=1; Path=/; HttpOnly'
+    const c2 = 'b=2; Path=/; SameSite=Lax'
+    const handler = http.get('*/api/cookies', () => {
+      const headers = new Headers()
+      headers.append('set-cookie', c1)
+      headers.append('set-cookie', c2)
+      headers.set('x-extra', 'valor')
+      return new HttpResponse('ok', { status: 200, headers })
+    })
+
+    const { res, setHeader, next } = await invocarMiddleware([handler], {
+      url: '/cookies',
+      originalUrl: '/api/cookies',
+    })
+
+    expect(next).not.toHaveBeenCalled()
+    expect(res.statusCode).toBe(200)
+    expect(setHeader).toHaveBeenCalledWith('set-cookie', [c1, c2])
+    expect(setHeader.mock.calls.filter(([chave]) => String(chave).toLowerCase() === 'set-cookie')).toHaveLength(1)
+    expect(setHeader).toHaveBeenCalledWith('x-extra', 'valor')
+  })
+
+  it('responde 502 com JSON de erro quando handler retorna HttpResponse.error()', async () => {
+    const handler = http.get('*/api/falha', () => HttpResponse.error())
+
+    const { res, setHeader, end, next } = await invocarMiddleware([handler], {
+      url: '/falha',
+      originalUrl: '/api/falha',
+    })
+
+    expect(next).not.toHaveBeenCalled()
+    expect(res.statusCode).toBe(502)
+    expect(setHeader).toHaveBeenCalledWith('content-type', 'application/json')
+    expect(JSON.parse(String(end.mock.calls[0]?.[0]))).toEqual({ erro: 'resposta de erro do mock' })
+  })
+
+  it('ignora pseudo-headers HTTP/2 ao construir cabeçalhos da requisição', async () => {
+    const handler = http.get('*/api/h2', ({ request }) =>
+      HttpResponse.json({ teste: request.headers.get('x-teste') }),
+    )
+
+    const { res, end, next } = await invocarMiddleware([handler], {
+      url: '/h2',
+      originalUrl: '/api/h2',
+      headers: {
+        ':authority': 'localhost:5173',
+        ':method': 'GET',
+        ':path': '/api/h2',
+        ':scheme': 'https',
+        'x-teste': 'ok',
+      },
+    })
+
+    expect(next).not.toHaveBeenCalled()
+    expect(res.statusCode).toBe(200)
+    expect(JSON.parse(Buffer.from(end.mock.calls[0]?.[0] as Uint8Array).toString('utf8'))).toEqual({ teste: 'ok' })
+  })
 })

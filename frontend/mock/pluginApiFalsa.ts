@@ -5,7 +5,7 @@ import type { Plugin } from 'vite'
 function construirCabecalhos(req: IncomingMessage): Headers {
   const cabecalhos = new Headers()
   for (const [chave, valor] of Object.entries(req.headers)) {
-    if (valor === undefined) continue
+    if (valor === undefined || chave.startsWith(':')) continue
     if (Array.isArray(valor)) {
       for (const item of valor) cabecalhos.append(chave, item)
     } else {
@@ -52,10 +52,22 @@ export function apiFalsa(): Plugin {
           const resposta = await getResponse(handlersDev, requisicao)
 
           if (resposta) {
+            if (resposta.type === 'error') {
+              res.statusCode = 502
+              res.setHeader('content-type', 'application/json')
+              res.end(JSON.stringify({ erro: 'resposta de erro do mock' }))
+              return
+            }
+
             res.statusCode = resposta.status
             resposta.headers.forEach((valor, chave) => {
+              if (chave.toLowerCase() === 'set-cookie') return
               res.setHeader(chave, valor)
             })
+            const cookies = resposta.headers.getSetCookie()
+            if (cookies.length > 0) {
+              res.setHeader('set-cookie', cookies)
+            }
             res.end(Buffer.from(await resposta.arrayBuffer()))
             return
           }
