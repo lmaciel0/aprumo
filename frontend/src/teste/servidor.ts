@@ -34,7 +34,7 @@ const cartoesVazios: CartoesResponse = { totalFaturas: '0.00', limiteTotal: '0.0
  */
 export const servidor = setupServer(
   http.get('/api/resumo', () => HttpResponse.json(resumoVazio)),
-  http.get('/api/saldo', () => HttpResponse.json({ ativo: false, saldo: '0.00', recebidoNoMes: '0.00' })),
+  http.get('/api/saldo', () => HttpResponse.json({ ativo: false, saldo: '0.00' })),
   http.get('/api/cartoes', () => HttpResponse.json(cartoesVazios)),
   http.get('/api/categorias', () => HttpResponse.json([])),
   http.get('/api/notas/fixada', () => HttpResponse.json({ nota: null })),

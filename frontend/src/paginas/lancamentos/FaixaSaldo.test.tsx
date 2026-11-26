@@ -19,7 +19,7 @@ const responderSaldo = (saldo: SaldoResponse) => {
   return consultas
 }
 
-const ativo: SaldoResponse = { ativo: true, saldo: '5322.44', recebidoNoMes: '5500.00' }
+const ativo: SaldoResponse = { ativo: true, saldo: '5322.44' }
 
 describe('FaixaSaldo', () => {
   // Só o Date é falso: timers falsos travariam o MSW e o react-query.
@@ -30,7 +30,7 @@ describe('FaixaSaldo', () => {
   afterEach(() => vi.useRealTimers())
 
   it('inativo_nao_renderiza_nada', async () => {
-    const consultas = responderSaldo({ ativo: false, saldo: '0.00', recebidoNoMes: '0.00' })
+    const consultas = responderSaldo({ ativo: false, saldo: '0.00' })
     renderComApp(<FaixaSaldo ano={2026} mes={10} />)
 
     await waitFor(() => expect(consultas).toEqual(['?ano=2026&mes=10']))
@@ -38,7 +38,7 @@ describe('FaixaSaldo', () => {
     expect(screen.queryByRole('region', { name: /saldo/i })).toBeNull()
   })
 
-  it('mes_corrente_mostra_dinheiro_hoje_e_recebido_no_mes', async () => {
+  it('mes_corrente_mostra_dinheiro_hoje', async () => {
     responderSaldo(ativo)
     renderComApp(<FaixaSaldo ano={2026} mes={11} />)
 
@@ -46,8 +46,16 @@ describe('FaixaSaldo', () => {
 
     expect(within(faixa).getByText('Saldo em conta hoje')).toBeInTheDocument()
     expect(within(faixa).getByText('R$ 5.322,44')).toBeInTheDocument()
-    expect(within(faixa).getByText('Recebido no mês')).toBeInTheDocument()
-    expect(within(faixa).getByText('R$ 5.500,00')).toBeInTheDocument()
+  })
+
+  it('nao_mostra_recebido_no_mes', async () => {
+    responderSaldo(ativo)
+    renderComApp(<FaixaSaldo ano={2026} mes={11} />)
+
+    const faixa = await screen.findByRole('region', { name: /saldo/i })
+
+    expect(within(faixa).queryByText('Recebido no mês')).toBeNull()
+    expect(within(faixa).getByText('R$ 5.322,44')).toBeInTheDocument()
   })
 
   it('mes_futuro_mostra_saldo_ao_fim_do_mes_e_nao_diz_hoje', async () => {
@@ -80,9 +88,9 @@ describe('FaixaSaldo', () => {
         const mesPedido = Number(new URL(request.url).searchParams.get('mes'))
         if (mesPedido === para) {
           await delay(150)
-          return HttpResponse.json({ ativo: true, saldo: '1111.11', recebidoNoMes: '2222.22' })
+          return HttpResponse.json({ ativo: true, saldo: '1111.11' })
         }
-        return HttpResponse.json({ ativo: true, saldo: '9999.99', recebidoNoMes: '8888.88' })
+        return HttpResponse.json({ ativo: true, saldo: '9999.99' })
       }),
     )
     const { rerender, queryClient } = renderComApp(<FaixaSaldo ano={2026} mes={de} />)
@@ -99,7 +107,6 @@ describe('FaixaSaldo', () => {
     // Carregando: o esqueleto ocupa o lugar e o valor do mês anterior não aparece.
     expect(screen.getByRole('status', { name: /carregando o saldo/i })).toBeInTheDocument()
     expect(screen.queryByText('R$ 9.999,99')).toBeNull()
-    expect(screen.queryByText('R$ 8.888,88')).toBeNull()
     expect(screen.queryByRole('region', { name: /saldo/i })).toBeNull()
 
     const faixa = await screen.findByRole('region', { name: /saldo/i })
