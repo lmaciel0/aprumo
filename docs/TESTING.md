@@ -13,6 +13,7 @@ Front-end:
 ```bash
 cd frontend
 npm test -- --run     # Vitest, uma execução
+npm run dev:mock      # dev com API falsa (/api/*) para o gate visual
 npm run lint          # oxlint
 npm run build         # tsc -b && vite build
 ```
