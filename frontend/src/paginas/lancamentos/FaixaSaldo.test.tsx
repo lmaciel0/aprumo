@@ -49,12 +49,13 @@ describe('FaixaSaldo', () => {
   })
 
   it('nao_mostra_recebido_no_mes', async () => {
-    responderSaldo(ativo)
+    responderSaldo({ ...ativo, recebidoNoMes: '5500.00' } as SaldoResponse)
     renderComApp(<FaixaSaldo ano={2026} mes={11} />)
 
     const faixa = await screen.findByRole('region', { name: /saldo/i })
 
     expect(within(faixa).queryByText('Recebido no mês')).toBeNull()
+    expect(within(faixa).queryByText('R$ 5.500,00')).toBeNull()
     expect(within(faixa).getByText('R$ 5.322,44')).toBeInTheDocument()
   })
 
