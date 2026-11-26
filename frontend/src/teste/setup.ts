@@ -30,10 +30,12 @@ globalThis.ResizeObserver = ResizeObserverFalso
  * falta, com retornos vazios, sem mudar o comportamento dos outros testes.
  */
 const retanguloVazio = () => ({ x: 0, y: 0, width: 0, height: 0, top: 0, left: 0, right: 0, bottom: 0, toJSON: () => ({}) })
-if (typeof document.elementFromPoint !== 'function') document.elementFromPoint = () => null
-if (typeof Range.prototype.getBoundingClientRect !== 'function') Range.prototype.getBoundingClientRect = retanguloVazio
-if (typeof Range.prototype.getClientRects !== 'function') {
-  Range.prototype.getClientRects = () => ({ length: 0, item: () => null, [Symbol.iterator]: [][Symbol.iterator] }) as unknown as DOMRectList
+if (typeof document !== 'undefined' && typeof document.elementFromPoint !== 'function') document.elementFromPoint = () => null
+if (typeof Range !== 'undefined') {
+  if (typeof Range.prototype.getBoundingClientRect !== 'function') Range.prototype.getBoundingClientRect = retanguloVazio
+  if (typeof Range.prototype.getClientRects !== 'function') {
+    Range.prototype.getClientRects = () => ({ length: 0, item: () => null, [Symbol.iterator]: [][Symbol.iterator] }) as unknown as DOMRectList
+  }
 }
 
 /**
@@ -46,7 +48,7 @@ beforeAll(() => servidor.listen({ onUnhandledFrame: 'error' }))
 
 afterEach(() => {
   cleanup()
-  localStorage.clear()
+  if (typeof window !== 'undefined') localStorage.clear()
   servidor.resetHandlers()
 })
 
